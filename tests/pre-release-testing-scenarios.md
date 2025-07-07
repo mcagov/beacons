@@ -8,6 +8,8 @@ production release.
 
 ## Checklist
 
+Example beacon ID `1D0E9B07CEFFBFF`.
+
 - [ ] Only the newly deployed images of the application are running (check the [AWS Console](https://eu-west-2.console.aws.amazon.com/ecs/v2/clusters/staging-mca-beacons-cluster/services?region=eu-west-2))
 - [ ] As an AccountHolder, I can sign in to my account at https://dev.register-406-beacons.service.gov.uk/ or https://staging.register-406-beacons.service.gov.uk/
 - [ ] As an AccountHolder, I can register a new Beacon

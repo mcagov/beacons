@@ -9,6 +9,10 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy. Please communicate with the rest of the team if you are using this."
 
 jobs:
   terraform_lint:
@@ -19,9 +23,13 @@ jobs:
         working-directory: terraform
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.git-reference }}
+
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.0.0
+
       - name: Terraform Lint
         run: terraform fmt --recursive --check
 
@@ -30,9 +38,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.git-reference }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: "16.17.0"
+
       - name: Prettier check
         run: |
           npm install
@@ -41,8 +53,10 @@ jobs:
   test_webapp:
     name: Test Webapp
     uses: ./.github/workflows/_reusable-test-webapp.yml
+    with:
+      git-reference: ${{ inputs.git-reference }}
     secrets:
-      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
+      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN_V4 }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
   test_service:
@@ -50,6 +64,7 @@ jobs:
     uses: ./.github/workflows/_reusable-test-service.yml
     with:
       environment: development
+      git-reference: ${{ inputs.git-reference }}
     secrets:
       microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
       microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
@@ -59,6 +74,8 @@ jobs:
   test_backoffice:
     name: Test Backoffice
     uses: ./.github/workflows/_reusable-test-backoffice.yml
+    with:
+      git-reference: ${{ inputs.git-reference }}
 
   publish_webapp_image:
     name: Publish Webapp
@@ -68,6 +85,7 @@ jobs:
       - test_webapp
     uses: ./.github/workflows/_reusable-publish-webapp-image.yml
     with:
+      git-reference: ${{ inputs.git-reference }}
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
@@ -82,6 +100,7 @@ jobs:
       - test_webapp
     uses: ./.github/workflows/_reusable-publish-service-image.yml
     with:
+      git-reference: ${{ inputs.git-reference }}
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
@@ -96,6 +115,7 @@ jobs:
       - test_webapp
     uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
     with:
+      git-reference: ${{ inputs.git-reference }}
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
@@ -112,6 +132,7 @@ jobs:
       - test_webapp
     uses: ./.github/workflows/_reusable-publish-opensearch-proxy-image.yml
     with:
+      git-reference: ${{ inputs.git-reference }}
       tag: ${{ github.sha }}
       registry_url: 232705206979.dkr.ecr.eu-west-2.amazonaws.com
     secrets:
@@ -132,6 +153,7 @@ jobs:
       - publish_opensearch_proxy_image
     uses: ./.github/workflows/_reusable-end-to-end-tests.yml
     with:
+      git-reference: ${{ inputs.git-reference }}
       image-tag: ${{ github.sha }}
       test_gov_notify_feedback_email_address: beacons_test_feedback@mailsac.com
       test_azure_ad_tenant_id: 513fb495-9a90-425b-a49a-bc6ebe2a429e
@@ -139,7 +161,7 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      test_webapp_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
+      test_webapp_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN_V4 }}
       test_webapp_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
       test_webapp_azure_b2c_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_CLIENT_SECRET }}
       test_webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_AD_CLIENT_SECRET }}
