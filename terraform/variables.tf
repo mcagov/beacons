@@ -412,7 +412,7 @@ variable "microsoft_graph_b2c_tenant_name" {
 }
 
 variable "load_balancer_idle_time" {
-  type = number
+  type        = number
   description = "(Optional) Time in seconds that the connection is allowed to be idle."
-  default = 60
+  default     = 60
 }
