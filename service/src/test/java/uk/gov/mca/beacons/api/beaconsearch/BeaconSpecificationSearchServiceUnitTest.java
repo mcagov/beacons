@@ -109,7 +109,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
   }
 
   @Test
-  void givenEmailAndAccountHolder_ThenShouldCallRepositoryWithSpecificationAndSort() {
+  public void givenEmailAndAccountHolder_ThenShouldCallRepositoryWithSpecificationAndSort() {
     String email = "test@example.com";
     UUID accountId = UUID.randomUUID();
     Sort sort = Sort.by("hexId");
@@ -138,6 +138,45 @@ public class BeaconSpecificationSearchServiceUnitTest {
       any(Specification.class),
       any(Sort.class)
     );
+  }
+
+  @Test
+  public void givenSearchParam_ThenShouldCallRepositoryWithSpecificationOnlyForFullExport() {
+    String searchParams = "search";
+    OffsetDateTime regFrom = OffsetDateTime.of(
+      2025,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      ZoneOffset.UTC
+    );
+    OffsetDateTime regTo = null;
+    OffsetDateTime modFrom = null;
+    OffsetDateTime modTo = null;
+    BeaconSearchEntity entity1 = createDummyEntity(UUID.randomUUID());
+    BeaconSearchEntity entity2 = createDummyEntity(UUID.randomUUID());
+    List<BeaconSearchEntity> expectedList = List.of(entity1, entity2);
+
+    when(beaconSearchRepository.findAll(any(Specification.class))).thenReturn(
+      expectedList
+    );
+
+    List<BeaconSearchEntity> actualList =
+      beaconSpecificationSearchService.findAllBeaconsForFullExport(
+        name,
+        regFrom,
+        regTo,
+        modFrom,
+        modTo
+      );
+
+    assertThat(actualList).isEqualTo(expectedList);
+    assertThat(actualList).hasSize(2);
+
+    verify(beaconSearchRepository).findAll(any(Specification.class));
   }
 
   private BeaconSearchEntity createDummyEntity(UUID id) {
