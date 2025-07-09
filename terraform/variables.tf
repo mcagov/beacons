@@ -410,3 +410,9 @@ variable "microsoft_graph_b2c_tenant_name" {
   description = "Name of the Azure AD B2C tenant. Used by the beacons service API to call the Microsoft Graph API"
   sensitive   = true
 }
+
+variable "load_balancer_idle_time" {
+  type        = number
+  description = "(Optional) Time in seconds that the connection is allowed to be idle."
+  default     = 60
+}
