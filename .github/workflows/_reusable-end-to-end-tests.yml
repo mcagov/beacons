@@ -1,4 +1,4 @@
-name: E2E tests
+name: "[reusable] E2E tests"
 
 permissions:
   contents: read
@@ -17,6 +17,9 @@ on:
         description: The tag of the release to test
         required: true
         type: string
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
       test_gov_notify_feedback_email_address:
         description: The email address to use to test email alerts against
         required: true
@@ -72,30 +75,38 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.git-reference}}
+
       - uses: actions/setup-node@v4
         with:
           node-version: "16.17.0"
+
       - name: Install npm dependencies
         run: npm ci
         env:
           CYPRESS_INSTALL_BINARY: 0
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.aws_access_key_id }}
           aws-secret-access-key: ${{ secrets.aws_secret_access_key }}
           aws-region: eu-west-2
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
         with:
           mask-password: "true"
+
       - name: Bring up published containers
         run: |
           IMAGE_TAG=${{ inputs.image-tag }} \
           GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS=${{ inputs.test_gov_notify_feedback_email_address }} \
           AZURE_B2C_CLIENT_SECRET=${{ secrets.test_webapp_azure_b2c_client_secret }} \
           JWT_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }} \
+          AUTH_SECRET=${{ secrets.test_webapp_azure_b2c_jwt_secret }} \
           WEBAPP_CLIENT_SECRET=${{ secrets.test_webapp_azure_ad_client_secret }} \
           GOV_NOTIFY_API_KEY=${{ secrets.test_webapp_gov_notify_api_key }} \
           MICROSOFT_GRAPH_CLIENT_ID=${{ secrets.microsoft_graph_client_id }} \
@@ -103,6 +114,7 @@ jobs:
           MICROSOFT_GRAPH_B2C_TENANT_ID=${{ secrets.microsoft_graph_b2c_tenant_id }} \
           MICROSOFT_GRAPH_B2C_TENANT_NAME=${{ secrets.microsoft_graph_b2c_tenant_name }} \
           docker compose --verbose -f docker-compose.e2e.yml -f docker-compose.ci.yml up --detach
+
       - name: Run Cypress end to end tests
         uses: cypress-io/github-action@v6
         env:
@@ -116,17 +128,18 @@ jobs:
           MICROSOFT_GRAPH_CLIENT_SECRET: ${{ secrets.microsoft_graph_client_secret }}
           MICROSOFT_GRAPH_B2C_TENANT_ID: ${{ secrets.microsoft_graph_b2c_tenant_id }}
           MICROSOFT_GRAPH_B2C_TENANT_NAME: ${{ secrets.microsoft_graph_b2c_tenant_name }}
-
         with:
           working-directory: tests
           spec: cypress/endToEnd/*
           browser: chrome
           wait-on: "http://localhost:8080/spring-api/actuator/health"
+
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots
           path: tests/cypress/screenshots/
+
       - name: Stop containers
         if: always()
         run: docker compose --file "docker-compose.e2e.yml" down

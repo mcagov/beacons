@@ -1,4 +1,4 @@
-import { Provider as AuthProvider } from "next-auth/client";
+import { SessionProvider as AuthProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { AppProps } from "next/app";
 import Head from "next/head";
@@ -40,7 +40,7 @@ const GovUKMetadata: FunctionComponent = () => (
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta charSet="utf-8" />
-    <meta name="theme-color" content="#1d70b8" />
+    <meta name="theme-color" content="#0b0c0c" />
 
     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
 

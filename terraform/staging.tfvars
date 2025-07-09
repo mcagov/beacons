@@ -42,3 +42,4 @@ opensearch_master_node_count            = 3
 opensearch_instance_count               = 2
 opensearch_ebs_volume_size              = 10
 ssl_certificate_arn                     = "arn:aws:acm:eu-west-2:232705206979:certificate/cca7f7e5-8b98-443d-a6c6-245e7b653200"
+load_balancer_idle_time                 = 120

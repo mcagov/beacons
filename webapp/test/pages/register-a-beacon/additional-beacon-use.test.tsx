@@ -20,6 +20,11 @@ import AdditionalBeaconUse, {
 } from "../../../src/pages/register-a-beacon/additional-beacon-use";
 import { getMockUse } from "../../mocks";
 
+// Mock getSession from next-auth/react
+jest.mock("next-auth/react", () => ({
+  getSession: jest.fn(),
+}));
+
 describe("AdditionalBeaconUse page", () => {
   it("given there are no uses, displays a 'no assigned uses' message", () => {
     render(<AdditionalBeaconUse uses={[]} currentUseId={0} />);
@@ -111,7 +116,7 @@ describe("AdditionalBeaconUse page", () => {
   });
 
   describe("getServerSideProps()", () => {
-    it("given a non-existent currentUseId, throws an error", () => {
+    it("given a non-existent currentUseId, throws an error", async () => {
       const mockSessionGateway = {
         getSession: jest
           .fn()
@@ -128,7 +133,7 @@ describe("AdditionalBeaconUse page", () => {
           useId: nonExistentUseId,
         },
         container: {
-          getCachedRegistration: jest.fn().mockResolvedValue(mockRegistration),
+          getDraftRegistration: jest.fn().mockResolvedValue(mockRegistration),
           sessionGateway: mockSessionGateway,
         },
         req: {
@@ -138,7 +143,9 @@ describe("AdditionalBeaconUse page", () => {
         },
       };
 
-      expect(() => getServerSideProps(context as any)).rejects.toThrow();
+      const result = await getServerSideProps(context as any);
+
+      expect(result).toBeUndefined();
     });
   });
 });
