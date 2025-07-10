@@ -28,7 +28,7 @@
     "@types/ioredis": "^4.26.7",
     "axios": "^1.9.0",
     "cookie": "^1.0.2",
-    "google-libphonenumber": "3.2.32",
+    "google-libphonenumber": "^3.2.32",
     "govuk-frontend": "^4.10.0",
     "ioredis": "^4.27.3",
     "isodate": "^0.1.4",
@@ -36,8 +36,8 @@
     "next": "^15.3.4",
     "next-auth": "^4.24.11",
     "notifications-node-client": "^8.2.1",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "redis-json": "^6.0.3",
     "urlencoded-body-parser": "^3.0.0",
     "uuid": "^11.1.0",
@@ -50,14 +50,14 @@
     "@types/cookie": "^0.4.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.15.34",
-    "@types/react": "19.1.8",
-    "@types/react-dom": "19.1.6",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "@typescript-eslint/eslint-plugin": "^8.35.1",
     "@typescript-eslint/parser": "^8.35.1",
     "cypress": "^13.3.0",
     "dotenv": "^10.0.0",
     "eslint": "^8.57.1",
-    "eslint-config-next": "15.3.4",
+    "eslint-config-next": "^15.3.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^4.3.8",
@@ -76,9 +76,5 @@
   },
   "lint-staged": {
     "*.{js, jsx, ts, tsx}": "eslint --cache --fix"
-  },
-  "overrides": {
-    "@types/react": "19.1.8",
-    "@types/react-dom": "19.1.6"
   }
 }
