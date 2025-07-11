@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { formatMonth } from "../../lib/writingStyle";
 import { SummaryList, SummaryListItem } from "../SummaryList";

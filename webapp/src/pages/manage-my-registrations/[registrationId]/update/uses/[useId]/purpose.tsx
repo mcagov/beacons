@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import {
   BeaconsForm,
   BeaconsFormFieldsetAndLegend,
@@ -102,7 +102,6 @@ export const getServerSideProps: GetServerSideProps = withContainer(
       context.query.registrationId as string,
       context.query.useId as string,
     );
-    ("");
 
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),

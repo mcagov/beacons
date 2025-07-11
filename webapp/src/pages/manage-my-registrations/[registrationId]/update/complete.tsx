@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React from "react";
+import React, { type JSX } from "react";
 import { ReturnToYourAccountSection } from "../../../../components/domain/ReturnToYourAccountSection";
 import { Grid } from "../../../../components/Grid";
 import { Layout } from "../../../../components/Layout";

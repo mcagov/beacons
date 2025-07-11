@@ -2,6 +2,7 @@ import React, {
   FunctionComponent,
   InputHTMLAttributes,
   ReactNode,
+  type JSX,
 } from "react";
 import { FormHint, FormLabel } from "./Form";
 

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { AccountHolder } from "../../entities/AccountHolder";
 import { AccountListBeacon } from "../../entities/AccountListBeacon";
 

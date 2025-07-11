@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { BackButton, LinkButton } from "../../../../../components/Button";
 import { AdditionalBeaconUseSummary } from "../../../../../components/domain/AdditionalBeaconUseSummary";
 import { Grid } from "../../../../../components/Grid";

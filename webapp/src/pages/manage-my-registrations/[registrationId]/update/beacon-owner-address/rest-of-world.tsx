@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { BackButton, Button } from "../../../../../components/Button";
 import { CountrySelect } from "../../../../../components/domain/formElements/CountrySelect";
 import { FormErrorSummary } from "../../../../../components/ErrorSummary";

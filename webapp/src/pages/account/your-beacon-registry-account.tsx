@@ -1,5 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { LinkButton } from "../../components/Button";
 import LegacyBeaconsNotification from "../../components/domain/LegacyBeaconsNotification";

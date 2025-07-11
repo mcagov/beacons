@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { LinkButton } from "../components/Button";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";

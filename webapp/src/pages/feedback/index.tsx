@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import { Button } from "../../components/Button";
 import { FormFieldset, FormGroup, FormLegend } from "../../components/Form";

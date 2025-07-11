@@ -2,6 +2,7 @@ import React, {
   FunctionComponent,
   ReactNode,
   SelectHTMLAttributes,
+  type JSX,
 } from "react";
 
 interface SelectProps {

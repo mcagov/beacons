@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, type JSX } from "react";
 import { AccountPageURLs } from "../../lib/urls";
 
 interface SignUpPageProps {

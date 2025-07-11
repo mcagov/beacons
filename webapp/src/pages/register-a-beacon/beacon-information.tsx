@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import Image from "next/legacy/image";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import { DateListItem, DateType } from "../../components/DateInput";
 import { Details } from "../../components/Details";
