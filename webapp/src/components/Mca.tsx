@@ -1,4 +1,5 @@
 import React, { FunctionComponent, type JSX } from "react";
+import Image from "next/image";
 import { Details } from "./Details";
 import { AnchorLink, GovUKList } from "./Typography";
 
@@ -9,9 +10,11 @@ interface BeaconRegistryContactInfoProps {
 export const McaLogo: FunctionComponent = (): JSX.Element => (
   <>
     <a className="govuk-body govuk-!-margin-bottom-3" href="https://gov.uk/mca">
-      <img
+      <Image
         src="/assets/mca_images/mca-logo.png"
         alt="This image illustrates the Maritime & Coastguard Agency logo."
+        height={178}
+        width={200}
       />
     </a>
   </>

@@ -10,7 +10,7 @@
     "test:staged": "jest -o",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "lint": "eslint .",
+    "lint": "next lint",
     "postinstall": "scripts/post-install.sh",
     "cypress": "cypress run",
     "cypress:open": "cypress open",
@@ -56,7 +56,7 @@
     "@typescript-eslint/parser": "^8.35.1",
     "cypress": "^13.3.0",
     "dotenv": "^10.0.0",
-    "eslint": "^8.57.1",
+    "eslint": "^9.30.1",
     "eslint-config-next": "^15.3.4",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -75,6 +75,6 @@
     "npm": "^10.9.2"
   },
   "lint-staged": {
-    "*.{js, jsx, ts, tsx}": "eslint --cache --fix"
+    "*.{js,jsx,ts,tsx}": "next lint --fix --file"
   }
 }
