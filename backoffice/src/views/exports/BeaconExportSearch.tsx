@@ -34,9 +34,7 @@ export interface ExportSearchFormProps {
   lastModifiedTo: Date;
 }
 
-export interface IBeaconExportSearchResult {
-  _embedded: { beaconSearch: IBeaconExportResult[] };
-}
+export type IBeaconExportSearchResult = IBeaconExportResult[];
 
 export interface IBeaconExportResult {
   id: string;

@@ -68,21 +68,6 @@ public class BeaconSpecificationSearchService {
     return results.isEmpty() ? Collections.emptyList() : results;
   }
 
-  public List<BeaconSearchEntity> findAllByAccountHolderIdAndEmail(
-    String email,
-    UUID accountHolderId,
-    Sort sort
-  ) {
-    Specification<BeaconSearchEntity> spec = Specification.where(
-      BeaconSearchSpecification.hasEmailOrRecoveryEmail(email)
-    ).or(BeaconSearchSpecification.hasAccountHolder(accountHolderId));
-
-    List<BeaconSearchEntity> results =
-      beaconSearchSpecificationRepository.findAll(spec, sort);
-
-    return results.isEmpty() ? Collections.emptyList() : results;
-  }
-
   public List<BeaconSearchEntity> findAllBeaconsForFullExport(
     String name,
     OffsetDateTime registrationFrom,

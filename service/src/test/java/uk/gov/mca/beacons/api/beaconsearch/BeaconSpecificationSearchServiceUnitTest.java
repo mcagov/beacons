@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -141,8 +143,34 @@ public class BeaconSpecificationSearchServiceUnitTest {
   }
 
   @Test
-  public void givenSearchParam_ThenShouldCallRepositoryWithSpecificationOnlyForFullExport() {
-    String searchParams = "search";
+  public void shouldCallRepositoryWithSpecificationOnlyForFullExport() {
+    BeaconSearchEntity entity1 = createDummyEntity(UUID.randomUUID());
+    BeaconSearchEntity entity2 = createDummyEntity(UUID.randomUUID());
+    List<BeaconSearchEntity> expectedList = List.of(entity1, entity2);
+
+    when(
+      beaconSearchSpecificationRepository.findAll(any(Specification.class))
+    ).thenReturn(expectedList);
+
+    List<BeaconSearchEntity> actualList =
+      beaconSpecificationSearchService.findAllBeaconsForFullExport(
+        "",
+        null,
+        null,
+        null,
+        null
+      );
+
+    assertThat(actualList, equalTo(expectedList));
+    assertThat(actualList, hasSize(2));
+
+    verify(beaconSearchSpecificationRepository).findAll(
+      any(Specification.class)
+    );
+  }
+
+  @Test
+  public void givenRegistrationFromParam_ThenShouldCallRepositoryWithSpecificationOnlyForFullExport() {
     OffsetDateTime regFrom = OffsetDateTime.of(
       2025,
       1,
@@ -153,30 +181,70 @@ public class BeaconSpecificationSearchServiceUnitTest {
       0,
       ZoneOffset.UTC
     );
-    OffsetDateTime regTo = null;
-    OffsetDateTime modFrom = null;
-    OffsetDateTime modTo = null;
-    BeaconSearchEntity entity1 = createDummyEntity(UUID.randomUUID());
-    BeaconSearchEntity entity2 = createDummyEntity(UUID.randomUUID());
-    List<BeaconSearchEntity> expectedList = List.of(entity1, entity2);
-
-    when(beaconSearchRepository.findAll(any(Specification.class))).thenReturn(
-      expectedList
+    BeaconSearchEntity entity = new BeaconSearchEntity();
+    entity.setId(UUID.randomUUID());
+    entity.setHexId("1D123456789ABCD");
+    entity.setBeaconStatus("NEW");
+    entity.setCreatedDate(
+      OffsetDateTime.of(2022, 1, 15, 10, 0, 0, 0, ZoneOffset.UTC)
     );
+
+    List<BeaconSearchEntity> expectedList = List.of(entity);
+
+    when(
+      beaconSearchSpecificationRepository.findAll(any(Specification.class))
+    ).thenReturn(expectedList);
 
     List<BeaconSearchEntity> actualList =
       beaconSpecificationSearchService.findAllBeaconsForFullExport(
-        name,
+        "",
         regFrom,
-        regTo,
-        modFrom,
-        modTo
+        null,
+        null,
+        null
       );
 
-    assertThat(actualList).isEqualTo(expectedList);
-    assertThat(actualList).hasSize(2);
+    assertThat(actualList, equalTo(expectedList));
+    assertThat(actualList, hasSize(1));
+  }
 
-    verify(beaconSearchRepository).findAll(any(Specification.class));
+  @Test
+  public void givenRegistrationToParam_ThenShouldCallRepositoryWithSpecificationOnlyForFullExport() {
+    OffsetDateTime regTo = OffsetDateTime.of(
+      2025,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0,
+      ZoneOffset.UTC
+    );
+    BeaconSearchEntity entity = new BeaconSearchEntity();
+    entity.setId(UUID.randomUUID());
+    entity.setHexId("1D123456789ABCD");
+    entity.setBeaconStatus("NEW");
+    entity.setCreatedDate(
+      OffsetDateTime.of(2022, 1, 15, 10, 0, 0, 0, ZoneOffset.UTC)
+    );
+
+    List<BeaconSearchEntity> expectedList = List.of(entity);
+
+    when(
+      beaconSearchSpecificationRepository.findAll(any(Specification.class))
+    ).thenReturn(expectedList);
+
+    List<BeaconSearchEntity> actualList =
+      beaconSpecificationSearchService.findAllBeaconsForFullExport(
+        "",
+        null,
+        regTo,
+        null,
+        null
+      );
+
+    assertThat(actualList, equalTo(expectedList));
+    assertThat(actualList, hasSize(1));
   }
 
   private BeaconSearchEntity createDummyEntity(UUID id) {

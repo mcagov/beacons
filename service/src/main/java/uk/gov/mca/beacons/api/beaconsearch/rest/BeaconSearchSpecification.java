@@ -2,8 +2,6 @@ package uk.gov.mca.beacons.api.beaconsearch.rest;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.Arrays;
-import java.util.UUID;
 import java.util.UUID;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -45,6 +43,12 @@ public class BeaconSearchSpecification {
 
   public static @Nullable Specification<
     BeaconSearchEntity
+  > hasAccountHolderName(String accountHolderName) {
+    return hasFuzzySearchCriteria(accountHolderName, "accountHolderName");
+  }
+
+  public static @Nullable Specification<
+    BeaconSearchEntity
   > hasCospasSarsatNumber(String cospasSarsatNumber) {
     return hasFuzzySearchCriteria(cospasSarsatNumber, "cospasSarsatNumber");
   }
@@ -58,19 +62,6 @@ public class BeaconSearchSpecification {
     );
   }
 
-  public static @Nullable Specification<
-    BeaconSearchEntity
-  > hasEmailOrRecoveryEmail(String email) {
-    return (root, query, cb) ->
-      cb.and(
-        cb.or(
-          cb.equal(root.get("ownerEmail"), email),
-          cb.equal(root.get("legacyBeaconRecoveryEmail"), email)
-        ),
-        cb.equal(root.get("beaconStatus"), "MIGRATED")
-      );
-  }
-
   public static @Nullable Specification<BeaconSearchEntity> hasAccountHolder(
     UUID accountHolderId
   ) {
@@ -91,16 +82,6 @@ public class BeaconSearchSpecification {
           cb.equal(root.get("legacyBeaconRecoveryEmail"), email)
         ),
         cb.equal(root.get("beaconStatus"), "MIGRATED")
-      );
-  }
-
-  public static @Nullable Specification<BeaconSearchEntity> hasAccountHolder(
-    UUID accountHolderId
-  ) {
-    return (root, query, cb) ->
-      cb.and(
-        cb.equal(root.get("accountHolderId"), accountHolderId),
-        root.get("beaconStatus").in(Arrays.asList("NEW", "CHANGE"))
       );
   }
 

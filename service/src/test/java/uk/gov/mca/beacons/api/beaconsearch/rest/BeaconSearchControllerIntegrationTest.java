@@ -231,6 +231,31 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
     }
   }
 
+  @Nested
+  class GetBeaconSearchResultsForFullExport {
+
+    @Test
+    void shouldReturnAllBeaconsWhenNoFiltersAreProvided() throws Exception {
+      final String accountHolderId = seedAccountHolder();
+      final var randomHexId = UUID.randomUUID().toString();
+      createBeacon(randomHexId, accountHolderId);
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(Endpoints.BeaconSearch.value + "/full-export-search")
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("length()")
+        .isEqualTo(1);
+    }
+  }
+
   private String readFile(String filePath) throws Exception {
     return Files.readString(Paths.get(filePath));
   }
