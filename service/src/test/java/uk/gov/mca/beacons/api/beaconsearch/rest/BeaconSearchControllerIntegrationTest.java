@@ -30,7 +30,7 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
           .uri(uriBuilder ->
             uriBuilder
               .path(Endpoints.BeaconSearch.value + "/find-all")
-              .queryParam("status", "migrated")
+              .queryParam("status", "MIGRATED")
               .queryParam("uses", "maritime")
               .queryParam("hexId", randomHexId)
               .queryParam("ownerName", "")
@@ -61,7 +61,7 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
           .uri(uriBuilder ->
             uriBuilder
               .path(Endpoints.BeaconSearch.value + "/find-all")
-              .queryParam("status", "new")
+              .queryParam("status", "NEW")
               .queryParam("uses", "fishing vessel")
               .queryParam("hexId", randomHexId)
               .queryParam("ownerName", "")

@@ -18,7 +18,7 @@ FROM base AS production-deps
 RUN npm install --production
 
 # NextJS production application
-FROM node:16.17-alpine AS nextjs-app
+FROM node:20.19-alpine AS nextjs-app
 
 ENV NODE_ENV=production
 
