@@ -93,4 +93,4 @@ The end-to-end tests are also a part of our CI/CD pipeline
 - They require the env vars `SESSION_TOKEN`, `JWT_SECRET` and `WEBAPP_CLIENT_SECRET`
   - These have been set as Github secrets in the repository
 - Currently, the values are the same as the ones used locally (`.env.local`)
-  - They're listed in 1Password in case the local or repo values change
+  - They're listed in 1Password in case the local or repository values change
