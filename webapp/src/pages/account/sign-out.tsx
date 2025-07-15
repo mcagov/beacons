@@ -1,8 +1,8 @@
 import { GetServerSideProps } from "next";
 import { signOut } from "next-auth/react";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { Layout } from "../../components/Layout";
-import { GovUKBody, PageHeading } from "../../components/Typography";
+import { PageHeading, AnchorLink } from "../../components/Typography";
 import { AccountPageURLs, GeneralPageURLs } from "../../lib/urls";
 
 interface SignOutProps {
@@ -21,21 +21,18 @@ export const SignOut: FunctionComponent<SignOutProps> = ({
   return (
     <Layout title={pageHeading} showCookieBanner={false}>
       <PageHeading>{pageHeading}</PageHeading>
-      <GovUKBody>
-        <>
-          <div className="govuk-button-group">
-            <button className="govuk-button" onClick={logoutHandler}>
-              Yes, I want to sign out
-            </button>
-            <a
-              className="govuk-link--no-visited-state"
-              href={AccountPageURLs.accountHome}
-            >
-              No, take me back to my account
-            </a>
-          </div>
-        </>
-      </GovUKBody>
+      <div className="govuk-button-group">
+        <button className="govuk-button" onClick={logoutHandler}>
+          Yes, I want to sign out
+        </button>
+        <AnchorLink
+          href={AccountPageURLs.accountHome}
+          classes="govuk-link--no-visited-state"
+          description="Navigate to my account"
+        >
+          No, take me back to my account
+        </AnchorLink>
+      </div>
     </Layout>
   );
 };
