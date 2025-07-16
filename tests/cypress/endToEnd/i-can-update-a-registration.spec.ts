@@ -39,7 +39,7 @@ describe("As an account holder", () => {
     whenIHaveVisited("/account/your-beacon-registry-account");
     iCanSeeMyExistingRegistrationHexId(firstRegistrationToUpdate.hexId);
     iCanSeeMyExistingRegistrationMainUse(
-      firstRegistrationToUpdate.uses[0].vesselName
+      firstRegistrationToUpdate.uses[0].vesselName,
     );
     iCanClickTheUpdateLinkToUpdateARegistration(firstRegistrationToUpdate);
 
@@ -337,7 +337,7 @@ const whenIClickOnTheHexIdOfTheRegistrationIUpdated =
 
 const iCanSeeTheDetailsOfMyRegistration = (registration) => {
   iCanSeeMyExistingRegistrationHexId(registration.hexId);
-  iCanSeeMyExistingRegistrationMainUse(registration.vesselName);
+  iCanSeeMyExistingRegistrationMainUse(registration.uses[0].vesselName);
   const dateRegistered = formatDateLong(new Date().toDateString()); // Assume test user registered beacon on same day for ease)
   iCanSeeTheHistoryOfMyRegistration(dateRegistered, dateRegistered);
   iCanSeeMyBeaconInformation(registration);
