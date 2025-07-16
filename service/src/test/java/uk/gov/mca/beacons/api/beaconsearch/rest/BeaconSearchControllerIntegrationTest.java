@@ -254,6 +254,32 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
         .jsonPath("length()")
         .isEqualTo(1);
     }
+
+    @Test
+    void shouldFindTheBeaconWhenFiltersAreProvided() throws Exception {
+      final String accountHolderId = seedAccountHolder();
+      final var randomHexId = UUID.randomUUID().toString();
+      createBeacon(randomHexId, accountHolderId);
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(Endpoints.BeaconSearch.value + "/full-export-search")
+            .queryParam("name", "Nelson")
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("length()")
+        .isEqualTo(1)
+        .jsonPath("[0].accountHolderId")
+        .isEqualTo(accountHolderId)
+        .jsonPath("[0].ownerEmail")
+        .isEqualTo("nelson@royalnavy.mod.uk");
+    }
   }
 
   private String readFile(String filePath) throws Exception {
