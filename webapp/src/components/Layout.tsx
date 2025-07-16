@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent, ReactNode, type JSX } from "react";
 import { FeedbackURLs } from "../lib/urls";
 import { CookieBanner } from "./CookieBanner";
 import { Footer } from "./Footer";

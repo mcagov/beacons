@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { BackButton, StartButton } from "../../components/Button";
 import { CheckYourAnswersBeaconDetailsSummary } from "../../components/domain/CheckYourAnswersBeaconDetailsSummary";
 import { CheckYourAnswersBeaconEmergencyContactsSummary } from "../../components/domain/CheckYourAnswersBeaconEmergencyContactsSummary";
