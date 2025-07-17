@@ -60,7 +60,10 @@ public class BeaconSpecificationSearchService {
   ) {
     Specification<BeaconSearchEntity> spec = Specification.where(
       BeaconSearchSpecification.hasEmailOrRecoveryEmail(email)
-    ).or(BeaconSearchSpecification.hasAccountHolder(accountHolderId));
+    )
+      .and(BeaconSearchSpecification.hasMigratedStatus())
+      .or(BeaconSearchSpecification.hasAccountHolderId(accountHolderId))
+      .and(BeaconSearchSpecification.hasNewOrChangeStatus());
 
     List<BeaconSearchEntity> results =
       beaconSearchSpecificationRepository.findAll(spec, sort);
@@ -80,25 +83,22 @@ public class BeaconSpecificationSearchService {
     )
       .or(BeaconSearchSpecification.hasAccountHolderName(name))
       .and(
-        BeaconSearchSpecification.isGreaterThanOrEqualTo(
+        BeaconSearchSpecification.hasDateOnAfter(
           registrationFrom,
           "createdDate"
         )
       )
       .and(
-        BeaconSearchSpecification.isLessThanOrEqualTo(
-          registrationTo,
-          "createdDate"
-        )
+        BeaconSearchSpecification.hasDateOnBefore(registrationTo, "createdDate")
       )
       .and(
-        BeaconSearchSpecification.isGreaterThanOrEqualTo(
+        BeaconSearchSpecification.hasDateOnAfter(
           lastModifiedFrom,
           "lastModifiedDate"
         )
       )
       .and(
-        BeaconSearchSpecification.isLessThanOrEqualTo(
+        BeaconSearchSpecification.hasDateOnBefore(
           lastModifiedTo,
           "lastModifiedDate"
         )

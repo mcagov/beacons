@@ -62,46 +62,50 @@ public class BeaconSearchSpecification {
     );
   }
 
-  public static @Nullable Specification<BeaconSearchEntity> hasAccountHolder(
-    UUID accountHolderId
-  ) {
-    return (root, query, cb) ->
-      cb.and(
-        cb.equal(root.get("accountHolderId"), accountHolderId),
-        root.get("beaconStatus").in(Arrays.asList("NEW", "CHANGE"))
-      );
-  }
-
   public static @Nullable Specification<
     BeaconSearchEntity
   > hasEmailOrRecoveryEmail(String email) {
     return (root, query, cb) ->
-      cb.and(
-        cb.or(
-          cb.equal(root.get("ownerEmail"), email),
-          cb.equal(root.get("legacyBeaconRecoveryEmail"), email)
-        ),
-        cb.equal(root.get("beaconStatus"), "MIGRATED")
+      cb.or(
+        cb.equal(root.get("ownerEmail"), email),
+        cb.equal(root.get("legacyBeaconRecoveryEmail"), email)
       );
   }
 
-  public static @Nullable Specification<
-    BeaconSearchEntity
-  > isGreaterThanOrEqualTo(OffsetDateTime dateTime, String criteriaName) {
-    if (dateTime != null) {
-      return (root, query, cb) ->
-        greaterThanOrEqualTo(cb, root.get(criteriaName), dateTime);
-    }
-    return null;
+  public static Specification<BeaconSearchEntity> hasMigratedStatus() {
+    return (root, query, cb) -> cb.equal(root.get("beaconStatus"), "MIGRATED");
   }
 
-  public static @Nullable Specification<BeaconSearchEntity> isLessThanOrEqualTo(
+  public static Specification<BeaconSearchEntity> hasAccountHolderId(
+    UUID accountHolderId
+  ) {
+    return (root, query, cb) ->
+      cb.equal(root.get("accountHolderId"), accountHolderId);
+  }
+
+  public static Specification<BeaconSearchEntity> hasNewOrChangeStatus() {
+    return (root, query, cb) ->
+      root.get("beaconStatus").in(Arrays.asList("NEW", "CHANGE"));
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasDateOnAfter(
     OffsetDateTime dateTime,
     String criteriaName
   ) {
     if (dateTime != null) {
       return (root, query, cb) ->
-        lessThanOrEqualTo(cb, root.get(criteriaName), dateTime);
+        hasDateGreaterThanOrEqualTo(cb, root.get(criteriaName), dateTime);
+    }
+    return null;
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasDateOnBefore(
+    OffsetDateTime dateTime,
+    String criteriaName
+  ) {
+    if (dateTime != null) {
+      return (root, query, cb) ->
+        hasDateLessThanOrEqualTo(cb, root.get(criteriaName), dateTime);
     }
     return null;
   }
@@ -127,7 +131,7 @@ public class BeaconSearchSpecification {
     );
   }
 
-  private static Predicate greaterThanOrEqualTo(
+  private static Predicate hasDateGreaterThanOrEqualTo(
     @NotNull CriteriaBuilder cb,
     Expression<OffsetDateTime> expression,
     @NotNull OffsetDateTime pattern
@@ -135,7 +139,7 @@ public class BeaconSearchSpecification {
     return cb.greaterThanOrEqualTo(expression, pattern);
   }
 
-  private static Predicate lessThanOrEqualTo(
+  private static Predicate hasDateLessThanOrEqualTo(
     @NotNull CriteriaBuilder cb,
     Expression<OffsetDateTime> expression,
     @NotNull OffsetDateTime pattern
