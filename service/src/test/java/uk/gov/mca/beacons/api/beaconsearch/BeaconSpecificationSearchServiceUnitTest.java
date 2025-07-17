@@ -5,6 +5,8 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -109,7 +111,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
   }
 
   @Test
-  void givenEmailAndAccountHolder_ThenShouldCallRepositoryWithSpecificationAndSort() {
+  public void givenEmailAndAccountHolder_ThenShouldCallRepositoryWithSpecificationAndSort() {
     String email = "test@example.com";
     UUID accountId = UUID.randomUUID();
     Sort sort = Sort.by("hexId");
@@ -138,6 +140,33 @@ public class BeaconSpecificationSearchServiceUnitTest {
       any(Specification.class),
       any(Sort.class)
     );
+  }
+
+  @Test
+  public void givenFindAllBeaconsForFullExport_ThenShouldCallRepositoryAndReturnList() {
+    BeaconSearchEntity entity1 = createDummyEntity(UUID.randomUUID());
+    BeaconSearchEntity entity2 = createDummyEntity(UUID.randomUUID());
+    List<BeaconSearchEntity> expectedList = List.of(entity1, entity2);
+
+    when(
+      beaconSearchSpecificationRepository.findAll(any(Specification.class))
+    ).thenReturn(expectedList);
+
+    List<BeaconSearchEntity> actualList =
+      beaconSpecificationSearchService.findAllBeaconsForFullExport(
+        "",
+        null,
+        null,
+        null,
+        null
+      );
+
+    verify(beaconSearchSpecificationRepository, times(1)).findAll(
+      any(Specification.class)
+    );
+
+    assertThat(actualList, equalTo(expectedList));
+    assertThat(actualList, hasSize(2));
   }
 
   private BeaconSearchEntity createDummyEntity(UUID id) {
