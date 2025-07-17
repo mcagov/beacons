@@ -107,7 +107,7 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
 
     const classes = useStyles();
 
-    let rows = result?._embedded?.beaconSearch || [];
+    let rows = result || [];
 
     function CustomToolbar() {
       if (!selectionModelItems || selectionModelItems.length === 0) {
