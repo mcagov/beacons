@@ -65,22 +65,28 @@ public class BeaconSearchSpecification {
   public static @Nullable Specification<
     BeaconSearchEntity
   > hasEmailOrRecoveryEmail(String email) {
-    return (root, query, cb) ->
-      cb.or(
-        cb.equal(root.get("ownerEmail"), email),
-        cb.equal(root.get("legacyBeaconRecoveryEmail"), email)
-      );
+    if (StringUtils.hasText(email)) {
+      return (root, query, cb) ->
+        cb.or(
+          cb.equal(root.get("ownerEmail"), email),
+          cb.equal(root.get("legacyBeaconRecoveryEmail"), email)
+        );
+    }
+    return null;
   }
 
   public static Specification<BeaconSearchEntity> hasMigratedStatus() {
     return (root, query, cb) -> cb.equal(root.get("beaconStatus"), "MIGRATED");
   }
 
-  public static Specification<BeaconSearchEntity> hasAccountHolderId(
+  public static @Nullable Specification<BeaconSearchEntity> hasAccountHolderId(
     UUID accountHolderId
   ) {
-    return (root, query, cb) ->
-      cb.equal(root.get("accountHolderId"), accountHolderId);
+    if (accountHolderId != null) {
+      return (root, query, cb) ->
+        cb.equal(root.get("accountHolderId"), accountHolderId);
+    }
+    return null;
   }
 
   public static Specification<BeaconSearchEntity> hasNewOrChangeStatus() {

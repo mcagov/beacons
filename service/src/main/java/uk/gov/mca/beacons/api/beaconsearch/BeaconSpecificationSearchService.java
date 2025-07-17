@@ -58,13 +58,15 @@ public class BeaconSpecificationSearchService {
     UUID accountHolderId,
     Sort sort
   ) {
-    Specification<BeaconSearchEntity> spec = Specification.where(
+    Specification<BeaconSearchEntity> migratedSpec = Specification.where(
       BeaconSearchSpecification.hasEmailOrRecoveryEmail(email)
-    )
-      .and(BeaconSearchSpecification.hasMigratedStatus())
-      .or(BeaconSearchSpecification.hasAccountHolderId(accountHolderId))
-      .and(BeaconSearchSpecification.hasNewOrChangeStatus());
+    ).and(BeaconSearchSpecification.hasMigratedStatus());
 
+    Specification<BeaconSearchEntity> newOrChangeSpec = Specification.where(
+      BeaconSearchSpecification.hasAccountHolderId(accountHolderId)
+    ).and(BeaconSearchSpecification.hasNewOrChangeStatus());
+
+    Specification<BeaconSearchEntity> spec = migratedSpec.or(newOrChangeSpec);
     List<BeaconSearchEntity> results =
       beaconSearchSpecificationRepository.findAll(spec, sort);
 

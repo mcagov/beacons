@@ -143,7 +143,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
   }
 
   @Test
-  public void givenFindingAllBeaconsForFullExport_ThenShouldCallRepositoryAndReturnList() {
+  public void givenFindAllBeaconsForFullExport_ThenShouldCallRepositoryAndReturnList() {
     BeaconSearchEntity entity1 = createDummyEntity(UUID.randomUUID());
     BeaconSearchEntity entity2 = createDummyEntity(UUID.randomUUID());
     List<BeaconSearchEntity> expectedList = List.of(entity1, entity2);
