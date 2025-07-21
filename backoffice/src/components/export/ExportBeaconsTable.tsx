@@ -16,7 +16,7 @@ import { formatDateTime } from "../../utils/dateTime";
 
 interface IExportBeaconsTableProps {
   result: IBeaconExportSearchResult;
-  loading: boolean;
+  loading?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
