@@ -77,13 +77,7 @@ public class BeaconSpecificationSearchService {
     Specification<BeaconSearchEntity> spec = migratedSpec.or(newOrChangeSpec);
     List<BeaconSearchEntity> results =
       beaconSearchSpecificationRepository.findAll(spec, sort);
-    results.forEach(beaconSearchEntity -> {
-      if (!StringUtils.hasText(beaconSearchEntity.getMainUseName())) {
-        beaconSearchEntity.setMainUseName(
-          resolveMainUseName(new BeaconId(beaconSearchEntity.getId()))
-        );
-      }
-    });
+    results.forEach(this::resolveMainUseName);
 
     return results.isEmpty() ? Collections.emptyList() : results;
   }
@@ -127,22 +121,26 @@ public class BeaconSpecificationSearchService {
     return results.isEmpty() ? Collections.emptyList() : results;
   }
 
-  private String resolveMainUseName(BeaconId beaconId) {
+  private void resolveMainUseName(BeaconSearchEntity beaconSearchEntity) {
+    if (StringUtils.hasText(beaconSearchEntity.getMainUseName())) {
+      return;
+    }
+    BeaconId beaconId = new BeaconId(beaconSearchEntity.getId());
+
     try {
-      var mainUse = beaconUseService.getMainUseByBeaconId(beaconId);
-      if (mainUse == null) {
-        return "";
-      }
-      return StringUtils.hasText(mainUse.getVesselName())
-        ? mainUse.getVesselName()
-        : mainUse.getRegistrationMark();
+      Optional.ofNullable(beaconUseService.getMainUseByBeaconId(beaconId))
+        .map(use ->
+          StringUtils.hasText(use.getVesselName())
+            ? use.getVesselName()
+            : use.getRegistrationMark()
+        )
+        .ifPresent(beaconSearchEntity::setMainUseName);
     } catch (Exception e) {
       log.error(
         "Failed to resolve main use name for beaconId: {}",
         beaconId,
         e
       );
-      return "";
     }
   }
 }

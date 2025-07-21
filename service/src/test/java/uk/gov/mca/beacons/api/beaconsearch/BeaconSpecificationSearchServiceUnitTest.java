@@ -109,7 +109,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
   }
 
   @Test
-  public void givenEmailAndAccountHolder_ThenShouldCallRepositoryWithSpecificationAndSort() {
+  public void givenEmailAndAccountId_whenSearchingBeacons_thenReturnBeaconSearchEntities() {
     String email = "test@example.com";
     UUID accountId = UUID.randomUUID();
     Sort sort = Sort.by("hexId");
