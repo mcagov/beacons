@@ -109,7 +109,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
   }
 
   @Test
-  public void givenEmailAndAccountId_whenSearchingBeacons_thenReturnBeaconSearchEntities() {
+  public void givenEmailAndAccountHolderId_WhenSearchingBeacons_ThenReturnBeaconSearchEntities() {
     String email = "test@example.com";
     UUID accountId = UUID.randomUUID();
     Sort sort = Sort.by("hexId");
@@ -120,7 +120,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
     when(
       beaconSearchSpecificationRepository.findAll(
         any(Specification.class),
-        any(Sort.class)
+        eq(sort)
       )
     ).thenReturn(expectedList);
 
@@ -136,7 +136,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
 
     verify(beaconSearchSpecificationRepository).findAll(
       any(Specification.class),
-      any(Sort.class)
+      eq(sort)
     );
   }
 
