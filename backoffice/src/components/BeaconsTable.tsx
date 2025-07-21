@@ -80,6 +80,12 @@ const tableIcons: Icons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
+tableIcons.Add.displayName = "Add";
+tableIcons.Check.displayName = "Check";
+tableIcons.Clear.displayName = "Clear";
+tableIcons.Delete.displayName = "Delete";
+tableIcons.DetailPanel.displayName = "DetailPanel";
+
 const columns: Column<BeaconRowData>[] = [
   {
     title: "Created date",
