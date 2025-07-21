@@ -5,8 +5,6 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -111,7 +109,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
   }
 
   @Test
-  public void givenEmailAndAccountHolder_ThenShouldCallRepositoryWithSpecificationAndSort() {
+  public void givenEmailAndAccountHolderId_WhenSearchingBeacons_ThenReturnBeaconSearchEntities() {
     String email = "test@example.com";
     UUID accountId = UUID.randomUUID();
     Sort sort = Sort.by("hexId");
@@ -122,7 +120,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
     when(
       beaconSearchSpecificationRepository.findAll(
         any(Specification.class),
-        any(Sort.class)
+        eq(sort)
       )
     ).thenReturn(expectedList);
 
@@ -138,7 +136,7 @@ public class BeaconSpecificationSearchServiceUnitTest {
 
     verify(beaconSearchSpecificationRepository).findAll(
       any(Specification.class),
-      any(Sort.class)
+      eq(sort)
     );
   }
 
