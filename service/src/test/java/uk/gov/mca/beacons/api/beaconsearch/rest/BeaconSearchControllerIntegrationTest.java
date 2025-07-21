@@ -203,7 +203,9 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
       final var accountHolderId = createAccountHolder(testAuthId);
 
       createBeacon(request ->
-        request.replace("account-holder-id-placeholder", accountHolderId)
+        request
+          .replace("account-holder-id-placeholder", accountHolderId)
+          .replace("vessel-name-placeholder", "HMS Victory")
       );
 
       webTestClient
@@ -227,7 +229,44 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
         .jsonPath("[0].accountHolderId")
         .isEqualTo(accountHolderId)
         .jsonPath("[0].ownerEmail")
-        .isEqualTo("nelson@royalnavy.mod.uk");
+        .isEqualTo("nelson@royalnavy.mod.uk")
+        .jsonPath("[0].mainUseName")
+        .isEqualTo("HMS Victory");
+    }
+
+    @Test
+    void shouldReturnResultsWithMainUseName() throws Exception {
+      String testAuthId = UUID.randomUUID().toString();
+      final var accountHolderId = createAccountHolder(testAuthId);
+
+      createBeacon(request ->
+        request
+          .replace("account-holder-id-placeholder", accountHolderId)
+          .replace("vessel-name-placeholder", "")
+      );
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(
+              Endpoints.BeaconSearch.value +
+              "/find-all-by-account-holder-and-email"
+            )
+            .queryParam("email", "")
+            .queryParam("accountHolderId", accountHolderId)
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("length()")
+        .isEqualTo(1)
+        .jsonPath("[0].accountHolderId")
+        .isEqualTo(accountHolderId)
+        .jsonPath("[0].mainUseName")
+        .isEqualTo("1");
     }
   }
 
@@ -278,9 +317,7 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
         .jsonPath("[0].accountHolderId")
         .isEqualTo(accountHolderId)
         .jsonPath("[0].ownerEmail")
-        .isEqualTo("nelson@royalnavy.mod.uk")
-        .jsonPath("[0].mainUseName")
-        .isEqualTo("HMS Victory");
+        .isEqualTo("nelson@royalnavy.mod.uk");
     }
   }
 
