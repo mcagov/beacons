@@ -2,27 +2,35 @@ package uk.gov.mca.beacons.api.beaconsearch;
 
 import java.time.OffsetDateTime;
 import java.util.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconsearch.repositories.BeaconSearchSpecificationRepository;
 import uk.gov.mca.beacons.api.beaconsearch.rest.BeaconSearchSpecification;
+import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
 import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
 
+@Slf4j
 @Service
 public class BeaconSpecificationSearchService {
 
   private final BeaconSearchSpecificationRepository beaconSearchSpecificationRepository;
+  private final BeaconUseService beaconUseService;
 
   @Autowired
   public BeaconSpecificationSearchService(
-    BeaconSearchSpecificationRepository beaconSearchSpecificationRepository
+    BeaconSearchSpecificationRepository beaconSearchSpecificationRepository,
+    BeaconUseService beaconUseService
   ) {
     this.beaconSearchSpecificationRepository =
       beaconSearchSpecificationRepository;
+    this.beaconUseService = beaconUseService;
   }
 
   public Page<BeaconSearchEntity> findAllBeacons(
@@ -69,6 +77,13 @@ public class BeaconSpecificationSearchService {
     Specification<BeaconSearchEntity> spec = migratedSpec.or(newOrChangeSpec);
     List<BeaconSearchEntity> results =
       beaconSearchSpecificationRepository.findAll(spec, sort);
+    results.forEach(beaconSearchEntity -> {
+      if (!StringUtils.hasText(beaconSearchEntity.getMainUseName())) {
+        beaconSearchEntity.setMainUseName(
+          resolveMainUseName(new BeaconId(beaconSearchEntity.getId()))
+        );
+      }
+    });
 
     return results.isEmpty() ? Collections.emptyList() : results;
   }
@@ -110,5 +125,24 @@ public class BeaconSpecificationSearchService {
       beaconSearchSpecificationRepository.findAll(spec);
 
     return results.isEmpty() ? Collections.emptyList() : results;
+  }
+
+  private String resolveMainUseName(BeaconId beaconId) {
+    try {
+      var mainUse = beaconUseService.getMainUseByBeaconId(beaconId);
+      if (mainUse == null) {
+        return "";
+      }
+      return StringUtils.hasText(mainUse.getVesselName())
+        ? mainUse.getVesselName()
+        : mainUse.getRegistrationMark();
+    } catch (Exception e) {
+      log.error(
+        "Failed to resolve main use name for beaconId: {}",
+        beaconId,
+        e
+      );
+      return "";
+    }
   }
 }

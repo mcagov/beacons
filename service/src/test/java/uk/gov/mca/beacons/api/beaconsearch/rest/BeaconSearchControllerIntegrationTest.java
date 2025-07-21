@@ -278,7 +278,9 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
         .jsonPath("[0].accountHolderId")
         .isEqualTo(accountHolderId)
         .jsonPath("[0].ownerEmail")
-        .isEqualTo("nelson@royalnavy.mod.uk");
+        .isEqualTo("nelson@royalnavy.mod.uk")
+        .jsonPath("[0].mainUseName")
+        .isEqualTo("HMS Victory");
     }
   }
 

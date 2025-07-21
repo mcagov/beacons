@@ -33,11 +33,7 @@ export const getBeaconsForAccountHolder =
         beaconStatus: beacon.beaconStatus,
         hexId: beacon.hexId,
         ownerName: titleCase(beacon.ownerName),
-        mainUse:
-          (beacon.mainUseName ||
-            beacon.vesselNames?.toString() ||
-            beacon.registrationMarks?.toString()) ??
-          "",
+        mainUse: beacon.mainUseName,
         uses: titleCase(beacon.useActivities),
       }));
   };
