@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{inputs.git-reference}}
 
@@ -53,7 +53,7 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{inputs.git-reference}}
 
@@ -83,7 +83,7 @@ jobs:
       NEXTAUTH_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{inputs.git-reference}}
 
