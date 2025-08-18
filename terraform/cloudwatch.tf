@@ -165,13 +165,13 @@ resource "aws_cloudwatch_metric_alarm" "alb_4xx_error_alarm" {
   statistic           = "Average"
   threshold           = 0.05
 
-  alarm_description = "This alarm triggers when the API Gateway stage has a high number of 4xx client errors."
+  alarm_description = "This alarm triggers when the ALB target group has a high number of 4xx server related errors."
   alarm_actions     = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions        = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
 
   dimensions = {
     LoadBalancer = aws_alb.main.arn_suffix
-    TargetGroup  = aws_alb_target_group.service.arn_suffix
+    TargetGroup  = aws_alb_target_group.webapp.arn_suffix
   }
 }
 
@@ -185,13 +185,13 @@ resource "aws_cloudwatch_metric_alarm" "alb_5xx_error_alarm" {
   period              = 60
   statistic           = "Average"
   threshold           = 0.05
-  alarm_description   = "This alarm triggers when the ALB target group has a high number of 5xx server errors."
+  alarm_description   = "This alarm triggers when the ALB target group has a high number of 5xx server related errors."
 
   alarm_actions = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions    = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
 
   dimensions = {
     LoadBalancer = aws_alb.main.arn_suffix
-    TargetGroup  = aws_alb_target_group.service.arn_suffix
+    TargetGroup  = aws_alb_target_group.webapp.arn_suffix
   }
 }
