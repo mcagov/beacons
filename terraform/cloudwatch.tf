@@ -166,8 +166,8 @@ resource "aws_cloudwatch_metric_alarm" "api_gateway_4xx_error_alarm" {
   threshold           = 0.05
 
   alarm_description = "This alarm triggers when the API Gateway stage has a high number of 4xx client errors."
-  alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-  ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+  alarm_actions     = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+  ok_actions        = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
 
   dimensions = {
     LoadBalancer = aws_alb.main.arn_suffix
@@ -184,11 +184,11 @@ resource "aws_cloudwatch_metric_alarm" "alb_5xx_error_alarm" {
   namespace           = "AWS/ApplicationELB"
   period              = 60
   statistic           = "Average"
-  threshold           =  0.05
-  alarm_description = "This alarm triggers when the ALB target group has a high number of 5xx server errors."
+  threshold           = 0.05
+  alarm_description   = "This alarm triggers when the ALB target group has a high number of 5xx server errors."
 
-  alarm_actions       = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-  ok_actions          = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+  alarm_actions = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+  ok_actions    = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
 
   dimensions = {
     LoadBalancer = aws_alb.main.arn_suffix
