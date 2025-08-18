@@ -154,13 +154,13 @@ resource "aws_cloudwatch_metric_alarm" "redis_memory_too_high" {
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "api_gateway_4xx_error_alarm" {
-  alarm_name          = "${terraform.workspace}-ApiGateway-4xx-High-Error-Count"
+resource "aws_cloudwatch_metric_alarm" "alb_4xx_error_alarm" {
+  alarm_name          = "${terraform.workspace}-ALB-4xx-High-Error-Count"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   evaluation_periods  = 5
   datapoints_to_alarm = 5
-  metric_name         = "4XXError"
-  namespace           = "AWS/ApiGateway"
+  metric_name         = "HTTPCode_Target_4XX_Count"
+  namespace           = "AWS/ApplicationELB"
   period              = 60
   statistic           = "Average"
   threshold           = 0.05
