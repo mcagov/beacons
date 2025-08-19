@@ -52,7 +52,7 @@ resource "aws_sns_topic_subscription" "sns_technical_alerts_pagerduty_subscripti
 
 resource "aws_sns_topic_subscription" "sns_service_alerts_pagerduty_subscription" {
   topic_arn = aws_sns_topic.sns_service_alerts.arn
-  protocol = "https"
+  protocol  = "https"
   endpoint  = var.alert_pagerduty_integration_url
   provider  = aws.us-east
 }
