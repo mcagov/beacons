@@ -44,6 +44,19 @@ resource "aws_sns_topic_subscription" "sns_service_alerts_trello_subscription" {
   provider  = aws.us-east
 }
 
+resource "aws_sns_topic_subscription" "sns_technical_alerts_pagerduty_subscription" {
+  topic_arn = aws_sns_topic.sns_technical_alerts.arn
+  protocol  = "https"
+  endpoint  = var.alert_pagerduty_integration_url
+}
+
+resource "aws_sns_topic_subscription" "sns_service_alerts_pagerduty_subscription" {
+  topic_arn = aws_sns_topic.sns_service_alerts.arn
+  protocol = "https"
+  endpoint  = var.alert_pagerduty_integration_url
+  provider  = aws.us-east
+}
+
 data "aws_iam_policy_document" "sns_technical_alerts_policy_document" {
   policy_id = "__default_policy_ID"
 
