@@ -17,7 +17,7 @@ jobs:
       run:
         working-directory: terraform
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.0.0
@@ -28,7 +28,7 @@ jobs:
     name: Prettier check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with:
           node-version: "22.17.0"
