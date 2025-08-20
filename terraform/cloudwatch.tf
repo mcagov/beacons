@@ -165,7 +165,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_4xx_error_alarm" {
   statistic           = "Average"
   threshold           = 0.05
 
-  alarm_description = "This alarm triggers when the ALB target group has a high number of 4xx server related errors."
+  alarm_description = "This alarm triggers when the ALB target group has a high number of 4XX server related errors. The suggested threshold detects when more than 5% of total requests are getting 4XX errors"
   alarm_actions     = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions        = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
 
@@ -185,7 +185,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_5xx_error_alarm" {
   period              = 60
   statistic           = "Average"
   threshold           = 0.05
-  alarm_description   = "This alarm triggers when the ALB target group has a high number of 5xx server related errors."
+  alarm_description   = "This alarm triggers when the ALB target group has a high number of 5XX server related errors. The suggested threshold detects when more than 5% of total requests are getting 5XX errors"
 
   alarm_actions = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
   ok_actions    = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
