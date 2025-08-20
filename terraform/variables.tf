@@ -294,6 +294,10 @@ variable "trello_list_id" {
   type        = string
   description = "Unique identifier for list in Trello"
 }
+variable "alert_pagerduty_integration_url" {
+  type        = string
+  description = " The Integration URL to which CloudWatch alerts should be sent for PagerDuty"
+}
 variable "opensearch_master_user_name" {
   type        = string
   description = "Master username for opensearch"
