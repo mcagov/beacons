@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { Environment } from "../../lib/deprecatedRegistration/types";
 import { CreateRegistrationPageURLs } from "../../lib/urls";
