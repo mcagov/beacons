@@ -30,7 +30,7 @@
       "mobileTelephone2": "012345678910",
       "otherCommunication": "true",
       "otherCommunicationValue": "On my telephone",
-      "vesselName": "HMS Victory",
+      "vesselName": "vessel-name-placeholder",
       "maxCapacity": 180,
       "portLetterNumber": "1",
       "homeport": "England",

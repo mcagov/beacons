@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, type JSX } from "react";
 import { Panel } from "./Panel";
 
 export const PanelSucceeded = (props: {

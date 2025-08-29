@@ -22,7 +22,7 @@ jobs:
       run:
         working-directory: terraform
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ inputs.git-reference }}
 
@@ -37,13 +37,13 @@ jobs:
     name: Prettier check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ inputs.git-reference }}
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "16.17.0"
+          node-version: "22.17.0"
 
       - name: Prettier check
         run: |
@@ -187,6 +187,7 @@ jobs:
       trello_list_id: 6157064b4d7e1b3b1ea839ad
     secrets:
       alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
+      alert_pagerduty_integration_url: ${{ secrets.ALERT_PAGERDUTY_INTEGRATION_URL }}
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       db_password: ${{ secrets.DB_PASSWORD }}

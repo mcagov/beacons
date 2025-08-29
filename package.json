@@ -22,7 +22,7 @@
   "homepage": "https://github.com/mcagov/beacons#readme",
   "devDependencies": {
     "cypress": "^14.3.3",
-    "dotenv": "^16.5.0",
+    "dotenv": "^17.2.1",
     "husky": "^9.1.7",
     "prettier": "3.6.2",
     "prettier-plugin-java": "^2.6.7",
