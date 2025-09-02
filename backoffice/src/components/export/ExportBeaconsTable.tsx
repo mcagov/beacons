@@ -16,6 +16,7 @@ import { formatDateTime } from "../../utils/dateTime";
 
 interface IExportBeaconsTableProps {
   result: IBeaconExportSearchResult;
+  loading?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -101,13 +102,13 @@ const columns: GridColDef[] = [
 ];
 
 export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
-  React.memo(function ({ result }): JSX.Element {
+  React.memo(function ({ result, loading }): JSX.Element {
     const [selectionModelItems, setSelectionModel] =
       useState<GridSelectionModel>([]);
 
     const classes = useStyles();
 
-    let rows = result?._embedded?.beaconSearch || [];
+    let rows = result || [];
 
     function CustomToolbar() {
       if (!selectionModelItems || selectionModelItems.length === 0) {
@@ -165,6 +166,7 @@ export const ExportBeaconsTable: FunctionComponent<IExportBeaconsTableProps> =
     return (
       <Box sx={{ height: 850 }}>
         <DataGrid
+          loading={loading}
           rows={rows}
           columns={columns}
           rowsPerPageOptions={[10, 20, 50, 100]}
