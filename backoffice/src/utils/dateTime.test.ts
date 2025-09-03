@@ -37,7 +37,9 @@ describe("formatDateTime()", () => {
     { in: "2023-04-10", out: "10/04/2023" },
     { in: "2012-01-01", out: "01/01/2012" },
     { in: "25/04/2019", out: "25/04/2019" },
+    { in: "01/07/2025", out: "01/07/2025" },
     { in: "01/2028", out: "01/2028" },
+    { in: "24 December 2012", out: "24/12/2012" },
   ];
 
   expectations.forEach((expectation) => {
