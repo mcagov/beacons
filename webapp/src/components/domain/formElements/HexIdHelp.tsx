@@ -1,5 +1,5 @@
-import Image from "next/image";
-import React, { FunctionComponent } from "react";
+import Image from "next/legacy/image";
+import React, { FunctionComponent, type JSX } from "react";
 import { Details } from "../../Details";
 
 export const HexIdHelp: FunctionComponent = (): JSX.Element => (

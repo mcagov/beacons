@@ -1,17 +1,23 @@
-// See: https://jestjs.io/docs/en/configuration for a full list of configuration options
-import type { Config } from "@jest/types";
+import type { Config } from "jest";
+import nextJest from "next/jest.js";
 
-const config: Config.InitialOptions = {
-  roots: ["<rootDir>"],
+const createJestConfig = nextJest({
+  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+  dir: "./",
+});
+
+// Add any custom config to be passed to Jest
+const config: Config = {
+  coverageProvider: "v8",
+  testEnvironment: "node",
+  // Add more setup options before each test is run
   setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"],
-  transform: {
-    ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform",
-    "^.+\\.(ts|tsx|js|jsx)?$": "babel-jest",
+  testPathIgnorePatterns: ["/cypress"],
+  moduleNameMapper: {
+    // Force module uuid to resolve with the CJS entry point, because Jest does not support package.json.exports. See https://github.com/uuidjs/uuid/issues/451
+    uuid: require.resolve("uuid"),
   },
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
-  testPathIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
-  transformIgnorePatterns: ["/node_modules/", "/.next/", "/cypress"],
-  verbose: true,
 };
 
-export default config;
+// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
+export default createJestConfig(config);

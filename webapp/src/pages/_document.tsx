@@ -16,9 +16,9 @@ class GovUKTemplate extends Document {
     return { ...initialProps };
   }
 
-  render(): React.ReactElement {
+  render(): React.ReactElement<any> {
     return (
-      <Html className="govuk-template " lang="en">
+      <Html className="govuk-template govuk-template--rebranded" lang="en">
         <Head />
         <body className="govuk-template__body">
           <Main />

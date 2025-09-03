@@ -1,5 +1,5 @@
 # Base Docker image for multi-stage build
-FROM node:20.19 AS base
+FROM node:22.17 AS base
 
 WORKDIR /usr/app
 
@@ -18,7 +18,7 @@ FROM base AS production-deps
 RUN npm install --production
 
 # NextJS production application
-FROM node:16.17-alpine AS nextjs-app
+FROM node:22.17-alpine AS nextjs-app
 
 ENV NODE_ENV=production
 

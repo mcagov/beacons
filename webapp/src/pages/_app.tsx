@@ -1,8 +1,8 @@
-import { Provider as AuthProvider } from "next-auth/client";
+import { SessionProvider as AuthProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, type JSX } from "react";
 import "../styles/globals.scss";
 
 const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
@@ -14,7 +14,7 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
       ? document.body.className + " js-enabled"
       : "js-enabled";
     // TODO investigate alternative syntax to avoid linter catching require()
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const GOVUKFrontend = require("govuk-frontend");
 
     GOVUKFrontend.initAll();
