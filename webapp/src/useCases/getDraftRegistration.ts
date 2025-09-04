@@ -6,7 +6,7 @@ export const getDraftRegistration =
   async (id: string): Promise<DraftRegistration> => {
     const draftRegistration = await draftRegistrationGateway.read(id);
     if (!draftRegistration) {
-      return draftRegistration;
+      return null;
     }
     return {
       ...draftRegistration,
