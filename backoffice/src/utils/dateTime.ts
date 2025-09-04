@@ -16,7 +16,15 @@ export const formatMonth = (dateString: string): string => {
 };
 
 export const formatDateTime = (dateTimeString: string): string => {
-  return dateTimeString
-    ? new Date(dateTimeString).toLocaleDateString("en-GB", {})
-    : "";
+  if (!dateTimeString) return "";
+
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateTimeString)) return dateTimeString;
+
+  try {
+    const date = new Date(dateTimeString);
+    if (isNaN(date.getTime())) return dateTimeString;
+    return date.toLocaleDateString("en-GB");
+  } catch (err) {
+    return dateTimeString;
+  }
 };
