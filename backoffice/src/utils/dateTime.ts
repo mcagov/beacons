@@ -28,3 +28,10 @@ export const formatDateTime = (dateTimeString: string): string => {
     return dateTimeString;
   }
 };
+
+export const convertToDate = (dateTimeString?: string): Date | null => {
+  if (!dateTimeString) return null;
+
+  const date = new Date(dateTimeString);
+  return isNaN(date.getTime()) ? null : date;
+};
