@@ -15,7 +15,7 @@ The following dependencies are required to build and test the application.
 
 | Dependency                                               | Version |
 | -------------------------------------------------------- | ------- |
-| [Java](https://adoptopenjdk.net/)                        | 11      |
+| [Java](https://adoptopenjdk.net/)                        | 17      |
 | [Docker](https://www.docker.com/products/docker-desktop) | Latest  |
 | [nodejs](https://nodejs.org/en/)                         | 14.x    |
 
