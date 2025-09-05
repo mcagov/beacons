@@ -104,7 +104,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
       try {
         const redis = new Redis(process.env.REDIS_URI);
         // Update redis listing with a TTL of 30 minutes
-        await redis.expire(draftRegistration.id, 1800);
+        await redis.expire(draftRegistration.id, 3600);
         redis.disconnect();
       } catch (error) {
         console.error("Redis entry TTL error - ", error);
