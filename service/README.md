@@ -17,7 +17,7 @@ The following dependencies are required to build and test the application.
 | -------------------------------------------------------- | ------- |
 | [Java](https://adoptopenjdk.net/)                        | 17      |
 | [Docker](https://www.docker.com/products/docker-desktop) | Latest  |
-| [nodejs](https://nodejs.org/en/)                         | 14.x    |
+| [nodejs](https://nodejs.org/en/)                         | 22.x    |
 
 Gradle is the build tool for the application. See
 the [docs](https://docs.gradle.org/current/userguide/gradle_wrapper.html#sec:upgrading_wrapper) for updating the Gradle
