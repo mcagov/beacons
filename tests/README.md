@@ -9,6 +9,8 @@ Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in
 
 To run end-to-end tests locally:
 
+- Copy `tests/.env.example` as `tests/.env` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password.
+
 ```sh
 $ docker compose -f docker-compose.e2e.yml up
 $ npm run test:e2e
