@@ -35,6 +35,7 @@ import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import { formatDateLong } from "../../../../lib/writingStyle";
 import { BeaconsPageRouter } from "../../../../router/BeaconsPageRouter";
 import { GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage";
+import { GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache } from "../../../../router/rules/GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache";
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheDraft_ThenShowChangesAndAllowThemToAcceptAndSend";
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_ThenShowTheExistingRegistration";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
@@ -221,6 +222,10 @@ export const getServerSideProps: GetServerSideProps = withSession(
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
         context,
+      ),
+      new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
+        context,
+        registrationId,
       ),
       new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges(
         context,

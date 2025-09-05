@@ -1,10 +1,12 @@
 import axios from "axios";
+import Redis from "ioredis";
 import { DraftRegistration } from "../entities/DraftRegistration";
 import { Registration } from "../entities/Registration";
 import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
 import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconGateway } from "./interfaces/BeaconGateway";
+import { RedisDraftRegistrationGateway } from "./RedisDraftRegistrationGateway";
 
 export interface IDeleteBeaconRequest {
   beaconId: string;
@@ -37,6 +39,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       logger.info("Registration sent");
+      await this.draftCompleted(draftRegistration);
       return true;
     } catch (error) {
       logger.error("sendRegistration:", error);
@@ -60,6 +63,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       logger.info("Registration updated");
+      await this.draftCompleted(draftRegistration);
       return true;
     } catch (error) {
       logger.error("updateRegistration:", error);
@@ -93,6 +97,19 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
     return new DeprecatedRegistration(
       draftRegistration as Registration,
     ).serialiseToAPI();
+  }
+  // Function to set completed submissions to expire
+  private async draftCompleted(draftRegistration: DraftRegistration) {
+    if (draftRegistration.id) {
+      try {
+        const redis = new Redis(process.env.REDIS_URI);
+        // Update redis listing with a TTL of 30 minutes
+        await redis.expire(draftRegistration.id, 3600);
+        redis.disconnect();
+      } catch (error) {
+        console.error("Redis entry TTL error - ", error);
+      }
+    }
   }
 
   private async getAccessToken() {
