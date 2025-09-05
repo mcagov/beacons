@@ -39,7 +39,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       logger.info("Registration sent");
-      await this.deleteDraftFromRedis(draftRegistration);
+      await this.draftCompleted(draftRegistration);
       return true;
     } catch (error) {
       logger.error("sendRegistration:", error);
@@ -63,7 +63,7 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       logger.info("Registration updated");
-      await this.deleteDraftFromRedis(draftRegistration);
+      await this.draftCompleted(draftRegistration);
       return true;
     } catch (error) {
       logger.error("updateRegistration:", error);
@@ -98,8 +98,8 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
       draftRegistration as Registration,
     ).serialiseToAPI();
   }
-
-  private async deleteDraftFromRedis(draftRegistration: DraftRegistration) {
+  // Function to set completed submissions to expire
+  private async draftCompleted(draftRegistration: DraftRegistration) {
     if (draftRegistration.id) {
       try {
         const redis = new Redis(process.env.REDIS_URI);
