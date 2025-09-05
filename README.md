@@ -54,7 +54,7 @@ Before you start...
   $ make setup # Install all the things, setup commit hooks etc.
   ```
 - ```bash
-  $ make # Start up the applications in development mode, with backing services
+  $ make serve # Start up the applications in development mode, with backing services
   ```
 
 ## Infrastructure-as-code
