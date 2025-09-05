@@ -1,4 +1,5 @@
 import axios from "axios";
+import Redis from "ioredis";
 import { DraftRegistration } from "../entities/DraftRegistration";
 import { Registration } from "../entities/Registration";
 import { DeprecatedRegistration } from "../lib/deprecatedRegistration/DeprecatedRegistration";
@@ -100,8 +101,14 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
 
   private async deleteDraftFromRedis(draftRegistration: DraftRegistration) {
     if (draftRegistration.id) {
-      const redisGateway = new RedisDraftRegistrationGateway();
-      await redisGateway.delete(draftRegistration.id);
+      try {
+        const redis = new Redis(process.env.REDIS_URI);
+        // Update redis listing with a TTL of 30 minutes
+        await redis.expire(draftRegistration.id, 1800);
+        redis.disconnect();
+      } catch (error) {
+        console.error("Redis entry TTL error - ", error);
+      }
     }
   }
 
