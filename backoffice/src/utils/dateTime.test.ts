@@ -1,4 +1,9 @@
-import { formatDateLong, formatDateTime, formatMonth } from "./dateTime";
+import {
+  formatDateLong,
+  formatDateTime,
+  formatMonth,
+  convertToISODateTime,
+} from "./dateTime";
 
 describe("formatDateLong()", () => {
   const expectations = [
@@ -47,6 +52,23 @@ describe("formatDateTime()", () => {
       expectation.out
     }`, () => {
       expect(formatDateTime(expectation.in)).toEqual(expectation.out);
+    });
+  });
+});
+
+describe("convertToISODateTime()", () => {
+  const expectations = [
+    { in: "2024-03-22T10:28:35.537234Z", out: "2024-03-22T10:28:35.537234Z" },
+    { in: "25/12/2025", out: "2025-12-25T00:00:00.000Z" },
+    { in: "01/07/2024", out: "2024-07-01T00:00:00.000Z" },
+    { in: "01/01/2012", out: "2012-01-01T00:00:00.000Z" },
+  ];
+
+  expectations.forEach((expectation) => {
+    it(`formats ${JSON.stringify(expectation.in)} ==> ${
+      expectation.out
+    }`, () => {
+      expect(convertToISODateTime(expectation.in)).toEqual(expectation.out);
     });
   });
 });

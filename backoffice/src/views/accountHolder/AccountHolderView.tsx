@@ -40,7 +40,7 @@ import { LoadingState } from "components/dataPanel/PanelLoadingState";
 import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IAccountHolderSearchResultData } from "entities/IAccountHolderSearchResult";
-import { convertToDate, formatDateTime } from "../../utils/dateTime";
+import { convertToISODateTime, formatDateTime } from "../../utils/dateTime";
 interface IAccountHolderViewProps {
   accountHolderGateway: IAccountHolderGateway;
   accountHolderId: string;
@@ -113,7 +113,6 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
         if (isMounted) {
           setAccountHolder(accountHolder);
           setBeacons(beacons);
-          console.log("beacons", beacons);
           setAccountHolders(accountHolders._embedded.accountHolderSearch);
           setLoading(false);
         }
@@ -286,7 +285,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueSetter: (params) => convertToDate(params.value),
+      valueGetter: (params) => convertToISODateTime(params.value),
+      valueFormatter: (params) => formatDateTime(params.value),
       sortComparator: dateSortComparator,
     },
     {
@@ -295,7 +295,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueSetter: (params) => convertToDate(params.value),
+      valueGetter: (params) => convertToISODateTime(params.value),
+      valueFormatter: (params) => formatDateTime(params.value),
       sortComparator: dateSortComparator,
     },
     {
