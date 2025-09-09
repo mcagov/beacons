@@ -22,8 +22,21 @@ export const formatDateTime = (dateTimeString: string): string => {
 
   try {
     const date = new Date(dateTimeString);
-    if (isNaN(date.getTime())) return dateTimeString;
-    return date.toLocaleDateString("en-GB");
+    return isNaN(date.getTime())
+      ? dateTimeString
+      : date.toLocaleDateString("en-GB");
+  } catch (err) {
+    return dateTimeString;
+  }
+};
+
+export const convertToISODateTime = (dateTimeString: string): string => {
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateTimeString)) return dateTimeString;
+
+  try {
+    const [day, month, year] = dateTimeString.split("/").map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return isNaN(date.getTime()) ? dateTimeString : date.toISOString();
   } catch (err) {
     return dateTimeString;
   }
