@@ -8,6 +8,7 @@ import { PanelFailed } from "../../components/PanelFailed";
 import { PanelSucceeded } from "../../components/PanelSucceeded";
 import { GovUKBody } from "../../components/Typography";
 import { DraftRegistration } from "../../entities/DraftRegistration";
+import { RedisDraftRegistrationGateway } from "../../gateways/RedisDraftRegistrationGateway";
 import { verifyFormSubmissionCookieIsSet } from "../../lib/cookies";
 import { clearFormSubmissionCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
@@ -97,6 +98,18 @@ export const getServerSideProps: GetServerSideProps = withSession(
         await getAccountHolderId(context.session),
       );
 
+      const cookieId = context.req.cookies[formSubmissionCookieId];
+ 
+      try {
+        const redisGateway = new RedisDraftRegistrationGateway();
+        await redisGateway.delete(cookieId);
+        await redisGateway.delete(`jc:${cookieId}`);
+        await redisGateway.delete(`jc:${cookieId}_t`);
+        logger.info(`Deleted Redis entries `);
+      } catch (redisError) {
+        logger.error(`Error: ${redisError}`);
+      }
+      
       clearFormSubmissionCookie(context);
 
       if (!result.beaconRegistered) {
