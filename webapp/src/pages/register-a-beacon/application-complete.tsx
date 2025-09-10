@@ -120,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
       return {
         props: {
-          reference: result.referenceNumber,
+          reference: result.beaconRegistered ? result.referenceNumber : undefined,
           registrationSuccess: result.beaconRegistered,
           confirmationEmailSuccess: result.confirmationEmailSent,
         },
