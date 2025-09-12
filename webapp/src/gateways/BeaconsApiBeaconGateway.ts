@@ -5,7 +5,6 @@ import { DeprecatedRegistration } from "../lib/deprecatedRegistration/Deprecated
 import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconGateway } from "./interfaces/BeaconGateway";
-import { RedisDraftRegistrationGateway } from "./RedisDraftRegistrationGateway";
 
 export interface IDeleteBeaconRequest {
   beaconId: string;
@@ -38,7 +37,6 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       logger.info("Registration sent");
-      await this.scheduleDraftDeletion(draftRegistration);
       return true;
     } catch (error) {
       logger.error("sendRegistration:", error);
@@ -62,7 +60,6 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
         headers: { Authorization: `Bearer ${await this.getAccessToken()}` },
       });
       logger.info("Registration updated");
-      await this.scheduleDraftDeletion(draftRegistration);
       return true;
     } catch (error) {
       logger.error("updateRegistration:", error);
@@ -98,17 +95,6 @@ export class BeaconsApiBeaconGateway implements BeaconGateway {
     ).serialiseToAPI();
   }
 
-  private async scheduleDraftDeletion(draftRegistration: DraftRegistration) {
-    if (draftRegistration.id) {
-      setTimeout(async () => {
-        const redisGateway = new RedisDraftRegistrationGateway();
-        await redisGateway.delete(draftRegistration.id);
-        logger.info(
-          `Draft ${draftRegistration.id} scheduled for deletion after 6 hours`,
-        );
-      }, 21600000);
-    }
-  }
 
   private async getAccessToken() {
     return await this.authGateway.getAccessToken();
