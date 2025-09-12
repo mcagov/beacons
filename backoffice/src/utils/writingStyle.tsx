@@ -7,16 +7,12 @@ import { IOwner } from "../entities/IOwner";
 import { Activities, IUse } from "../entities/IUse";
 import { formatDateTime } from "./dateTime";
 
-export const isDate = (dateString: string) => {
-  if (!dateString) return false;
-
-  if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) {
-    const [day, month, year] = dateString.split("/").map(Number);
-    const date = new Date(Date.UTC(year, month - 1, day));
-    return !isNaN(date.getTime());
-  }
-
-  return !isNaN(new Date(dateString).getTime());
+export const isDate = (dateString: string | null) => {
+  return (
+    !!dateString &&
+    (/^(\d{2}\/\d{2}\/\d{4}|\d{2}\/\d{4})$/.test(dateString) ||
+      !isNaN(new Date(dateString).getTime()))
+  );
 };
 
 export enum WritingStyle {
