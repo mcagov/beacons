@@ -7,6 +7,7 @@ import {
   formatUses,
   Placeholders,
   titleCase,
+  isDate,
 } from "./writingStyle";
 
 describe("titleCase()", () => {
@@ -23,6 +24,29 @@ describe("titleCase()", () => {
       expectation.out
     }`, () => {
       expect(titleCase(expectation.in)).toEqual(expectation.out);
+    });
+  });
+});
+
+describe("IsDate()", () => {
+  const expectations = [
+    { in: "07/08/2020", out: true },
+    { in: "2012-01-01", out: true },
+    { in: "01/2028", out: true },
+    { in: "2025-02", out: true },
+    { in: "2020-09-01T23:58:29+01:00", out: true },
+    { in: "2024-03-22T10:28:35.537234Z", out: true },
+    { in: null, out: false },
+    { in: "HOT_AIR_BALLOON", out: false },
+    { in: "", out: false },
+    { in: " ", out: false },
+  ];
+
+  expectations.forEach((expectation) => {
+    it(`checks value ${JSON.stringify(expectation.in)} ==> ${
+      expectation.out
+    }`, () => {
+      expect(isDate(expectation.in)).toEqual(expectation.out);
     });
   });
 });
@@ -231,6 +255,33 @@ describe("formatForClipboard", () => {
 
     expect(formatForClipboard(nestedData)).toEqual(
       "\n=====OWNER=====\nName:    Steve\nEmail:    steve@mail.com\n",
+    );
+  });
+
+  it("exports date in the correct format", () => {
+    const dynamicLegacyBeaconData1 = {
+      batteryExpiryDate: "2020-08-07",
+      lastServiceDate: "2021-04-14",
+    };
+    const dynamicLegacyBeaconData2 = {
+      batteryExpiryDate: "2020-09-01T23:58:29+01:00",
+      lastServiceDate: "2021-06-11T12:47:14+01:00",
+    };
+    const dynamicLegacyBeaconData3 = {
+      batteryExpiryDate: "01/2028",
+      lastServiceDate: "2025-02",
+    };
+
+    expect(formatForClipboard(dynamicLegacyBeaconData1)).toEqual(
+      "Battery Expiry Date:    07/08/2020\n" +
+        "Last Service Date:    14/04/2021\n",
+    );
+    expect(formatForClipboard(dynamicLegacyBeaconData2)).toEqual(
+      "Battery Expiry Date:    01/09/2020\n" +
+        "Last Service Date:    11/06/2021\n",
+    );
+    expect(formatForClipboard(dynamicLegacyBeaconData3)).toEqual(
+      "Battery Expiry Date:    01/2028\n" + "Last Service Date:    02/2025\n",
     );
   });
 });
