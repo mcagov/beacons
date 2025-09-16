@@ -18,7 +18,6 @@ import { formSubmissionCookieId } from "../../../../lib/types";
 import { GeneralPageURLs } from "../../../../lib/urls";
 import logger from "../../../../logger";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { deleteCachedRegistrationForAccountHolder } from "../../../../useCases/deleteCachedRegistrationsForAccountHolder";
 
 const ApplicationCompletePage = (props: {
   reference: string;
