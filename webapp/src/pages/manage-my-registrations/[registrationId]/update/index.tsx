@@ -40,7 +40,6 @@ import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges_The
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 import { SendYourApplication } from "../../../register-a-beacon/check-your-answers";
 import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges } from "../../../../router/rules/GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges";
-import { GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage } from "../../../../router/rules/GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage";
 
 interface RegistrationSummaryPageProps {
   registration: Registration;
@@ -221,9 +220,6 @@ export const getServerSideProps: GetServerSideProps = withSession(
     return await new BeaconsPageRouter([
       new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
       new GivenUserHasStartedEditingADifferentDraftRegistration_ThenDeleteItAndReloadPage(
-        context,
-      ),
-      new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
         context,
       ),
       new GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChangesToTheDraft_ThenRemoveInvalidChanges(

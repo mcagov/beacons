@@ -9,7 +9,10 @@ import { PanelSucceeded } from "../../../../components/PanelSucceeded";
 import { GovUKBody } from "../../../../components/Typography";
 import { DraftRegistration } from "../../../../entities/DraftRegistration";
 import { verifyFormSubmissionCookieIsSet } from "../../../../lib/cookies";
-import { clearFormSubmissionCookie } from "../../../../lib/middleware";
+import {
+  clearFormSubmissionCookie,
+  parseFormDataAs,
+} from "../../../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../lib/middleware/withSession";
@@ -93,6 +96,9 @@ export const getServerSideProps: GetServerSideProps = withSession(
         draftRegistration,
         draftRegistration.id,
       );
+
+      const data = await parseFormDataAs(context.req);
+      console.log("parseFormDataAs: ", data);
 
       clearFormSubmissionCookie(context);
 

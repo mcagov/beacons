@@ -1,30 +1,19 @@
 import { BeaconsGetServerSidePropsContext } from "../../../src/lib/middleware/BeaconsGetServerSidePropsContext";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage } from "../../../src/router/rules/GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage";
+import { WhenUserSubmitsADraftRegistration } from "../../../src/router/rules/WhenUserSubmitsADraftRegistration";
 import { registrationFixture } from "../../fixtures/registration.fixture";
 
 jest.mock("../../../src/useCases/deleteCachedRegistrationsForAccountHolder");
 
-describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage", () => {
+describe("WhenUserSubmitsADraftRegistration", () => {
   describe("condition()", () => {
     it("doesn't trigger if there are no cookies", async () => {
       const context: BeaconsGetServerSidePropsContext = {
         req: {
           cookies: {},
         },
-        container: {
-          getDraftRegistration: jest.fn(),
-          getAccountHolderId: jest.fn(),
-          getAccountHoldersRegistration: jest.fn(),
-        },
-        params: {
-          registrationId: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
-        },
       } as any;
-      const rule =
-        new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
-          context,
-        );
+      const rule = new WhenUserSubmitsADraftRegistration(context);
 
       const triggered = await rule.condition();
 
@@ -38,19 +27,8 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
             [formSubmissionCookieId]: undefined,
           },
         },
-        container: {
-          getDraftRegistration: jest.fn(),
-          getAccountHolderId: jest.fn(),
-          getAccountHoldersRegistration: jest.fn(),
-        },
-        params: {
-          registrationId: "60bcc58b-88bb-4a51-9c55-5fa54b748806",
-        },
       } as any;
-      const rule =
-        new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
-          context,
-        );
+      const rule = new WhenUserSubmitsADraftRegistration(context);
 
       const triggered = await rule.condition();
 
@@ -60,26 +38,14 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
     it(`does trigger if the user has completed a draft registration`, async () => {
       const context: BeaconsGetServerSidePropsContext = {
         req: {
-          method: "POST",
+          method: "GET",
           cookies: {
             [formSubmissionCookieId]:
               "user-has-completed-this-draft-registration",
           },
         },
-        container: {
-          getAccountHolderId: jest.fn(),
-          accountHolderGateway: {
-            getAccountBeacons: jest.fn(),
-          },
-        },
-        params: {
-          registrationId: "user-has-completed-this-draft-registration",
-        },
       } as any;
-      const rule =
-        new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
-          context,
-        );
+      const rule = new WhenUserSubmitsADraftRegistration(context);
 
       const triggered = await rule.condition();
 
@@ -89,7 +55,7 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
     it(`doesn't trigger if the user has not completed a draft registration`, async () => {
       const context: BeaconsGetServerSidePropsContext = {
         req: {
-          method: "POST",
+          method: "GET",
           cookies: {
             [formSubmissionCookieId]:
               "user-has-started-doing-something-to-a-draft-registration",
@@ -98,16 +64,8 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
         params: {
           registrationId: null,
         },
-        container: {
-          getDraftRegistration: jest.fn(),
-          getAccountHolderId: jest.fn(),
-          getAccountHoldersRegistration: jest.fn(),
-        },
       } as any;
-      const rule =
-        new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
-          context,
-        );
+      const rule = new WhenUserSubmitsADraftRegistration(context);
 
       const triggered = await rule.condition();
 
@@ -138,12 +96,10 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
             ...registrationFixture,
             ownerFullName: "Sally Stevington", // Changed in DraftRegistration
           }),
+          beaconUpdated: true,
         },
       } as any;
-      const rule =
-        new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
-          context,
-        );
+      const rule = new WhenUserSubmitsADraftRegistration(context);
 
       const triggered = await rule.condition();
 
@@ -174,10 +130,7 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
             .mockResolvedValue(registrationFixture),
         },
       } as any;
-      const rule =
-        new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
-          context,
-        );
+      const rule = new WhenUserSubmitsADraftRegistration(context);
 
       const triggered = await rule.condition();
 
@@ -187,8 +140,7 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
 
   describe("action()", () => {
     it("deletes the existing DraftRegistration", async () => {
-      const existingDraftRegistrationId =
-        "a-draft-registration-id-from-a-flow-the-user-is-no-longer-on";
+      const existingDraftRegistrationId = "a-draft-registration-id";
       const context: BeaconsGetServerSidePropsContext = {
         req: {
           cookies: {
@@ -206,10 +158,7 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
           setHeader: jest.fn(),
         },
       } as any;
-      const rule =
-        new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
-          context,
-        );
+      const rule = new WhenUserSubmitsADraftRegistration(context);
 
       await rule.action();
 
@@ -219,8 +168,7 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
     });
 
     it("delete the existing DraftRegistration cookie", async () => {
-      const existingDraftRegistrationId =
-        "a-draft-registration-id-from-a-flow-the-user-is-no-longer-on";
+      const existingDraftRegistrationId = "a-draft-registration-id";
       const context: BeaconsGetServerSidePropsContext = {
         req: {
           cookies: {
@@ -238,10 +186,7 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
           setHeader: jest.fn(),
         },
       } as any;
-      const rule =
-        new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
-          context,
-        );
+      const rule = new WhenUserSubmitsADraftRegistration(context);
 
       await rule.action();
 
@@ -252,8 +197,7 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
     });
 
     it("reloads the page when deleted", async () => {
-      const existingDraftRegistrationId =
-        "a-draft-registration-id-from-a-flow-the-user-is-no-longer-on";
+      const existingDraftRegistrationId = "a-draft-registration-id";
       const context: BeaconsGetServerSidePropsContext = {
         req: {
           cookies: {
@@ -272,10 +216,7 @@ describe("GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration
           setHeader: jest.fn(),
         },
       } as any;
-      const rule =
-        new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage(
-          context,
-        );
+      const rule = new WhenUserSubmitsADraftRegistration(context);
 
       const props = (await rule.action()) as any;
 

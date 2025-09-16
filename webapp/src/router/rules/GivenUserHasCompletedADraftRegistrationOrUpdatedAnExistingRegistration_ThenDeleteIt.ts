@@ -1,14 +1,14 @@
 import { GetServerSidePropsResult } from "next";
-import { clearFormSubmissionCookie } from "../../lib/middleware";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
-import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
 import { deleteCachedRegistrationForAccountHolder } from "../../useCases/deleteCachedRegistrationsForAccountHolder";
 import { Rule } from "./Rule";
 import { DraftRegistration } from "../../entities/DraftRegistration";
 import { Registration } from "../../entities/Registration";
 import { isEqual } from "lodash";
-export class GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteItAndReloadPage
+import { redirectUserTo } from "../../lib/redirectUserTo";
+import { clearFormSubmissionCookie } from "../../lib/middleware";
+export class GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteIt
   implements Rule
 {
   private readonly context: BeaconsGetServerSidePropsContext;
@@ -18,6 +18,8 @@ export class GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistrat
   }
 
   public async condition(): Promise<boolean> {
+    if (this.thereIsNoDraftRegistrationCookieSet()) return false;
+
     return (
       this.hasCompletedDraftRegistration() ||
       this.hasUpdatedAnExistingRegistration()
@@ -48,7 +50,7 @@ export class GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistrat
       registrationId,
     );
 
-    clearFormSubmissionCookie(this.context);
+    // clearFormSubmissionCookie(this.context);
 
     return redirectUserTo(this.context.req.url);
   }
@@ -56,7 +58,7 @@ export class GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistrat
   private hasCompletedDraftRegistration() {
     return (
       this.theDraftRegistrationCookieIdDoesMatchTheQueryId() &&
-      this.isHttpPostRequest()
+      this.userSubmittedForm()
     );
   }
 
@@ -68,6 +70,7 @@ export class GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistrat
     } = this.context.container;
 
     const registrationId = this.context.params.registrationId as string;
+    console.log("context: ", this.context.res);
 
     const draftRegistration: DraftRegistration =
       await getDraftRegistration(registrationId);
@@ -83,12 +86,14 @@ export class GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistrat
 
     return (
       !isEqual(existingRegistration, draftRegistration) &&
-      this.isHttpPostRequest()
+      this.userSubmittedForm()
     );
   }
 
-  private isHttpPostRequest(): boolean {
-    return this.context.req.method === "POST";
+  private userSubmittedForm(): boolean {
+    return (
+      this.context.req.method === "POST" || this.context.req.method === "PATCH"
+    );
   }
 
   private draftRegistrationId(): string {
@@ -97,5 +102,9 @@ export class GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistrat
 
   private theDraftRegistrationCookieIdDoesMatchTheQueryId() {
     return this.draftRegistrationId() === this.context.params?.registrationId;
+  }
+
+  private thereIsNoDraftRegistrationCookieSet() {
+    return !this.context.req.cookies[formSubmissionCookieId];
   }
 }
