@@ -111,7 +111,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
       return {
         props: {
-          reference: result.referenceNumber || "",
+          reference: result.referenceNumber,
           registrationSuccess: result.beaconRegistered,
           confirmationEmailSuccess: result.confirmationEmailSent,
         },
