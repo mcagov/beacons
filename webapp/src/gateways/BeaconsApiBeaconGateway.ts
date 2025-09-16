@@ -5,6 +5,7 @@ import { DeprecatedRegistration } from "../lib/deprecatedRegistration/Deprecated
 import logger from "../logger";
 import { AuthGateway } from "./interfaces/AuthGateway";
 import { BeaconGateway } from "./interfaces/BeaconGateway";
+import { RedisDraftRegistrationGateway } from "./RedisDraftRegistrationGateway";
 
 export interface IDeleteBeaconRequest {
   beaconId: string;

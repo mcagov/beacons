@@ -18,9 +18,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { GeneralPageURLs } from "../../lib/urls";
 import logger from "../../logger";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
-import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { WhenUserSubmitsADraftRegistration } from "../../router/rules/WhenUserSubmitsADraftRegistration";
-import { GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteIt } from "../../router/rules/GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteIt";
+import { deleteCachedRegistrationForAccountHolder } from "../../useCases/deleteCachedRegistrationsForAccountHolder";
 
 const ApplicationCompletePage = (props: {
   reference: string;
@@ -73,67 +71,86 @@ const ApplicationCompletePage = (props: {
   );
 };
 
+const deleteRedisCacheRegistration = async (
+  context: BeaconsGetServerSidePropsContext,
+) => {
+  const { getAccountHolderId, draftRegistrationGateway, accountHolderGateway } =
+    context.container;
+
+  const accountHolderId = await getAccountHolderId(context.session);
+
+  await context.container.deleteDraftRegistration(
+    context.req.cookies[formSubmissionCookieId],
+  );
+
+  const registrationId: string = context.req.cookies[
+    formSubmissionCookieId
+  ] as string;
+
+  await deleteCachedRegistrationForAccountHolder(
+    draftRegistrationGateway,
+    accountHolderGateway,
+    accountHolderId,
+    registrationId,
+  );
+};
+
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
-    return await new BeaconsPageRouter([
-      new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-      // new GivenUserHasCompletedADraftRegistrationOrUpdatedAnExistingRegistration_ThenDeleteIt(
-      //   context,
-      // ),
-      new WhenUserSubmitsADraftRegistration(context),
-    ]).execute();
-    // const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
-    //   context,
-    // );
-    //
-    // if (await rule.condition()) {
-    //   return rule.action();
-    // }
-    // /* Retrieve injected use case(s) */
-    // const { getDraftRegistration, submitRegistration, getAccountHolderId } =
-    //   context.container;
-    //
-    // /* Page logic */
-    // if (!verifyFormSubmissionCookieIsSet(context))
-    //   return redirectUserTo(GeneralPageURLs.start);
-    //
-    // const draftRegistration: DraftRegistration = await getDraftRegistration(
-    //   context.req.cookies[formSubmissionCookieId],
-    // );
-    //
-    // try {
-    //   const result = await submitRegistration(
-    //     draftRegistration,
-    //     await getAccountHolderId(context.session),
-    //   );
-    //
-    //   clearFormSubmissionCookie(context);
-    //
-    //   if (!result.beaconRegistered) {
-    //     logger.error(
-    //       `Failed to register beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
-    //     );
-    //   }
-    //
-    //   return {
-    //     props: {
-    //       reference: result.referenceNumber,
-    //       registrationSuccess: result.beaconRegistered,
-    //       confirmationEmailSuccess: result.confirmationEmailSent,
-    //     },
-    //   };
-    // } catch (e) {
-    //   logger.error(e);
-    //   logger.error(
-    //     `Threw error when registering beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
-    //   );
-    //   return {
-    //     props: {
-    //       registrationSuccess: false,
-    //       confirmationEmailSuccess: false,
-    //     },
-    //   };
-    // }
+    const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
+      context,
+    );
+
+    if (await rule.condition()) {
+      return rule.action();
+    }
+    /* Retrieve injected use case(s) */
+    const { getDraftRegistration, submitRegistration, getAccountHolderId } =
+      context.container;
+
+    /* Page logic */
+    if (!verifyFormSubmissionCookieIsSet(context))
+      return redirectUserTo(GeneralPageURLs.start);
+
+    const draftRegistration: DraftRegistration = await getDraftRegistration(
+      context.req.cookies[formSubmissionCookieId],
+    );
+
+    try {
+      const result = await submitRegistration(
+        draftRegistration,
+        await getAccountHolderId(context.session),
+      );
+
+      if (result.beaconRegistered) {
+        await deleteRedisCacheRegistration(context);
+      } else {
+        logger.error(
+          `Failed to register beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
+        );
+      }
+
+      clearFormSubmissionCookie(context);
+
+      return {
+        props: {
+          reference: result.referenceNumber,
+          registrationSuccess: result.beaconRegistered,
+          confirmationEmailSuccess: result.confirmationEmailSent,
+        },
+      };
+    } catch (e) {
+      logger.error(e);
+      logger.error(
+        `Threw error when registering beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
+      );
+      return {
+        props: {
+          registrationSuccess: false,
+          confirmationEmailSuccess: false,
+        },
+      };
+    }
   }),
 );
 
