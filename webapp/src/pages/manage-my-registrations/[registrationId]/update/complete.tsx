@@ -18,6 +18,7 @@ import { formSubmissionCookieId } from "../../../../lib/types";
 import { GeneralPageURLs } from "../../../../lib/urls";
 import logger from "../../../../logger";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
+import { deleteCachedRegistrationForAccountHolder } from "../../../../useCases/deleteCachedRegistrationsForAccountHolder";
 
 const ApplicationCompletePage = (props: {
   reference: string;
@@ -68,6 +69,30 @@ const ApplicationCompletePage = (props: {
   );
 };
 
+const deleteRedisCacheRegistration = async (
+  context: BeaconsGetServerSidePropsContext,
+) => {
+  const { getAccountHolderId, draftRegistrationGateway, accountHolderGateway } =
+    context.container;
+
+  const accountHolderId = await getAccountHolderId(context.session);
+
+  await context.container.deleteDraftRegistration(
+    context.req.cookies[formSubmissionCookieId],
+  );
+
+  const registrationId: string = context.req.cookies[
+    formSubmissionCookieId
+  ] as string;
+
+  await deleteCachedRegistrationForAccountHolder(
+    draftRegistrationGateway,
+    accountHolderGateway,
+    accountHolderId,
+    registrationId,
+  );
+};
+
 export const getServerSideProps: GetServerSideProps = withSession(
   withContainer(async (context: BeaconsGetServerSidePropsContext) => {
     const rule = new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(
@@ -94,13 +119,15 @@ export const getServerSideProps: GetServerSideProps = withSession(
         draftRegistration.id,
       );
 
-      clearFormSubmissionCookie(context);
-
-      if (!result.beaconUpdated) {
+      if (result.beaconUpdated) {
+        await deleteRedisCacheRegistration(context);
+      } else {
         logger.error(
           `Failed to update beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
         );
       }
+
+      clearFormSubmissionCookie(context);
 
       return {
         props: {
