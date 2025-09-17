@@ -44,8 +44,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server:2.6.6'
     implementation 'org.jetbrains:annotations:23.0.+'
     implementation 'org.springframework.data:spring-data-elasticsearch:4.3.3'
-    implementation 'org.apache.poi:poi:5.2.2' // Writing to Excel files
-    implementation 'org.apache.poi:poi-ooxml:5.2.2' // Writing to Excel files (additional for .xlsx)
+    implementation 'org.apache.poi:poi:5.4.1' // Writing to Excel files
+    implementation 'org.apache.poi:poi-ooxml:5.4.1' // Writing to Excel files (additional for .xlsx)
     implementation 'net.javacrumbs.shedlock:shedlock-spring:4.34.+' // Scheduling jobs in a distributed system
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.33.+' // Scheduling jobs in a distributed system
     implementation 'commons-beanutils:commons-beanutils:1.11.0'
