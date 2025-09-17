@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.azure:azure-identity:1.+'
 
     runtimeOnly 'org.postgresql:postgresql:42.3.4'
+    runtimeOnly 'com.nimbusds:oauth2-oidc-sdk:11.28'
 
     // Ensures compatibility across architectures by conditionally including dependencies
     if (System.getProperty("os.name").toLowerCase().contains("mac")
