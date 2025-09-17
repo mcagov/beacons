@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 
+import { setImmediate } from "timers";
 import { render } from "@testing-library/react";
 import { createResponse } from "node-mocks-http";
 import React from "react";
@@ -13,6 +14,8 @@ import CompletePage, {
 } from "../../../src/pages/manage-my-registrations/[registrationId]/update/complete";
 import { IUpdateRegistrationResult } from "../../../src/useCases/updateRegistration";
 
+global.setImmediate = setImmediate;
+
 describe("CompletePage", () => {
   it("should render correctly", () => {
     render(<CompletePage updateSuccess={true} reference="Test" />);
@@ -21,6 +24,7 @@ describe("CompletePage", () => {
   describe("getServerSideProps()", () => {
     const mockDraftRegistration: DraftRegistration = {
       id: "draft-registration-id",
+      hexId: "draft-registration-hexId",
       model: "ASOS",
       uses: [],
     };
@@ -122,10 +126,10 @@ describe("CompletePage", () => {
       expect(context.container.deleteDraftRegistration).not.toHaveBeenCalled();
     });
 
-    it("should not return a reference number if updating the registration is unsuccessful", async () => {
+    it("should return a reference number if updating the registration is unsuccessful", async () => {
       const unsuccessful: IUpdateRegistrationResult = {
         beaconUpdated: false,
-        referenceNumber: "",
+        referenceNumber: "ABC123",
       };
       const context = {
         req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
@@ -137,7 +141,7 @@ describe("CompletePage", () => {
 
       const result = await getServerSideProps(context as any);
 
-      expect(result["props"].reference).toBeUndefined();
+      expect(result["props"].reference).toBe("ABC123");
     });
 
     it("should return a reference number if updating the registration is successful", async () => {

@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 
+import { setImmediate } from "timers";
 import { render } from "@testing-library/react";
 import { createResponse } from "node-mocks-http";
 import React from "react";
@@ -12,6 +13,8 @@ import ApplicationCompletePage, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/application-complete";
 import { ISubmitRegistrationResult } from "../../../src/useCases/submitRegistration";
+
+global.setImmediate = setImmediate;
 
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
@@ -26,6 +29,8 @@ describe("ApplicationCompletePage", () => {
 
   describe("getServerSideProps()", () => {
     const mockDraftRegistration: DraftRegistration = {
+      id: "draft-registration-id",
+      hexId: "draft-registration-hexId",
       model: "ASOS",
       uses: [],
     };
@@ -146,7 +151,7 @@ describe("ApplicationCompletePage", () => {
 
       const result = await getServerSideProps(context as any);
 
-      expect(result["props"].reference).toBeUndefined();
+      expect(result["props"].reference).toBe("");
     });
 
     it("should return a reference number if creating the registration is successful", async () => {
