@@ -87,9 +87,9 @@ export const getServerSideProps: GetServerSideProps = withSession(
     if (!verifyFormSubmissionCookieIsSet(context))
       return redirectUserTo(GeneralPageURLs.start);
 
-    const draftRegistration: DraftRegistration = await getDraftRegistration(
-      context.req.cookies[formSubmissionCookieId],
-    );
+    const submissionCookieId = context.req.cookies[formSubmissionCookieId];
+    const draftRegistration: DraftRegistration =
+      await getDraftRegistration(submissionCookieId);
 
     try {
       const result = await submitRegistration(
@@ -98,12 +98,10 @@ export const getServerSideProps: GetServerSideProps = withSession(
       );
 
       if (result.beaconRegistered) {
-        await context.container.deleteDraftRegistration(
-          context.req.cookies[formSubmissionCookieId],
-        );
+        await context.container.deleteDraftRegistration(submissionCookieId);
       } else {
         logger.error(
-          `Failed to register beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
+          `Failed to register beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${submissionCookieId}`,
         );
       }
 
@@ -119,7 +117,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
     } catch (e) {
       logger.error(e);
       logger.error(
-        `Threw error when registering beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${context.req.cookies[formSubmissionCookieId]}`,
+        `Threw error when registering beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${submissionCookieId}`,
       );
       return {
         props: {
