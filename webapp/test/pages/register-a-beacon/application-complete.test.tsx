@@ -61,7 +61,7 @@ describe("ApplicationCompletePage", () => {
       };
     });
 
-    it("should redirect the user to the start page if their form submission cookie isn't set", async () => {
+    it("should redirect the user to your account home page if their form submission cookie isn't set", async () => {
       const context = {
         req: { cookies: {} },
         res: createResponse(),
@@ -73,7 +73,7 @@ describe("ApplicationCompletePage", () => {
 
       expect(result).toMatchObject({
         redirect: {
-          destination: "/",
+          destination: "/account/your-beacon-registry-account",
         },
       });
     });

@@ -15,7 +15,7 @@ import { withContainer } from "../../lib/middleware/withContainer";
 import { withSession } from "../../lib/middleware/withSession";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
-import { GeneralPageURLs } from "../../lib/urls";
+import { AccountPageURLs } from "../../lib/urls";
 import logger from "../../logger";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = withSession(
 
     /* Page logic */
     if (!verifyFormSubmissionCookieIsSet(context))
-      return redirectUserTo(GeneralPageURLs.start);
+      return redirectUserTo(AccountPageURLs.accountHome);
 
     const submissionCookieId = context.req.cookies[formSubmissionCookieId];
     const draftRegistration: DraftRegistration =
