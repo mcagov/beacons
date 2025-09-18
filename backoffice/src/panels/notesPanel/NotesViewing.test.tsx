@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { INote } from "../../entities/INote";
 import { notesFixture } from "../../fixtures/notes.fixture";
-import { formatMonth } from "../../utils/dateTime";
+import { formatDateLong } from "../../utils/dateTime";
 import { noNotesMessage, NotesViewing } from "./NotesViewing";
 
 describe("NotesViewing", () => {
@@ -10,7 +10,7 @@ describe("NotesViewing", () => {
 
     for (const note of notesFixture) {
       expect(
-        await screen.findAllByText(formatMonth(note.createdDate)),
+        await screen.findAllByText(formatDateLong(note.createdDate)),
       ).toBeTruthy();
       expect(await screen.findByText(new RegExp(note.type, "i"))).toBeTruthy();
       expect(await screen.findByText(note.text)).toBeTruthy();
