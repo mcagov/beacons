@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 
+import { setImmediate } from "timers";
 import { render } from "@testing-library/react";
 import { createResponse } from "node-mocks-http";
 import React from "react";
@@ -12,6 +13,8 @@ import ApplicationCompletePage, {
   getServerSideProps,
 } from "../../../src/pages/register-a-beacon/application-complete";
 import { ISubmitRegistrationResult } from "../../../src/useCases/submitRegistration";
+
+global.setImmediate = setImmediate;
 
 describe("ApplicationCompletePage", () => {
   it("should render correctly", () => {
@@ -26,6 +29,8 @@ describe("ApplicationCompletePage", () => {
 
   describe("getServerSideProps()", () => {
     const mockDraftRegistration: DraftRegistration = {
+      id: "draft-registration-id",
+      hexId: "draft-registration-hexId",
       model: "ASOS",
       uses: [],
     };
@@ -52,6 +57,7 @@ describe("ApplicationCompletePage", () => {
           .fn()
           .mockResolvedValue(mockDraftRegistration),
         sessionGateway: mockSessionGateway,
+        deleteDraftRegistration: jest.fn(),
       };
     });
 
@@ -92,6 +98,43 @@ describe("ApplicationCompletePage", () => {
       );
     });
 
+    it("should attempt to remove the user's draft registration if creating the registration is successful", async () => {
+      const userRegistrationId = "user-form-submission-cookie-id";
+      const context = {
+        req: {
+          cookies: { [formSubmissionCookieId]: userRegistrationId },
+        },
+        res: createResponse(),
+        container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
+      };
+
+      await getServerSideProps(context as any);
+
+      expect(context.container.deleteDraftRegistration).toHaveBeenCalledWith(
+        userRegistrationId,
+      );
+    });
+
+    it("should not attempt to remove the user's draft registration if creating the registration is unsuccessful", async () => {
+      const unsuccessful: ISubmitRegistrationResult = {
+        beaconRegistered: false,
+        confirmationEmailSent: false,
+        referenceNumber: "",
+      };
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
+        container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
+      };
+      mockSubmitRegistration.mockResolvedValue(unsuccessful);
+
+      await getServerSideProps(context as any);
+
+      expect(context.container.deleteDraftRegistration).not.toHaveBeenCalled();
+    });
+
     it("should not return a reference number if creating the registration is unsuccessful", async () => {
       const unsuccessful: ISubmitRegistrationResult = {
         beaconRegistered: false,
@@ -108,7 +151,7 @@ describe("ApplicationCompletePage", () => {
 
       const result = await getServerSideProps(context as any);
 
-      expect(result["props"].reference).toBeUndefined();
+      expect(result["props"].reference).toBe("");
     });
 
     it("should return a reference number if creating the registration is successful", async () => {
