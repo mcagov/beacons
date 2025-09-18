@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { INote } from "entities/INote";
 import React, { FunctionComponent } from "react";
-import { formatMonth } from "utils/dateTime";
+import { formatDateLong } from "utils/dateTime";
 import { titleCase } from "utils/writingStyle";
 
 interface INotesViewingProps {
@@ -41,7 +41,7 @@ export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
           <TableBody>
             {notes.map((note) => (
               <TableRow key={note.id}>
-                <TableCell>{formatMonth(note.createdDate)}</TableCell>
+                <TableCell>{formatDateLong(note.createdDate)}</TableCell>
                 <TableCell>{titleCase(note.type)}</TableCell>
                 <TableCell>{note.text}</TableCell>
                 <TableCell>{note.fullName}</TableCell>
