@@ -3,7 +3,6 @@ import { GetServerSidePropsResult } from "next";
 import { DraftRegistration } from "../../../src/entities/DraftRegistration";
 import { IAppContainer } from "../../../src/lib/IAppContainer";
 import { formSubmissionCookieId } from "../../../src/lib/types";
-import { GeneralPageURLs } from "../../../src/lib/urls";
 import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../../src/router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
 
 describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage", () => {
@@ -98,7 +97,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
 
       expect(result).toMatchObject({
         redirect: {
-          destination: GeneralPageURLs.start,
+          destination: "/account/your-beacon-registry-account",
         },
       });
     });
