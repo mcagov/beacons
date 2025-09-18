@@ -90,42 +90,6 @@ describe("CompletePage", () => {
       );
     });
 
-    it("should attempt to remove the user's draft registration if updating the registration is successful", async () => {
-      const userRegistrationId = "user-form-submission-cookie-id";
-      const context = {
-        req: {
-          cookies: { [formSubmissionCookieId]: userRegistrationId },
-        },
-        res: createResponse(),
-        container: mockContainer,
-        session: { user: { authId: "a-session-id" } },
-      };
-
-      await getServerSideProps(context as any);
-
-      expect(context.container.deleteDraftRegistration).toHaveBeenCalledWith(
-        userRegistrationId,
-      );
-    });
-
-    it("should not attempt to remove the user's draft registration if updating the registration is unsuccessful", async () => {
-      const unsuccessful: IUpdateRegistrationResult = {
-        beaconUpdated: false,
-        referenceNumber: "",
-      };
-      const context = {
-        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
-        res: createResponse(),
-        container: mockContainer,
-        session: { user: { authId: "a-session-id" } },
-      };
-      mockUpdateRegistration.mockResolvedValue(unsuccessful);
-
-      await getServerSideProps(context as any);
-
-      expect(context.container.deleteDraftRegistration).not.toHaveBeenCalled();
-    });
-
     it("should return a reference number if updating the registration is unsuccessful", async () => {
       const unsuccessful: IUpdateRegistrationResult = {
         beaconUpdated: false,
