@@ -54,7 +54,22 @@
       rel="stylesheet"
       href="https://mca-beacons-b2c-assets.s3.eu-west-2.amazonaws.com/main-rebranded.css"
       data-preload="true"
+      type="text/css"
     />
+    <script>
+      const observer = new MutationObserver((mutationsList, observer) => {
+        if (document.getElementById("api")) {
+          document.documentElement.classList.remove(
+            "govuk-template--rebranded",
+          );
+          document.body.classList.remove("govuk-template__body");
+          document.documentElement.classList.add("govuk-template--rebranded");
+          document.body.classList.add("govuk-template__body");
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    </script>
   </head>
   <body class="govuk-template__body">
     <header class="govuk-header" role="banner" data-module="govuk-header">
