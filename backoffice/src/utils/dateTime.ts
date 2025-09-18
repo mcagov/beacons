@@ -20,6 +20,11 @@ export const formatDateTime = (dateTimeString: string): string => {
 
   if (/^\d{2}\/\d{2}\/\d{4}$/.test(dateTimeString)) return dateTimeString;
 
+  if (/^\d{4}-\d{2}$/.test(dateTimeString)) {
+    const [year, month] = dateTimeString.split("-");
+    return `${month}/${year}`;
+  }
+
   try {
     const date = new Date(dateTimeString);
     return isNaN(date.getTime())
