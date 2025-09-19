@@ -9,6 +9,9 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
     new Redis(process.env.REDIS_URI),
   );
   private static instance: DraftRegistrationGateway;
+  private static readonly TTL_SECONDS = parseInt(
+    process.env.DRAFT_REGISTRATION_TTL_SECONDS || "2592000",
+  );
 
   static getGateway(): DraftRegistrationGateway {
     if (!RedisDraftRegistrationGateway.instance) {
@@ -28,6 +31,10 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
     draftRegistration: DraftRegistration,
   ): Promise<void> {
     await this.cache.set(id, draftRegistration);
+    await this.cache.redis.expire(
+      id,
+      RedisDraftRegistrationGateway.TTL_SECONDS,
+    );
   }
 
   public async delete(id: string): Promise<void> {
