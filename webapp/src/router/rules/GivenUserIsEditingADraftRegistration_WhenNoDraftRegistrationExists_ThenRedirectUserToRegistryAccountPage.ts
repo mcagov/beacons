@@ -6,7 +6,7 @@ import { formSubmissionCookieId } from "../../lib/types";
 import { AccountPageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage
+export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToRegistryAccountPage
   implements Rule
 {
   private readonly context: BeaconsGetServerSidePropsContext;
