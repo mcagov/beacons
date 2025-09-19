@@ -10,7 +10,7 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
   );
   private static instance: DraftRegistrationGateway;
   private static readonly TTL_SECONDS = parseInt(
-    process.env.DRAFT_REGISTRATION_TTL_SECONDS || "604800",
+    process.env.DRAFT_REGISTRATION_TTL_SECONDS || "2628000",
   );
 
   static getGateway(): DraftRegistrationGateway {
