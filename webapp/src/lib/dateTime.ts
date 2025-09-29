@@ -19,3 +19,5 @@ export function toIsoDateString(year: string, month: string): string {
 
 export const isoDate = (isoDateTime: string): string =>
   isoDateTime.slice(0, 10);
+
+export const ONE_MONTH_SECONDS = 30 * 24 * 60 * 60;
