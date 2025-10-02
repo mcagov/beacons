@@ -1,7 +1,7 @@
 import { DraftRegistration } from "../../src/entities/DraftRegistration";
 import { RedisDraftRegistrationGateway } from "../../src/gateways/RedisDraftRegistrationGateway";
 import JSONCacheMock from "redis-json";
-import { ONE_MONTH_SECONDS } from "../../src/lib/dateTime";
+import { ONE_DAY_SECONDS } from "../../src/lib/dateTime";
 
 // Mock external dependencies
 jest.mock("ioredis", () => jest.fn());
@@ -52,7 +52,7 @@ describe("RedisDraftRegistrationGateway", () => {
     it("should update a draft registration in cache with TTL", async () => {
       await gateway.update("123", draft);
       expect(cacheMock.set).toHaveBeenCalledWith("123", draft, {
-        expire: ONE_MONTH_SECONDS,
+        expire: ONE_DAY_SECONDS,
       });
     });
   });
@@ -78,7 +78,7 @@ describe("RedisDraftRegistrationGateway", () => {
             { environment: "", purpose: "", activity: "", moreDetails: "" },
           ],
         },
-        { expire: ONE_MONTH_SECONDS },
+        { expire: ONE_DAY_SECONDS },
       );
     });
   });
@@ -94,7 +94,7 @@ describe("RedisDraftRegistrationGateway", () => {
           ...draft,
           uses: [],
         },
-        { expire: ONE_MONTH_SECONDS },
+        { expire: ONE_DAY_SECONDS },
       );
     });
   });
@@ -129,7 +129,7 @@ describe("RedisDraftRegistrationGateway", () => {
             },
           ],
         },
-        { expire: ONE_MONTH_SECONDS },
+        { expire: ONE_DAY_SECONDS },
       );
     });
   });
@@ -177,7 +177,7 @@ describe("RedisDraftRegistrationGateway", () => {
             },
           ],
         },
-        { expire: ONE_MONTH_SECONDS },
+        { expire: ONE_DAY_SECONDS },
       );
     });
   });

@@ -3,7 +3,7 @@ import JSONCache from "redis-json";
 import { DraftRegistration } from "../entities/DraftRegistration";
 import { DraftRegistrationGateway } from "./interfaces/DraftRegistrationGateway";
 import { isValidUse } from "../lib/helpers/isValidUse";
-import { ONE_MONTH_SECONDS } from "../lib/dateTime";
+import { ONE_DAY_SECONDS } from "../lib/dateTime";
 
 export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
   private cache = new JSONCache<DraftRegistration>(
@@ -11,7 +11,7 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
   );
   private static instance: DraftRegistrationGateway;
   private static readonly TTL_SECONDS =
-    parseInt(process.env.DRAFT_REGISTRATION_TTL_SECONDS) || ONE_MONTH_SECONDS;
+    parseInt(process.env.REDIS_DRAFT_REGISTRATION_TTL) || ONE_DAY_SECONDS;
 
   static getGateway(): DraftRegistrationGateway {
     if (!RedisDraftRegistrationGateway.instance) {
