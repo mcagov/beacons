@@ -5,7 +5,7 @@ COPY . ./
 RUN ./gradlew clean assemble
 
 # Run the service
-FROM eclipse-temurin:17 AS beacons-service
+FROM eclipse-temurin:25 AS beacons-service
 WORKDIR /opt/app
 COPY --from=build /opt/app/build/libs/*.jar app.jar
 
