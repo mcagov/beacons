@@ -52,8 +52,29 @@
     />
     <link
       rel="stylesheet"
-      href="https://mca-beacons-b2c-assets.s3.eu-west-2.amazonaws.com/main-rebranded.min.css"
+      href="https://mca-beacons-b2c-assets.s3.eu-west-2.amazonaws.com/main-rebranded.css"
+      data-preload="true"
+      type="text/css"
     />
+    <script>
+      const observer = new MutationObserver((mutationsList, observer) => {
+        if (document.getElementById("api")) {
+          document.documentElement.classList.remove(
+            "govuk-template--rebranded",
+          );
+          document.body.classList.remove("govuk-template__body");
+          document.documentElement.classList.add("govuk-template--rebranded");
+          document.body.classList.add("govuk-template__body");
+
+          const signUpSignInPageUrl = `${document.referrer}account/sign-up-or-sign-in`;
+          const backLink = document.getElementById("back-link");
+          backLink.href = signUpSignInPageUrl;
+
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    </script>
   </head>
   <body class="govuk-template__body">
     <header class="govuk-header" role="banner" data-module="govuk-header">
@@ -215,10 +236,5 @@
         </div>
       </div>
     </footer>
-    <script>
-      var signUpSignInPageUrl = `${document.referrer}account/sign-up-or-sign-in`;
-      var backLink = document.getElementById("back-link");
-      backLink.href = signUpSignInPageUrl;
-    </script>
   </body>
 </html>

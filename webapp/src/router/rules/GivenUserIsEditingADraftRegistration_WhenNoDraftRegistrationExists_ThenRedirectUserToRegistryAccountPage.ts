@@ -3,10 +3,10 @@ import { DraftRegistration } from "../../entities/DraftRegistration";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { redirectUserTo } from "../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../lib/types";
-import { GeneralPageURLs } from "../../lib/urls";
+import { AccountPageURLs } from "../../lib/urls";
 import { Rule } from "./Rule";
 
-export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage
+export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToRegistryAccountPage
   implements Rule
 {
   private readonly context: BeaconsGetServerSidePropsContext;
@@ -24,7 +24,7 @@ export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
     if (this.draftRegistrationCookieIdIsMissing())
-      return redirectUserTo(GeneralPageURLs.start);
+      return redirectUserTo(AccountPageURLs.accountHome);
 
     await this.createBlankDraftRegistration();
 

@@ -41,7 +41,7 @@ jobs:
         with:
           ref: ${{ inputs.git-reference }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "22.17.0"
 
@@ -56,7 +56,7 @@ jobs:
     with:
       git-reference: ${{ inputs.git-reference }}
     secrets:
-      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN_V4 }}
+      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
   test_service:
@@ -161,7 +161,7 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      test_webapp_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN_V4 }}
+      test_webapp_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_webapp_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
       test_webapp_azure_b2c_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_CLIENT_SECRET }}
       test_webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_AD_CLIENT_SECRET }}
