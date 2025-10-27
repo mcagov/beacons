@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api.beaconsearch;
 
 import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beaconsearch.repositories.BeaconSearchSpecificationRepository;
+import uk.gov.mca.beacons.api.beaconsearch.rest.BeaconSearchDTO;
 import uk.gov.mca.beacons.api.beaconsearch.rest.BeaconSearchSpecification;
 import uk.gov.mca.beacons.api.beaconuse.application.BeaconUseService;
 import uk.gov.mca.beacons.api.search.domain.BeaconSearchEntity;
@@ -61,7 +63,7 @@ public class BeaconSpecificationSearchService {
     return results.getContent().isEmpty() ? Page.empty(pageable) : results;
   }
 
-  public List<BeaconSearchEntity> findAllByAccountHolderIdAndEmail(
+  public List<BeaconSearchDTO> findAllByAccountHolderIdAndEmail(
     String email,
     UUID accountHolderId,
     Sort sort
@@ -75,9 +77,14 @@ public class BeaconSpecificationSearchService {
     ).and(BeaconSearchSpecification.hasNewOrChangeStatus());
 
     Specification<BeaconSearchEntity> spec = migratedSpec.or(newOrChangeSpec);
-    List<BeaconSearchEntity> results =
+    List<BeaconSearchEntity> entities =
       beaconSearchSpecificationRepository.findAll(spec, sort);
-    results.forEach(this::resolveMainUseName);
+
+    List<BeaconSearchDTO> results = entities
+      .stream()
+      .map(this::toDto)
+      .peek(this::resolveMainUseName)
+      .collect(Collectors.toList());
 
     return results.isEmpty() ? Collections.emptyList() : results;
   }
@@ -121,11 +128,34 @@ public class BeaconSpecificationSearchService {
     return results.isEmpty() ? Collections.emptyList() : results;
   }
 
-  private void resolveMainUseName(BeaconSearchEntity beaconSearchEntity) {
-    if (StringUtils.hasText(beaconSearchEntity.getMainUseName())) {
+  public BeaconSearchDTO toDto(BeaconSearchEntity entity) {
+    return BeaconSearchDTO.builder()
+      .id(entity.getId())
+      .createdDate(entity.getCreatedDate())
+      .lastModifiedDate(entity.getLastModifiedDate())
+      .beaconStatus(entity.getBeaconStatus())
+      .hexId(entity.getHexId())
+      .ownerName(entity.getOwnerName())
+      .ownerEmail(entity.getOwnerEmail())
+      .legacyBeaconRecoveryEmail(entity.getLegacyBeaconRecoveryEmail())
+      .accountHolderId(entity.getAccountHolderId())
+      .accountHolderName(entity.getAccountHolderName())
+      .accountHolderEmail(entity.getAccountHolderEmail())
+      .useActivities(entity.getUseActivities())
+      .vesselNames(entity.getVesselNames())
+      .registrationMarks(entity.getRegistrationMarks())
+      .beaconType(entity.getBeaconType())
+      .manufacturerSerialNumber(entity.getManufacturerSerialNumber())
+      .cospasSarsatNumber(entity.getCospasSarsatNumber())
+      .mainUseName(entity.getMainUseName())
+      .build();
+  }
+
+  public void resolveMainUseName(BeaconSearchDTO beaconSearchDto) {
+    if (StringUtils.hasText(beaconSearchDto.getMainUseName())) {
       return;
     }
-    BeaconId beaconId = new BeaconId(beaconSearchEntity.getId());
+    BeaconId beaconId = new BeaconId(beaconSearchDto.getId());
 
     try {
       Optional.ofNullable(beaconUseService.getMainUseByBeaconId(beaconId))
@@ -134,11 +164,11 @@ public class BeaconSpecificationSearchService {
             ? use.getVesselName()
             : use.getRegistrationMark()
         )
-        .ifPresent(beaconSearchEntity::setMainUseName);
+        .ifPresent(beaconSearchDto::setMainUseName);
     } catch (Exception e) {
       log.error(
         "Failed to resolve main use name for beaconId: {}",
-        beaconId,
+        beaconId.unwrap(),
         e
       );
     }
