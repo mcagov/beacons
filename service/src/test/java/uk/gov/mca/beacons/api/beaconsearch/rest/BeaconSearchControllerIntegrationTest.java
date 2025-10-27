@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.beaconsearch.rest;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -235,14 +237,23 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
     }
 
     @Test
-    void shouldReturnResultsWithMainUseName() throws Exception {
+    void shouldFindAllAndResolveMainUseName_WithoutException()
+      throws Exception {
       String testAuthId = UUID.randomUUID().toString();
       final var accountHolderId = createAccountHolder(testAuthId);
 
       createBeacon(request ->
         request
           .replace("account-holder-id-placeholder", accountHolderId)
+          .replace("vessel-name-placeholder", "Vessel Name")
+          .replace("registration-mark-placeholder", "")
+      );
+
+      createBeacon(request ->
+        request
+          .replace("account-holder-id-placeholder", accountHolderId)
           .replace("vessel-name-placeholder", "")
+          .replace("registration-mark-placeholder", "Registration Mark")
       );
 
       webTestClient
@@ -262,11 +273,11 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
         .isOk()
         .expectBody()
         .jsonPath("length()")
-        .isEqualTo(1)
+        .isEqualTo(2)
         .jsonPath("[0].accountHolderId")
         .isEqualTo(accountHolderId)
-        .jsonPath("[0].mainUseName")
-        .isEqualTo("1");
+        .jsonPath("$..mainUseName")
+        .value(containsInAnyOrder("Vessel Name", "Registration Mark"));
     }
   }
 
