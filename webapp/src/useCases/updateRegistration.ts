@@ -24,6 +24,6 @@ export const updateRegistration =
 
     return {
       beaconUpdated,
-      referenceNumber: draftRegistration.referenceNumber,
+      referenceNumber: draftRegistration.referenceNumber || "",
     };
   };

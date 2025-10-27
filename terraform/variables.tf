@@ -187,7 +187,10 @@ variable "gov_notify_api_key" {
 variable "gov_notify_feedback_email_address" {
   type        = string
   description = "The email address to which feedback should be sent"
-  sensitive   = true
+}
+variable "redis_draft_registration_ttl" {
+  type        = string
+  description = "Time to live in seconds for redis cache keys"
 }
 variable "db_instance_class" {
   type        = string
