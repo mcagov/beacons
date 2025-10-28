@@ -1,9 +1,10 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { cloneDeep } from "lodash";
 import { IBeacon } from "../../entities/IBeacon";
 import { beaconFixture } from "../../fixtures/beacons.fixture";
 import { BeaconSummaryEditing } from "./BeaconSummaryEditing";
+import { BEACON_TYPES } from "../../entities/BeaconType";
 
 describe("BeaconSummaryEditing", () => {
   it("user can type text in basic string input fields", async () => {
@@ -83,6 +84,39 @@ describe("BeaconSummaryEditing", () => {
     });
   });
 
+  it("user can see all options and select a beacon type", async () => {
+    const onSave = jest.fn();
+
+    render(
+      <BeaconSummaryEditing
+        beacon={beaconFixture}
+        onSave={onSave}
+        onCancel={jest.fn()}
+      />,
+    );
+
+    const dropdownField = await screen.findByLabelText(/beacon type/i);
+
+    const options = within(dropdownField).getAllByRole("option");
+    expect(options.length).toBe(BEACON_TYPES.length + 1);
+
+    const optionValues = options.map((opt) => opt.textContent);
+    const expectedValues = ["N/A", ...BEACON_TYPES];
+
+    expect(optionValues).toEqual(expectedValues);
+
+    await act(async () => {
+      await userEvent.selectOptions(dropdownField, "ELT (Automatic Fixed)");
+      await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    });
+
+    await waitFor(() => {
+      expect(onSave).toHaveBeenCalledWith(
+        expect.objectContaining({ beaconType: "ELT (Automatic Fixed)" }),
+      );
+    });
+  });
+
   it("calls the cancel callback to abort the edit", async () => {
     const onCancel = jest.fn();
     act(() => {
@@ -127,7 +161,7 @@ describe("BeaconSummaryEditing", () => {
       const modelField = await screen.findByLabelText(/model/i);
       const manufacturer = "Ocean Signal";
       const model =
-        "CSTA 1362, EPIRB3 (non-Float Free), EPIRB3 Pro (Float Free / non-Float Free)";
+        "CSTA 1362, EPIRB3 (non-FF), EPIRB3 Pro (FF / non-FF), RLS, AIS";
 
       await act(async () => {
         await userEvent.selectOptions(manufacturerField, manufacturer);
