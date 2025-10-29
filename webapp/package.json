@@ -34,7 +34,7 @@
     "isodate": "^0.1.4",
     "lodash": "^4.17.21",
     "next": "^15.5.2",
-    "next-auth": "^4.24.11",
+    "next-auth": "^4.24.12",
     "notifications-node-client": "^8.2.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
