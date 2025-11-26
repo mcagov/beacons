@@ -2,7 +2,7 @@ locals {
   environment = terraform.workspace
   b2c_origins = {
     dev     = "https://dev.406beacons.com",
-    stage = "https://stage.406beacons.com"
+    staging = "https://stage.406beacons.com"
   }
 }
 
