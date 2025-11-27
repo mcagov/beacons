@@ -1,7 +1,7 @@
 ##
 # Deploy a specified version to development.  Useful for testing terraform infrastructure.
 ##
-name: Deploy a version of the application
+name: Deploy a specified version to development
 
 permissions:
   contents: read
