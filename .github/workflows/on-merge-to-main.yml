@@ -171,6 +171,26 @@ jobs:
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
       microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
 
+  deploy_assets:
+    name: Deploy Assets
+    needs:
+      - publish_webapp_image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.git-reference }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - name: Deploy assets to dev
+        run: ./terraform/scripts/deploy-assets.sh dev
+
   deploy_dev:
     name: Development
     needs:
@@ -179,6 +199,7 @@ jobs:
       - publish_service_image
       - publish_opensearch_proxy_image
       - end_to_end_tests
+      - deploy_assets
     uses: ./.github/workflows/_reusable-deploy.yml
     with:
       environment: development
