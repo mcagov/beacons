@@ -9,7 +9,6 @@ locals {
 resource "aws_s3_bucket" "mca_beacons_b2c_assets" {
   for_each = local.environment == "production" ? {} : { "${local.environment}" = true }
   bucket   = "mca-beacons-b2c-assets-${each.key}"
-  acl      = "public-read"
   tags = {
     Name        = "mca-beacons-b2c-assets-${each.key}"
     Environment = "${each.key}"
