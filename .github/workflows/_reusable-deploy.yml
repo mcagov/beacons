@@ -157,4 +157,9 @@ jobs:
           TF_VAR_microsoft_graph_client_secret: ${{ secrets.microsoft_graph_client_secret }}
           TF_VAR_microsoft_graph_b2c_tenant_id: ${{ secrets.microsoft_graph_b2c_tenant_id }}
           TF_VAR_microsoft_graph_b2c_tenant_name: ${{ secrets.microsoft_graph_b2c_tenant_name }}
-        run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
+        run: |
+          if [ "${{ inputs.dry-run }}" = "true" ]; then
+            terraform plan -input=false -var-file=${{ inputs.terraform_workspace }}.tfvars
+          else
+            terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
+          fi

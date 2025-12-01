@@ -1,0 +1,56 @@
+##
+# Deploy a specified version to development.  Useful for testing terraform infrastructure.
+##
+name: Deploy a specified version to development
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Enter the version of the application to deploy
+        required: true
+        type: string
+
+      dry-run:
+        description: Toggle true if no infrastructure should be altered (runs `terraform plan` instead of `apply`)
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  deploy_development:
+    name: Development
+    uses: ./.github/workflows/_reusable-deploy.yml
+    with:
+      environment: development
+      terraform_workspace: dev
+      version: ${{ inputs.version }}
+      trello_list_id: 6157064b4d7e1b3b1ea839ad
+      dry-run: ${{ inputs.dry-run }}
+    secrets:
+      alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
+      alert_pagerduty_integration_url: ${{ secrets.ALERT_PAGERDUTY_INTEGRATION_URL }}
+      aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      db_password: ${{ secrets.DB_PASSWORD }}
+      gov_notify_api_key: ${{ secrets.GOV_NOTIFY_API_KEY }}
+      webapp_azure_ad_client_secret: ${{ secrets.WEBAPP_CLIENT_SECRET }}
+      webapp_azure_b2c_client_secret: ${{ secrets.AZURE_B2C_CLIENT_SECRET }}
+      webapp_azure_b2c_next_auth_jwt_secret: ${{ secrets.JWT_SECRET }}
+      service_basic_auth_username: ${{ secrets.SERVICE_BASIC_AUTH_USERNAME }}
+      service_basic_auth_password: ${{ secrets.SERVICE_BASIC_AUTH_PASSWORD }}
+      aws_account_number: ${{ secrets.AWS_ACCOUNT_NUMBER }}
+      trello_api_key: ${{ secrets.TRELLO_API_KEY }}
+      trello_board_email_address: ${{ secrets.TRELLO_BOARD_EMAIL_ADDRESS }}
+      trello_token: ${{ secrets.TRELLO_TOKEN }}
+      opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
+      opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
+      opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
+      microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
+      microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
+      microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
+      microsoft_graph_b2c_tenant_name: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_NAME }}
