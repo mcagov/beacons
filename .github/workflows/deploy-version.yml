@@ -1,5 +1,5 @@
 ##
-# Deploy a specified version to production.  Useful for reverting production to a known good state.
+# TODO: Deploy a specified version to production.  Useful for reverting production to a known good state.
 ##
 name: Deploy a version of the application
 
