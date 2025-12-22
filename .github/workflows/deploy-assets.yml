@@ -1,0 +1,35 @@
+name: Deploy Assets to S3
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      git-reference:
+        type: string
+        description: Enter the version of the application to deploy
+      terraform_workspace:
+        description: >
+          The Terraform workspace to which infrastructure should be deployed.  Must be one of dev/staging/production and
+          must match the environment input.
+
+jobs:
+  deploy_assets:
+    name: Deploy Assets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.git-reference }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+
+      - name: Deploy assets to dev
+        run: ./terraform/scripts/deploy-assets.sh ${{ inputs.terraform_workspace }}
