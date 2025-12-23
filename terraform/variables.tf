@@ -187,7 +187,10 @@ variable "gov_notify_api_key" {
 variable "gov_notify_feedback_email_address" {
   type        = string
   description = "The email address to which feedback should be sent"
-  sensitive   = true
+}
+variable "redis_draft_registration_ttl" {
+  type        = string
+  description = "Time to live in seconds for redis cache keys"
 }
 variable "db_instance_class" {
   type        = string
@@ -293,6 +296,10 @@ variable "trello_board_email_address" {
 variable "trello_list_id" {
   type        = string
   description = "Unique identifier for list in Trello"
+}
+variable "alert_pagerduty_integration_url" {
+  type        = string
+  description = " The Integration URL to which CloudWatch alerts should be sent for PagerDuty"
 }
 variable "opensearch_master_user_name" {
   type        = string
@@ -409,4 +416,10 @@ variable "microsoft_graph_b2c_tenant_name" {
   type        = string
   description = "Name of the Azure AD B2C tenant. Used by the beacons service API to call the Microsoft Graph API"
   sensitive   = true
+}
+
+variable "load_balancer_idle_time" {
+  type        = number
+  description = "(Optional) Time in seconds that the connection is allowed to be idle."
+  default     = 60
 }

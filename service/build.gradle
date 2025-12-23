@@ -48,7 +48,7 @@ dependencies {
     implementation 'org.apache.poi:poi-ooxml:5.2.2' // Writing to Excel files (additional for .xlsx)
     implementation 'net.javacrumbs.shedlock:shedlock-spring:4.34.+' // Scheduling jobs in a distributed system
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.33.+' // Scheduling jobs in a distributed system
-    implementation 'commons-beanutils:commons-beanutils:1.9.4'
+    implementation 'commons-beanutils:commons-beanutils:1.11.0'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-cache:3.5.0'
@@ -59,6 +59,7 @@ dependencies {
     implementation 'com.azure:azure-identity:1.+'
 
     runtimeOnly 'org.postgresql:postgresql:42.3.4'
+    runtimeOnly 'com.nimbusds:oauth2-oidc-sdk:11.28'
 
     // Ensures compatibility across architectures by conditionally including dependencies
     if (System.getProperty("os.name").toLowerCase().contains("mac")
@@ -72,10 +73,10 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.0'
     testImplementation 'org.springframework.security:spring-security-test:5.6.3'
-    testImplementation 'org.testcontainers:testcontainers:1.21.0'
-    testImplementation 'org.testcontainers:junit-jupiter:1.21.0'
-    testImplementation 'org.testcontainers:postgresql:1.21.0'
-    testImplementation 'org.testcontainers:elasticsearch:1.21.0'
+    testImplementation 'org.testcontainers:testcontainers:1.21.3'
+    testImplementation 'org.testcontainers:junit-jupiter:1.21.3'
+    testImplementation 'org.testcontainers:postgresql:1.21.3'
+    testImplementation 'org.testcontainers:elasticsearch:1.21.3'
     testImplementation 'org.springframework.batch:spring-batch-test:4.3.5'
     testImplementation 'com.google.jimfs:jimfs:1.2' // File system mocking
     testImplementation 'org.springframework:spring-webflux:5.3.18' // POSTing in integration tests
