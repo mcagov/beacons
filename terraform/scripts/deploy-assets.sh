@@ -24,7 +24,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-aws s3 sync "$REPO_ROOT/webapp/public/assets" s3://$BUCKET/assets 
+aws s3 sync "$REPO_ROOT/webapp/public" s3://$BUCKET --delete 
 
 echo "Assets deployed successfully to $ENV!"
 echo "Assets available at: https://$BUCKET.s3.amazonaws.com"
