@@ -94,3 +94,7 @@ The end-to-end tests are also a part of our CI/CD pipeline
   - These have been set as GitHub secrets in the repository
 - Currently, the values are the same as the ones used locally (`.env.local`)
   - They're listed in 1Password in case the local or repository values change
+
+  #### Testing authentication pages:
+
+- If you are working on authentication pages, look at the [auth documentation here](./public/auth/README.md).
