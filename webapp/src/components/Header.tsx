@@ -15,11 +15,8 @@ export const Header: FunctionComponent<HeaderProps> = ({
     <header className="govuk-header " role="banner" data-module="govuk-header">
       <div className="govuk-header__container govuk-width-container">
         <HeaderLogo />
-        <div className="govuk-header__content">
-          <a
-            href={homeLink}
-            className="govuk-header__link govuk-header__link--service-name"
-          >
+        <div className="govuk-header__content app-header-navigation">
+          <a href={homeLink} className="govuk-header__link">
             {serviceName}
           </a>
           {signOutUri && (

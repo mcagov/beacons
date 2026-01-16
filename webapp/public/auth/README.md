@@ -14,25 +14,29 @@ This document outlines the steps to configure a User Flow in Azure Active Direct
 
 Follow these steps to link your custom HTML to the sign-up/sign-in experience.
 
-1.  **Navigate to B2C Service:**
-    - Log in to the Azure Portal.
-    - Search for and select **Azure AD B2C**.
+1. **Create assets in S3:**
+   - Create new resources in a new directory in S3.
+   - Ensure new directory has a sensible name for example **assets-2025-24-11** and **stylesheets-2025-24-11**.
 
-2.  **Select User Flow:**
-    - In the left-hand menu, select **User flows**.
-    - Click on the **B2C_1_login_beacons** user flow.
+2. **Navigate to B2C Service:**
+   - Log in to the Azure Portal.
+   - Search for and select **Azure AD B2C**.
 
-3.  **Enable Custom Page Content:**
-    - In the left sidebar of the User Flow, select **Page layouts**.
-    - Locate the section labeled **Unified sign-up or sign-in page**.
-    - For the setting **Use custom page content**, select **Yes**.
+3. **Select User Flow:**
+   - In the left-hand menu, select **User flows**.
+   - Click on the **B2C_1_login_beacons** user flow.
 
-4.  **Link the URI:**
-    - In the **Custom page URI** field, enter the full URL for your `login.html` file.
-    - _Note: Ensure the URI is accessible via HTTPS._
+4. **Enable Custom Page Content:**
+   - In the left sidebar of the User Flow, select **Page layouts**.
+   - Locate the section labeled **Unified sign-up or sign-in page**.
+   - For the setting **Use custom page content**, select **Yes**.
 
-5.  **Apply Changes:**
-    - Select **Save** at the top of the page.
+5. **Link the URI:**
+   - In the **Custom page URI** field, enter the full URL for your `login.html` file.
+   - _Note: Ensure the URI is accessible via HTTPS._
+
+6. **Apply Changes:**
+   - Select **Save** at the top of the page.
 
 ---
 
@@ -52,6 +56,9 @@ Perform a manual test to ensure the CSS and HTML are rendering correctly.
 3.  **Verify Results:**
     - A new browser tab or window will open.
     - **Success Criteria:** You should see the sign-in page with elements centered (or styled) based on the CSS file linked in your HTML template.
+
+4.  **Clean Up:**
+    - Once changes are tested and validated, clean up the old files in S3 after release.
 
 ---
 
