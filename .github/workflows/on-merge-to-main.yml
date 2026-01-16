@@ -22,7 +22,7 @@ jobs:
       run:
         working-directory: terraform
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.git-reference }}
 
@@ -37,7 +37,7 @@ jobs:
     name: Prettier check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.git-reference }}
 

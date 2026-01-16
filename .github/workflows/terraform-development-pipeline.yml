@@ -1,7 +1,7 @@
 ##
-# TODO: Deploy a specified version to production.  Useful for reverting production to a known good state.
+# TODO: Deploy a specified version to development.  Useful for testing terraform infrastructure.
 ##
-name: Deploy a version of the application
+name: Deploy a specified version to development
 
 permissions:
   contents: read
@@ -11,19 +11,26 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Enter the version of the application to deploy"
+        description: Enter the version of the application to deploy
         required: true
         type: string
 
+      dry-run:
+        description: Toggle true if no infrastructure should be altered (runs `terraform plan` instead of `apply`)
+        required: true
+        default: true
+        type: boolean
+
 jobs:
-  deploy_production:
-    name: Production
+  deploy_development:
+    name: Development
     uses: ./.github/workflows/_reusable-deploy.yml
     with:
-      environment: production
-      terraform_workspace: production
+      environment: development
+      terraform_workspace: dev
       version: ${{ inputs.version }}
       trello_list_id: 6157064b4d7e1b3b1ea839ad
+      dry-run: ${{ inputs.dry-run }}
     secrets:
       alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
       alert_pagerduty_integration_url: ${{ secrets.ALERT_PAGERDUTY_INTEGRATION_URL }}
