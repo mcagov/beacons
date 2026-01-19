@@ -62,6 +62,15 @@ export const givenIHaveSignedIn = (): void => {
   });
 };
 
+export const givenIHaveSignedInAndHideCookieBanner = (): void => {
+  cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
+    log: false,
+  });
+  cy.get("button")
+    .contains(/hide this message/i)
+    .click();
+};
+
 export const givenIHaveNotSignedIn = (): void => {
   cy.clearCookie("next-auth.session-token");
 };
