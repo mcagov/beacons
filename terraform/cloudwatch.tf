@@ -166,8 +166,8 @@ resource "aws_cloudwatch_metric_alarm" "alb_4xx_error_alarm" {
   threshold           = 50
 
   alarm_description = "This alarm triggers when the ALB target group has a high number of 4XX server related errors. The suggested threshold detects when 50 or more 4XX errors occurs over a 10 minute period, trigger the alarm."
-  alarm_actions     = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
-  ok_actions        = var.enable_alerts == true ? [aws_sns_topic.sns_technical_alerts.arn] : []
+  alarm_actions     = []
+  ok_actions        = []
 
   dimensions = {
     LoadBalancer = aws_alb.main.arn_suffix
