@@ -21,6 +21,9 @@ export const theBackLinkContains = (...strings: string[]): void => {
 export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.setCookie("submissionId", v4());
   cy.visit(url);
+  cy.get(".govuk-button")
+    .contains(/hide this message/i)
+    .click();
 };
 
 export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
@@ -60,15 +63,6 @@ export const givenIHaveSignedIn = (): void => {
   cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
     log: false,
   });
-};
-
-export const givenIHaveSignedInAndHideCookieBanner = (): void => {
-  cy.setCookie("next-auth.session-token", Cypress.env("SESSION_TOKEN"), {
-    log: false,
-  });
-  cy.get("button")
-    .contains(/hide this message/i)
-    .click();
 };
 
 export const givenIHaveNotSignedIn = (): void => {

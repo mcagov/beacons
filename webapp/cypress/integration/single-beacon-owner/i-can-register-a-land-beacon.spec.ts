@@ -39,7 +39,7 @@ import {
 } from "../../common/i-can-enter-use-information/land.spec";
 import {
   andIClickContinue,
-  givenIHaveSignedInAndHideCookieBanner,
+  givenIHaveSignedIn,
   iHaveVisited,
   thenTheUrlShouldContain,
   whenIClickBack,
@@ -48,7 +48,7 @@ import {
 
 describe("As a land beacon owner", () => {
   it("I can register my beacon", () => {
-    givenIHaveSignedInAndHideCookieBanner();
+    givenIHaveSignedIn();
     givenIHaveEnteredMyBeaconDetails();
     givenIHaveEnteredMyLandUse();
     iCanSeeMyLandUse();
