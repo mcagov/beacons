@@ -21,6 +21,13 @@ export const theBackLinkContains = (...strings: string[]): void => {
 export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.setCookie("submissionId", v4());
   cy.visit(url);
+};
+
+export const givenIHaveACookieSetIVisitAndHideCookieBanner = (
+  url: string,
+): void => {
+  cy.setCookie("submissionId", v4());
+  cy.visit(url);
   cy.get(".govuk-button")
     .contains(/hide this message/i)
     .click();
