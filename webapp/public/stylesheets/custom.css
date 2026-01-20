@@ -4,3 +4,373 @@
   font-weight: 700;
   line-height: 1.25;
 }
+
+.autocomplete__wrapper {
+  position: relative;
+}
+.autocomplete__hint,
+.autocomplete__input {
+  -webkit-appearance: none;
+  border: 2px solid #0b0c0c;
+  border-radius: 0;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin-bottom: 0;
+  width: 100%;
+}
+.autocomplete__input {
+  background-color: transparent;
+  position: relative;
+}
+.autocomplete__hint {
+  color: #b1b4b6;
+  position: absolute;
+}
+.autocomplete__input--default {
+  padding: 5px;
+}
+.autocomplete__input--focused {
+  outline: 3px solid #fd0;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px;
+}
+.autocomplete__input--show-all-values {
+  padding: 5px 34px 5px 5px;
+  cursor: pointer;
+}
+.autocomplete__dropdown-arrow-down {
+  z-index: -1;
+  display: inline-block;
+  position: absolute;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  top: 10px;
+}
+.autocomplete__menu {
+  background-color: #fff;
+  border: 2px solid #0b0c0c;
+  border-top: 0;
+  color: #0b0c0c;
+  margin: 0;
+  max-height: 342px;
+  overflow-x: hidden;
+  padding: 0;
+  width: calc(100% - 4px);
+}
+.autocomplete__menu--visible {
+  display: block;
+}
+.autocomplete__menu--hidden {
+  display: none;
+}
+.autocomplete__menu--overlay {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.256863);
+  left: 0;
+  position: absolute;
+  top: 100%;
+  z-index: 100;
+}
+.autocomplete__menu--inline {
+  position: relative;
+}
+.autocomplete__option {
+  border-left-width: 0;
+  border-bottom: 1px solid #b1b4b6;
+  border-right-width: 0;
+  border-top-width: 1px;
+  cursor: pointer;
+  display: block;
+  position: relative;
+}
+.autocomplete__option > * {
+  pointer-events: none;
+}
+.autocomplete__option:first-of-type {
+  border-top-width: 0;
+}
+.autocomplete__option:last-of-type {
+  border-bottom-width: 0;
+}
+.autocomplete__option--odd {
+  background-color: #fafafa;
+}
+.autocomplete__option--focused,
+.autocomplete__option:hover {
+  background-color: #1d70b8;
+  border-color: #1d70b8;
+  color: #fff;
+  outline: 0;
+}
+.autocomplete__option--no-results {
+  background-color: #fafafa;
+  color: #646b6f;
+  cursor: not-allowed;
+}
+.autocomplete__hint,
+.autocomplete__input,
+.autocomplete__option {
+  font-size: 16px;
+  line-height: 1.25;
+}
+.autocomplete__hint,
+.autocomplete__option {
+  padding: 5px;
+}
+@media (min-width: 641px) {
+  .autocomplete__hint,
+  .autocomplete__input,
+  .autocomplete__option {
+    font-size: 19px;
+    line-height: 1.31579;
+  }
+}
+.block {
+  display: block !important;
+}
+.hidden {
+  display: none !important;
+}
+.visible {
+  visibility: visible;
+}
+.visually-hidden {
+  visibility: hidden;
+}
+.row-prototype-coordinate-input .govuk-form-group {
+  display: inline-block;
+  margin-bottom: 0;
+}
+@media (min-width: 40.0625em) {
+  .row-prototype-coordinate-input {
+    display: inline-block;
+    margin-right: 1em;
+  }
+}
+.autocomplete__option--focused span,
+.autocomplete__option:hover span {
+  color: #fff;
+}
+.map-display,
+.row-prototype-map-select {
+  height: 400px;
+}
+.leaflet-legend {
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 48.0625em) {
+  .leaflet-legend {
+    display: flex;
+    align-items: center;
+  }
+}
+.leaflet-legend__item {
+  display: flex;
+  align-items: center;
+}
+@media (min-width: 48.0625em) {
+  .leaflet-legend__item {
+    flex: 1;
+  }
+}
+.leaflet-legend__icon {
+  border: 2px solid #b1b4b6;
+  border-radius: 3px;
+}
+.leaflet-legend__description {
+  flex: 1;
+}
+.declaration-wrapper {
+  background-color: #f3f2f1;
+}
+.declaration-wrapper .govuk-checkboxes__label:before {
+  background-color: #fff;
+}
+@media (min-width: 641px) {
+  .check-answers__details-rowgap {
+    margin-top: -30px;
+  }
+}
+.show-on-print {
+  display: none;
+}
+
+#api {
+  font-family:
+    GDS Transport,
+    arial,
+    sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+}
+#api .intro h2,
+#api h1 {
+  font-family:
+    GDS Transport,
+    arial,
+    sans-serif;
+}
+#api .intro h2 {
+  display: block;
+  color: #0b0c0c;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 700;
+}
+#api input {
+  font-family:
+    GDS Transport,
+    arial,
+    sans-serif;
+  font-weight: 400;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 40ex;
+  height: 2.5rem;
+  margin-top: 0;
+  padding: 5px;
+  border: 2px solid #0b0c0c;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+#api input:focus {
+  outline: 3px solid #fd0;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px;
+  border-radius: 0;
+}
+#api label {
+  font-weight: 400;
+  color: #0b0c0c;
+}
+#api #forgotPassword,
+#api label {
+  display: block;
+  margin-bottom: 5px;
+}
+#api .entry {
+  font-family:
+    GDS Transport,
+    arial,
+    sans-serif;
+}
+#api .entry-item {
+  margin-bottom: 20px;
+}
+#api .buttons {
+  margin-top: 10px;
+}
+#api .buttons button {
+  font-family:
+    GDS Transport,
+    arial,
+    sans-serif !important;
+  display: flex;
+  justify-content: center;
+  background-color: #00703c;
+  box-shadow: 0 2px 0 #002d18;
+  text-align: center;
+  color: #fff;
+  font-size: 1.125rem;
+  vertical-align: top;
+  cursor: pointer;
+  margin-bottom: 30px;
+  font-weight: 700;
+  padding: 8px 10px 7px;
+  border: 2px solid transparent;
+  border-radius: 0;
+  width: 100%;
+}
+#api .buttons button:hover:not([aria-disabled="true"]),
+#api .buttons button:link {
+  background-color: #005a30;
+}
+#api .buttons button:active:not([aria-disabled="true"]) {
+  top: 2px;
+}
+#api .buttons button:focus:not([aria-disabled="true"]) {
+  border-color: #fd0;
+  outline: 3px solid transparent;
+  box-shadow: inset 0 0 0 1px #fd0;
+}
+#api,
+.buttons,
+button:focus:not(:active):not(:hover):not([aria-disabled="true"]) {
+  border-color: #fd0;
+  color: #0b0c0c;
+}
+#api .buttons button[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.5;
+}
+#api .buttons button[aria-disabled="true"]:active,
+#api .buttons button[aria-disabled="true"]:focus,
+#api .buttons button[aria-disabled="true"]:hover {
+  outline: none;
+}
+#api .buttons #continue:after,
+#api .buttons #next:after,
+#api .buttons #signIn:after {
+  content: "";
+  background-image: url(https://mca-beacons-b2c-assets.s3.eu-west-2.amazonaws.com/assets-2025-24-11/images/chevron-right.svg);
+  filter: invert(100);
+  width: 18px;
+  height: 19px;
+  margin: 3px 0 3px 0.5rem;
+}
+#api .divider h2 {
+  text-align: center;
+}
+#api .attr ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+#api .attrEntry {
+  margin-bottom: 20px;
+}
+#api #cancel,
+#api .helpLink {
+  display: none;
+}
+@media (min-width: 40.0625em) {
+  #api input,
+  #api label {
+    font-size: 1.1875rem;
+    line-height: 1.31579;
+  }
+  #api .entry-item {
+    margin-bottom: 30px;
+  }
+  #api .buttons button {
+    font-size: 1.5rem;
+    line-height: 1;
+    width: auto;
+  }
+  #api .buttons button.sendNewCode {
+    margin-left: 22px;
+  }
+}
+.error_container h1 {
+  font-family:
+    GDS Transport,
+    arial,
+    sans-serif;
+}
+.error {
+  font-weight: 700;
+  color: #d4351c;
+}
+.error,
+.error p {
+  display: block;
+  font-size: 1.1875rem;
+  line-height: 1.31579;
+  margin-bottom: 15px;
+}
+.error p {
+  font-weight: 700 !important;
+  color: #d4351c !important;
+}
