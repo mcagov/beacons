@@ -15,7 +15,7 @@ This document outlines the steps to configure a User Flow in Azure Active Direct
 Follow these steps to link your custom HTML to the sign-up/sign-in experience.
 
 1. **Create assets in S3:**
-   - Create new resources in a new directory in S3.
+   - Create new resources in a new directory in S3 with Cache-Control set to max-age=3600
    - Ensure new directory has a sensible name for example **assets-2025-24-11** and **stylesheets-2025-24-11**.
 
 2. **Navigate to B2C Service:**

@@ -75,6 +75,11 @@
           const backLink = document.getElementById("back-link");
           backLink.href = signUpSignInPageUrl;
 
+          const emailInput = document.getElementById("email");
+          if (emailInput && !emailInput.hasAttribute("autocomplete")) {
+            emailInput.setAttribute("autocomplete", "username");
+          }
+
           observer.disconnect();
         }
       });
