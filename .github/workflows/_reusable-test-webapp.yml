@@ -100,7 +100,7 @@ jobs:
         run: cp .env.example .env
 
       - name: Run Cypress UI tests
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           working-directory: webapp
           spec: cypress/integration/**/*.spec.ts
