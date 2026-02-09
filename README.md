@@ -41,20 +41,21 @@ unsure.
 
 Before you start...
 
-```bash
-$ make setup # Install all the things, setup commit hooks etc.
-```
-
-| **dependency**                                                    | **version** |
-| ----------------------------------------------------------------- | ----------- |
-| [java](https://openjdk.java.net/projects/jdk/11/)                 | 11.x        |
-| [nvm](https://github.com/nvm-sh/nvm)                              | 0.38        |
-| [terraform](https://www.terraform.io/)                            | 1.0.X       |
-| [Docker desktop](https://www.docker.com/products/docker-desktop/) | Latest      |
-
-```bash
-$ make # Start up the applications in development mode, with backing services
-```
+- Make sure you have the required versions of things installed. We recommend using [asdf](asdf-vm.com) to manage this. See the `.tool-versions` if you want to manage them some other way.
+- Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password.
+- Export all environment variables from "Microsoft Graph Secrets - TEST" from 1Password to your terminal.
+- ```bash
+  $ export MICROSOFT_GRAPH_CLIENT_ID="changeme"
+  $ export MICROSOFT_GRAPH_CLIENT_SECRET="changeme"
+  $ export MICROSOFT_GRAPH_B2C_TENANT_ID="changeme"
+  $ export MICROSOFT_GRAPH_B2C_TENANT_NAME="changeme"
+  ```
+- ```bash
+  $ make setup # Install all the things, setup commit hooks etc.
+  ```
+- ```bash
+  $ make serve # Start up the applications in development mode, with backing services
+  ```
 
 ## Infrastructure-as-code
 

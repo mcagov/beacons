@@ -40,6 +40,7 @@ import { LoadingState } from "components/dataPanel/PanelLoadingState";
 import { AccountHolderSummaryEdit } from "./AccountHolderSummaryEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IAccountHolderSearchResultData } from "entities/IAccountHolderSearchResult";
+import { convertToISODateTime, formatDateTime } from "../../utils/dateTime";
 interface IAccountHolderViewProps {
   accountHolderGateway: IAccountHolderGateway;
   accountHolderId: string;
@@ -284,7 +285,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueSetter: (params): string => params.value.toString(),
+      valueGetter: (params) => convertToISODateTime(params.value),
+      valueFormatter: (params) => formatDateTime(params.value),
       sortComparator: dateSortComparator,
     },
     {
@@ -293,7 +295,8 @@ export const AccountHolderView: FunctionComponent<IAccountHolderViewProps> = ({
       width: 175,
       editable: false,
       type: "date",
-      valueSetter: (params): string => params.value.toString(),
+      valueGetter: (params) => convertToISODateTime(params.value),
+      valueFormatter: (params) => formatDateTime(params.value),
       sortComparator: dateSortComparator,
     },
     {

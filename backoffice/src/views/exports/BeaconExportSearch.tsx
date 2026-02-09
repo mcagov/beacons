@@ -34,9 +34,7 @@ export interface ExportSearchFormProps {
   lastModifiedTo: Date;
 }
 
-export interface IBeaconExportSearchResult {
-  _embedded: { beaconSearch: IBeaconExportResult[] };
-}
+export type IBeaconExportSearchResult = IBeaconExportResult[];
 
 export interface IBeaconExportResult {
   id: string;
@@ -84,6 +82,8 @@ export const BeaconExportSearch: FunctionComponent<
   );
   const [form, setForm] = useState<any>({});
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   const { handleSubmit, reset, control } = useForm();
 
   const onSubmit = async (formData: any) => {
@@ -92,7 +92,10 @@ export const BeaconExportSearch: FunctionComponent<
 
   useEffect(() => {
     const getResponse = async () => {
-      await exportsGateway.searchExportData(form).then(setResult);
+      await exportsGateway.searchExportData(form).then((results) => {
+        setResult(results);
+        setIsLoading(false);
+      });
     };
 
     getResponse().catch(console.error);
@@ -162,7 +165,7 @@ export const BeaconExportSearch: FunctionComponent<
               Clear
             </Button>
           </Box>
-          <ExportBeaconsTable result={result} />
+          <ExportBeaconsTable result={result} loading={isLoading} />
         </Paper>
       </PageContent>
     </div>

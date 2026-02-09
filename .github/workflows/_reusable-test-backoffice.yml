@@ -1,4 +1,4 @@
-name: Test Backoffice
+name: "[reusable] Test Backoffice"
 
 permissions:
   contents: read
@@ -6,6 +6,10 @@ permissions:
 
 on:
   workflow_call:
+    inputs:
+      git-reference:
+        type: string
+        description: "(Optional) branch, tag or commit to test and deploy"
 
 defaults:
   run:
@@ -17,16 +21,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
         with:
-          node-version: "20.19.1"
+          ref: ${{inputs.git-reference}}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24.11.0"
+
       - name: Install npm dependencies
         run: npm ci
+
       - name: Npm linter
         run: npm run lint
+
       - name: Docker lint
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.3.0
         with:
           dockerfile: backoffice/Dockerfile
 
@@ -35,11 +45,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
         with:
-          node-version: "20.19.1"
+          ref: ${{inputs.git-reference}}
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24.11.0"
+
       - name: Install npm dependencies
         run: npm ci
+
       - name: Run unit tests
         run: npm test

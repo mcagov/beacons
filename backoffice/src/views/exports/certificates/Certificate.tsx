@@ -115,11 +115,14 @@ const BeaconSection = ({ beacon }: BeaconExportProps): JSX.Element => {
 const NotesSection: FunctionComponent<BeaconExportProps> = ({
   beacon,
 }): JSX.Element => {
+  const sortedNotes = beacon.notes
+    ?.slice()
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   return (
     <div className="section beacon-notes">
       <span className="title">NOTES: </span>
-      {beacon.notes &&
-        beacon.notes.map((note, index) => (
+      {sortedNotes &&
+        sortedNotes.map((note, index) => (
           <span className="note" key={index}>
             {formatDateTime(note.date)}: {note.note}
           </span>

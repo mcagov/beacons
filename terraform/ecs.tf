@@ -78,6 +78,10 @@ resource "aws_ecs_task_definition" "webapp" {
       {
         name : "GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS",
         value : var.gov_notify_feedback_email_address
+      },
+      {
+        name : "REDIS_DRAFT_REGISTRATION_TTL",
+        value : var.redis_draft_registration_ttl
       }
     ],
     logConfiguration : {
@@ -103,6 +107,10 @@ resource "aws_ecs_task_definition" "webapp" {
       },
       {
         name : "JWT_SECRET",
+        valueFrom : aws_secretsmanager_secret.webapp_next_auth_jwt_secret.arn
+      },
+      {
+        name : "AUTH_SECRET",
         valueFrom : aws_secretsmanager_secret.webapp_next_auth_jwt_secret.arn
       }
     ],

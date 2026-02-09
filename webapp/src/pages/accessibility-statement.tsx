@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React, { FunctionComponent } from "react";
 import { Grid } from "../components/Grid";
 import { Layout } from "../components/Layout";

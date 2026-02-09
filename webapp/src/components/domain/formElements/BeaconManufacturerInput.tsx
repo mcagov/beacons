@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { FormGroup } from "../../Form";
 import { FormInputProps, Input } from "../../Input";
 

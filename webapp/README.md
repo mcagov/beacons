@@ -84,13 +84,17 @@ The UI tests are a part of our CI/CD pipeline.
 - Bring up the: Service, Database and Webapp
 - Cypress needs the `SESSION_TOKEN` environment variable to be set
   - This value is set in env.local
-  - The value is in 1Password - the token has been set to expire in 2031
+  - The value is in 1Password
 - `npm run cypress:open` or `npm run cypress:watch` -- Run Cypress tests in the `cypress/endToEnd` directory with the Test Runner
 - `npm run cypress:e2e` -- Run Cypress tests in the `cypress/endToEnd` directory in the command line
 
 The end-to-end tests are also a part of our CI/CD pipeline
 
 - They require the env vars `SESSION_TOKEN`, `JWT_SECRET` and `WEBAPP_CLIENT_SECRET`
-  - These have been set as Github secrets in the repository
+  - These have been set as GitHub secrets in the repository
 - Currently, the values are the same as the ones used locally (`.env.local`)
-  - They're listed in 1Password in case the local or repo values change
+  - They're listed in 1Password in case the local or repository values change
+
+  #### Testing authentication pages:
+
+- If you are working on authentication pages, look at the [auth documentation here](./public/auth/README.md).

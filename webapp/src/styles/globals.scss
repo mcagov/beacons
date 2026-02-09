@@ -1,6 +1,6 @@
-@import "~@csstools/normalize.css";
+@import "@csstools/normalize.css";
 
-@import "~govuk-frontend/govuk/all";
+@import "govuk-frontend/dist/govuk/all";
 
 body {
   margin: 0;
@@ -18,4 +18,11 @@ body {
 
 .govuk-custom-link {
   @include govuk-font($size: 19);
+}
+
+.app-header-navigation {
+  padding-top: govuk-spacing(4);
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.25;
 }

@@ -1,4 +1,4 @@
-name: Deploy
+name: "[reusable] Deploy"
 
 permissions:
   contents: read
@@ -35,6 +35,9 @@ on:
     secrets:
       alert_email_address:
         description: The email address to which CloudWatch alerts should be sent
+        required: true
+      alert_pagerduty_integration_url:
+        description: The Integration URL to which CloudWatch alerts should be sent for PagerDuty
         required: true
       aws_access_key_id:
         required: true
@@ -111,21 +114,26 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
       TF_WORKSPACE: ${{ inputs.terraform_workspace }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.version }}
+
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.0.0
+
       - name: Terraform init
         run: terraform init
+
       - name: Terraform validate
         run: terraform validate
+
       - name: Terraform deploy
         if: always() # Prevent terraform deploy from being interrupted and causing state lock issues
         env:
           TF_VAR_trello_list_id: ${{ inputs.trello_list_id }}
           TF_VAR_alert_email_address: ${{ secrets.alert_email_address }}
+          TF_VAR_alert_pagerduty_integration_url: ${{ secrets.alert_pagerduty_integration_url }}
           TF_VAR_db_password: ${{ secrets.db_password }}
           TF_VAR_gov_notify_api_key: ${{ secrets.gov_notify_api_key }}
           TF_VAR_webapp_image_tag: ${{ inputs.version }}
@@ -149,4 +157,9 @@ jobs:
           TF_VAR_microsoft_graph_client_secret: ${{ secrets.microsoft_graph_client_secret }}
           TF_VAR_microsoft_graph_b2c_tenant_id: ${{ secrets.microsoft_graph_b2c_tenant_id }}
           TF_VAR_microsoft_graph_b2c_tenant_name: ${{ secrets.microsoft_graph_b2c_tenant_name }}
-        run: terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
+        run: |
+          if [ "${{ inputs.dry-run }}" = "true" ]; then
+            terraform plan -input=false -var-file=${{ inputs.terraform_workspace }}.tfvars
+          else
+            terraform apply -input=false -auto-approve -var-file=${{ inputs.terraform_workspace }}.tfvars
+          fi
