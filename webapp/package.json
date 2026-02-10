@@ -26,7 +26,7 @@
   "dependencies": {
     "@azure/msal-node": "^2.16.2",
     "@types/ioredis": "^4.26.7",
-    "axios": "^1.12.2",
+    "axios": "^1.13.5",
     "cookie": "^1.0.2",
     "google-libphonenumber": "^3.2.32",
     "govuk-frontend": "^5.13.0",
