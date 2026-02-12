@@ -6,7 +6,8 @@ import {
   formatOwners,
   formatUses,
   Placeholders,
-  titleCase, formatForClipboardWithNotes,
+  titleCase,
+  formatForClipboardWithNotes,
 } from "./writingStyle";
 import { INote } from "../entities/INote";
 import { formatDateTime } from "./dateTime";
@@ -246,7 +247,7 @@ describe("formatForClipboard", () => {
       lastServiceDate: formatDateTime("2021-06-11T12:47:14+01:00"),
       firstRegistrationDate: formatDateTime("2004-10-28 00:00:00"),
       createdDate: formatDateTime("2020-08-02T21:33:13"),
-      lastModifiedDate: formatDateTime("2021-08-02T21:33:13")
+      lastModifiedDate: formatDateTime("2021-08-02T21:33:13"),
     };
     const dynamicLegacyBeaconData3 = {
       batteryExpiryDate: formatDateTime("01/2028"),
@@ -269,32 +270,40 @@ describe("formatForClipboard", () => {
 
     expect(formatForClipboard(dynamicLegacyBeaconData1)).toEqual(
       "Battery Expiry Date:    07/08/2020\n" +
-      "Last Service Date:    14/04/2021\n"
+        "Last Service Date:    14/04/2021\n",
     );
     expect(formatForClipboard(dynamicLegacyBeaconData2)).toEqual(
       "Battery Expiry Date:    01/09/2020\n" +
-      "Last Service Date:    11/06/2021\n" +
-      "First Registration Date:    28/10/2004\n" +
-      "Created Date:    02/08/2020\n" +
-      "Last Modified Date:    02/08/2021\n"
+        "Last Service Date:    11/06/2021\n" +
+        "First Registration Date:    28/10/2004\n" +
+        "Created Date:    02/08/2020\n" +
+        "Last Modified Date:    02/08/2021\n",
     );
     expect(formatForClipboard(dynamicLegacyBeaconData3)).toEqual(
-      "Battery Expiry Date:    01/2028\n" +
-      "Last Service Date:    02/2025\n"
+      "Battery Expiry Date:    01/2028\n" + "Last Service Date:    02/2025\n",
     );
-    expect(formatForClipboardWithNotes(dynamicBeaconData1, null as unknown as INote[])).toEqual(
+    expect(
+      formatForClipboardWithNotes(
+        dynamicBeaconData1,
+        null as unknown as INote[],
+      ),
+    ).toEqual(
       "Battery Expiry Date:    01/02/2020\n" +
-      "Last Serviced Date:    01/02/2020\n" +
-      "Registered Date:    08/06/2018\n" +
-      "Last Modified Date:    01/02/2021\n"
+        "Last Serviced Date:    01/02/2020\n" +
+        "Registered Date:    08/06/2018\n" +
+        "Last Modified Date:    01/02/2021\n",
     );
-    expect(formatForClipboardWithNotes(dynamicBeaconData2, null as unknown as INote[])).toEqual(
+    expect(
+      formatForClipboardWithNotes(
+        dynamicBeaconData2,
+        null as unknown as INote[],
+      ),
+    ).toEqual(
       "Battery Expiry Date:    01/02/2020\n" +
-      "Last Serviced Date:    01/02/2020\n" +
-      "Registered Date:    08/06/2018\n" +
-      "Last Modified Date:    01/02/2021\n"
+        "Last Serviced Date:    01/02/2020\n" +
+        "Registered Date:    08/06/2018\n" +
+        "Last Modified Date:    01/02/2021\n",
     );
-
   });
 
   it("Manufacturer Serial Number is in the correct format", () => {
@@ -306,18 +315,24 @@ describe("formatForClipboard", () => {
     };
 
     expect(formatForClipboard(dynamicBeaconData)).toEqual(
-      "Manufacturer Serial Number:    1407312904\n"
+      "Manufacturer Serial Number:    1407312904\n",
     );
-    expect(formatForClipboardWithNotes(dynamicBeaconData, null as unknown as INote[])).toEqual(
-      "Manufacturer Serial Number:    1407312904\n"
-    );
+    expect(
+      formatForClipboardWithNotes(
+        dynamicBeaconData,
+        null as unknown as INote[],
+      ),
+    ).toEqual("Manufacturer Serial Number:    1407312904\n");
 
     expect(formatForClipboard(dynamicBeaconData2)).toEqual(
-      "Manufacturer Serial Number:    17052\n"
+      "Manufacturer Serial Number:    17052\n",
     );
-    expect(formatForClipboardWithNotes(dynamicBeaconData2, null as unknown as INote[])).toEqual(
-      "Manufacturer Serial Number:    17052\n"
-    );
+    expect(
+      formatForClipboardWithNotes(
+        dynamicBeaconData2,
+        null as unknown as INote[],
+      ),
+    ).toEqual("Manufacturer Serial Number:    17052\n");
   });
 
   it("Ids and Versioning are in the correct format", () => {
@@ -332,19 +347,24 @@ describe("formatForClipboard", () => {
 
     expect(formatForClipboard(dynamicLegacyBeaconData)).toEqual(
       "Pk Beacon Id:    6062\n" +
-      "Coding:    14740\n" +
-      "Mti:    304\n" +
-      "Create User Id:    2889\n" +
-      "Update User Id:    2889\n" +
-      "Versioning:    0\n"
+        "Coding:    14740\n" +
+        "Mti:    304\n" +
+        "Create User Id:    2889\n" +
+        "Update User Id:    2889\n" +
+        "Versioning:    0\n",
     );
-    expect(formatForClipboardWithNotes(dynamicLegacyBeaconData, null as unknown as INote[])).toEqual(
+    expect(
+      formatForClipboardWithNotes(
+        dynamicLegacyBeaconData,
+        null as unknown as INote[],
+      ),
+    ).toEqual(
       "Pk Beacon Id:    6062\n" +
-      "Coding:    14740\n" +
-      "Mti:    304\n" +
-      "Create User Id:    2889\n" +
-      "Update User Id:    2889\n" +
-      "Versioning:    0\n"
+        "Coding:    14740\n" +
+        "Mti:    304\n" +
+        "Create User Id:    2889\n" +
+        "Update User Id:    2889\n" +
+        "Versioning:    0\n",
     );
   });
 });

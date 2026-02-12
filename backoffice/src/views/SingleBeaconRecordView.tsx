@@ -124,8 +124,8 @@ export const SingleBeaconRecordView: FunctionComponent<
                 lastServicedDate: formatDateTime(beacon.lastServicedDate),
                 registeredDate: formatDateTime(beacon.registeredDate),
                 lastModifiedDate: formatDateTime(beacon.lastModifiedDate),
-              }
-              return formatForClipboardWithNotes(formattedBeacon, notes)
+              };
+              return formatForClipboardWithNotes(formattedBeacon, notes);
             })()}
             variant="outlined"
           />

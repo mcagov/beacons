@@ -112,14 +112,16 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
           <CopyToClipboardButton
             text={(() => {
               const formattedBeacon: ILegacyBeacon = {
-              ...beacon,
+                ...beacon,
                 batteryExpiryDate: formatDateTime(beacon.batteryExpiryDate),
                 lastServiceDate: formatDateTime(beacon.lastServiceDate),
-                firstRegistrationDate: formatDateTime(beacon.firstRegistrationDate),
+                firstRegistrationDate: formatDateTime(
+                  beacon.firstRegistrationDate,
+                ),
                 lastModifiedDate: formatDateTime(beacon.lastModifiedDate),
                 createdDate: formatDateTime(beacon.createdDate),
-              }
-               return formatForClipboard(formattedBeacon)
+              };
+              return formatForClipboard(formattedBeacon);
             })()}
             variant="outlined"
           />
