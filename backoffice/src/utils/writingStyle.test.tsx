@@ -8,8 +8,9 @@ import {
   Placeholders,
   titleCase,
   formatForClipboardWithNotes,
+  parseNotesData,
 } from "./writingStyle";
-import { INote } from "../entities/INote";
+import { INote, NoteType } from "../entities/INote";
 import { formatDateTime } from "./dateTime";
 
 describe("titleCase()", () => {
@@ -365,6 +366,51 @@ describe("formatForClipboard", () => {
         "Create User Id:    2889\n" +
         "Update User Id:    2889\n" +
         "Versioning:    0\n",
+    );
+  });
+
+  it("export notes is in the correct format", () => {
+    const notes: INote[] = [
+      {
+        id: "id",
+        beaconId: "beaconId",
+        text: "Label Generated",
+        type: NoteType.RECORD_HISTORY,
+        createdDate: "2020-02-06T00:00:00Z",
+        userId: "userId",
+        fullName: "SYSTEM",
+        email: "",
+      },
+      {
+        id: "id",
+        beaconId: "beaconId",
+        text: "Beacon MMSI coded, assuming COSPAS SARSAT Type Approval 1351. Generate labels",
+        type: NoteType.GENERAL,
+        createdDate: "2026-02-06T00:00:00Z",
+        userId: "userId",
+        fullName: "Full Name",
+        email: "example@emailaddress.com",
+      },
+    ];
+
+    expect(formatForClipboard(parseNotesData(notes))).toEqual(
+      "\n" +
+        "=====NOTES=====\n" +
+        "\n" +
+        "-----NOTES (1)-----\n" +
+        "Type Of Note:    RECORD_HISTORY\n" +
+        "Note:    Label Generated\n" +
+        "Noted By:    SYSTEM\n" +
+        "Noted By Email Address:    N/A\n" +
+        "Date:    06/02/2020\n" +
+        ",\n" +
+        "-----NOTES (2)-----\n" +
+        "Type Of Note:    GENERAL\n" +
+        "Note:    Beacon MMSI coded, assuming COSPAS SARSAT Type Approval 1351. Generate labels\n" +
+        "Noted By:    Full Name\n" +
+        "Noted By Email Address:    example@emailaddress.com\n" +
+        "Date:    06/02/2026" +
+        "\n",
     );
   });
 });
