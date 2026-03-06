@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
-import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.note.domain.Note;
-import uk.gov.mca.beacons.api.note.domain.NoteId;
 import uk.gov.mca.beacons.api.note.domain.NoteRepository;
 import uk.gov.mca.beacons.api.note.domain.NoteType;
 import uk.gov.mca.beacons.api.shared.domain.user.User;
@@ -28,23 +26,6 @@ public class NoteService {
 
   public Note create(Note note) {
     return noteRepository.save(note);
-  }
-
-  public Note update(NoteId noteId, Note noteUpdate) {
-    Note existingNote = noteRepository
-      .findById(noteId)
-      .orElseThrow(ResourceNotFoundException::new);
-    existingNote.setText(noteUpdate.getText());
-    existingNote.setType(noteUpdate.getType());
-
-    return noteRepository.save(existingNote);
-  }
-
-  public void delete(NoteId noteId) {
-    if (!noteRepository.existsById(noteId)) {
-      throw new ResourceNotFoundException();
-    }
-    noteRepository.deleteById(noteId);
   }
 
   public List<Note> getByBeaconId(BeaconId beaconId) {

@@ -1,8 +1,7 @@
 package uk.gov.mca.beacons.api.note.rest;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -53,79 +52,6 @@ public class NoteControllerIntegrationTest extends WebIntegrationTest {
       .isCreated()
       .expectBody()
       .json(createNoteResponse);
-  }
-
-  @Test
-  void shouldUpdateExistingNote() throws Exception {
-    String noteId = createNoteAndGetId(beaconId);
-
-    String updateNoteRequest = fixtureHelper.getFixture(
-      "src/test/resources/fixtures/updateNoteRequest.json",
-      fixture ->
-        fixture
-          .replace("replace-with-test-note-id", noteId)
-          .replace("replace-with-test-beacon-id", beaconId)
-    );
-
-    Mockito.when(getUserService.getUser()).thenReturn(user);
-
-    webTestClient
-      .patch()
-      .uri(Endpoints.Note.value + "/" + noteId)
-      .body(BodyInserters.fromValue(updateNoteRequest))
-      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-      .exchange()
-      .expectStatus()
-      .isOk()
-      .expectBody()
-      .jsonPath("$.data.attributes.text")
-      .isEqualTo("That's a great beacon right there which has been updated")
-      .jsonPath("$.data.attributes.type")
-      .isEqualTo("GENERAL");
-  }
-
-  @Test
-  void shouldDeleteExistingNote() throws Exception {
-    String noteId = createNoteAndGetId(beaconId);
-
-    Mockito.when(getUserService.getUser()).thenReturn(user);
-
-    webTestClient
-      .delete()
-      .uri(Endpoints.Note.value + "/" + noteId)
-      .exchange()
-      .expectStatus()
-      .isOk();
-
-    webTestClient
-      .get()
-      .uri(Endpoints.Note.value + "/" + noteId)
-      .exchange()
-      .expectStatus()
-      .isNotFound();
-  }
-
-  private String createNoteAndGetId(String beaconId) throws Exception {
-    String createNoteRequest = getCreateNoteRequest(beaconId);
-    String createNoteResponse = getCreateNoteResponse(beaconId);
-    Mockito.when(getUserService.getUser()).thenReturn(user);
-
-    byte[] responseBody = webTestClient
-      .post()
-      .uri(Endpoints.Note.value)
-      .body(BodyInserters.fromValue(createNoteRequest))
-      .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-      .exchange()
-      .expectStatus()
-      .isCreated()
-      .expectBody()
-      .json(createNoteResponse)
-      .returnResult()
-      .getResponseBody();
-
-    ObjectMapper mapper = new ObjectMapper();
-    JsonNode root = mapper.readTree(responseBody);
-    return root.path("data").path("id").asText();
   }
 
   private String getCreateNoteRequest(String beaconId) throws Exception {
