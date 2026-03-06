@@ -7,7 +7,7 @@
     "relationships": {},
     "attributes": {
       "beaconId": "replace-with-test-beacon-id",
-      "text": "That's a great beacon right there",
+      "text": "That's a great beacon right there which has been updated",
       "type": "GENERAL"
     }
   }

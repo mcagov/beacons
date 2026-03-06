@@ -79,7 +79,7 @@ public class NoteControllerIntegrationTest extends WebIntegrationTest {
       .isOk()
       .expectBody()
       .jsonPath("$.data.attributes.text")
-      .isEqualTo("Updated note text")
+      .isEqualTo("That's a great beacon right there which has been updated")
       .jsonPath("$.data.attributes.type")
       .isEqualTo("GENERAL");
   }
@@ -107,6 +107,7 @@ public class NoteControllerIntegrationTest extends WebIntegrationTest {
 
   private String createNoteAndGetId(String beaconId) throws Exception {
     String createNoteRequest = getCreateNoteRequest(beaconId);
+    String createNoteResponse = getCreateNoteResponse(beaconId);
     Mockito.when(getUserService.getUser()).thenReturn(user);
 
     byte[] responseBody = webTestClient
@@ -118,6 +119,7 @@ public class NoteControllerIntegrationTest extends WebIntegrationTest {
       .expectStatus()
       .isCreated()
       .expectBody()
+      .json(createNoteResponse)
       .returnResult()
       .getResponseBody();
 
