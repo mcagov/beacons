@@ -5,26 +5,35 @@
 #
 ###
 
-# Run jobs in parallel so we can see log output
-MAKEFLAGS += -j
-
 .PHONY: setup
 setup: setup-root setup-backoffice setup-webapp
 
 .PHONY: setup-root
 setup-root:
-	@echo "⏭ Installing root level dependencies and commit hooks..."
-	@cd ./ && npm install
+	@echo "\n==================================================="
+	@echo "Installing root level dependencies and commit hooks\n"
+	cd . && \
+		asdf install && \
+		node --version && \
+		npm install
 
 .PHONY: setup-backoffice
 setup-backoffice:
-	@echo "⏭ Installing backoffice dependencies..."
-	@cd ./backoffice && npm install
+	@echo "\n=================================="
+	@echo "Installing backoffice dependencies\n"
+	cd ./backoffice && \
+		asdf install && \
+		node --version && \
+		npm install
 
 .PHONY: setup-webapp
 setup-webapp:
-	@echo "⏭ Installing webapp dependencies..."
-	@cd ./webapp && npm install
+	@echo "\n=============================="
+	@echo "Installing webapp dependencies\n"
+	cd ./webapp && \
+		asdf install && \
+		node --version && \
+		npm install
 
 ##
 # Applications
