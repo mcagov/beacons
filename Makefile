@@ -39,7 +39,12 @@ setup-webapp:
 # Applications
 ##
 .PHONY: serve
-serve: serve-backing-services serve-webapp serve-backoffice serve-backoffice-stubs
+serve:
+	@docker compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service --build & \
+	(cd ./webapp && npm run dev) & \
+	(cd ./backoffice && npm run start) & \
+	node ./backoffice/stubs.js & \
+	wait
 
 .PHONY: serve-webapp
 serve-webapp:
