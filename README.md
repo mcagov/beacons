@@ -41,24 +41,29 @@ unsure.
 
 Before you start...
 
-- Make sure you have the required versions of things installed. We recommend using [asdf](asdf-vm.com) to manage this. See the `.tool-versions` if you want to manage them some other way.
+- Make sure you have the required versions of things installed.
+  - We recommend using [asdf](asdf-vm.com) to manage this.
+  - See the `.tool-versions` if you want to manage them some other way.
 - Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password.
 - Get the Microsoft Graph secrets into your environment variables from "Microsoft Graph Secrets - TEST" from 1Password to your terminal.
   - We recommend using [direnv](https://direnv.net/) to manage this.
   - ```bash
     # Add the following to a .envrc file in the root of the repository and populate the values with what's in "Microsoft Graph Secrets - TEST" in 1Password
-
     export MICROSOFT_GRAPH_CLIENT_ID="<from_1Password>"
     export MICROSOFT_GRAPH_CLIENT_SECRET="<from_1Password>"
     export MICROSOFT_GRAPH_B2C_TENANT_ID="<from_1Password>"
     export MICROSOFT_GRAPH_B2C_TENANT_NAME="<from_1Password>"
     ```
-- ```bash
-  $ make setup # Install all the things, setup commit hooks etc.
-  ```
-- ```bash
-  $ make serve # Start up the applications in development mode, with backing services
-  ```
+- Install all the things, setup commit hooks etc.
+  - ```bash
+    # From the root of this repository
+    make setup
+    ```
+- Start up the applications in development mode, with backing services
+  - ```bash
+    # From the root of this repository
+    make serve
+    ```
 
 ## Infrastructure-as-code
 
