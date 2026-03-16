@@ -9,20 +9,9 @@ This is a Spring Boot API to enable:
 - Search and rescue [Mission Control Centres](<https://en.wikipedia.org/wiki/Mission_control_centre_(Cospas-Sarsat)>) to
   retrieve information about beacons during distress signal activations
 
-## Dependencies
-
-The following dependencies are required to build and test the application.
-
-| Dependency                                               | Version |
-| -------------------------------------------------------- | ------- |
-| [Java](https://adoptopenjdk.net/)                        | 17      |
-| [Docker](https://www.docker.com/products/docker-desktop) | Latest  |
-
-Gradle is the build tool for the application. See
-the [docs](https://docs.gradle.org/current/userguide/gradle_wrapper.html#sec:upgrading_wrapper) for updating the Gradle
-Wrapper.
-
 ## Local development
+
+Follow [the instructions in the root README to get started](../README.md#local-development).
 
 ### Configuration
 
@@ -31,7 +20,7 @@ Wrapper.
 
 ### Run the backing services
 
-You will need these running before you try to run the API.
+You will need these running before you try to run the API or continue down from here if you want to work on the API in isolation.
 
 ```shell
 # From the repository root

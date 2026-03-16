@@ -1,3 +1,4 @@
+# Todo: Is this just duplication? We already have this in the root docker-compose.yml.
 version: "3.8"
 
 services:
