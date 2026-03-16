@@ -33,51 +33,6 @@ export class NotesGateway implements INotesGateway {
     }
   }
 
-  public async updateNote(
-    noteId: string,
-    note: Partial<INote>,
-  ): Promise<INote> {
-    try {
-      const response = await this._makePatchRequest(`/note/${noteId}`, note);
-      return this._mapNoteResponseToNote(response.data);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  public async deleteNote(noteId: string): Promise<void> {
-    try {
-      await this._makeDeleteRequest(`/note/${noteId}`);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  private async _makePatchRequest(
-    path: string,
-    note: Partial<INote>,
-  ): Promise<AxiosResponse> {
-    const accessToken = await this._authGateway.getAccessToken();
-
-    return await axios.patch(
-      `${applicationConfig.apiUrl}${path}`,
-      this._mapNoteToNoteRequest(note), // We reuse the existing mapper
-      {
-        timeout: applicationConfig.apiTimeoutMs,
-        headers: { Authorization: `Bearer ${accessToken}` },
-      },
-    );
-  }
-
-  private async _makeDeleteRequest(path: string): Promise<AxiosResponse> {
-    const accessToken = await this._authGateway.getAccessToken();
-
-    return await axios.delete(`${applicationConfig.apiUrl}${path}`, {
-      timeout: applicationConfig.apiTimeoutMs,
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-  }
-
   private async _makeGetRequest(path: string): Promise<AxiosResponse> {
     const accessToken = await this._authGateway.getAccessToken();
 
