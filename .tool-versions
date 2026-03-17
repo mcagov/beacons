@@ -2,3 +2,6 @@
 
 java adoptopenjdk-17.0.15+6
 nodejs 20.19.1
+# Todo: This is the first version that supports macOS + arm. Aside from it obviously being a bit behind the times, we should update the pipelines to match.
+# https://madetech-team-b91dpvs1.atlassian.net/browse/MCA-228
+terraform 1.1.0

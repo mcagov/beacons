@@ -1,7 +1,6 @@
 package uk.gov.mca.beacons.api.note.rest;
 
 import java.util.UUID;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
