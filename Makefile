@@ -38,13 +38,13 @@ setup-webapp:
 ##
 # Applications
 ##
+
+# We are using --jobs so that all jobs run in parallel
+# Without this flag, the first job hogs the terminal and the others don't run
+MAKEFLAGS += --jobs
+
 .PHONY: serve
-serve:
-	@docker compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service --build & \
-	(cd ./webapp && npm run dev) & \
-	(cd ./backoffice && npm run start) & \
-	node ./backoffice/stubs.js & \
-	wait
+serve: serve-backing-services serve-webapp serve-backoffice serve-backoffice-stubs	
 
 .PHONY: serve-webapp
 serve-webapp:
