@@ -44,7 +44,7 @@ setup-webapp:
 MAKEFLAGS += --jobs
 
 .PHONY: serve
-serve: serve-backing-services serve-webapp serve-backoffice serve-backoffice-stubs	
+serve: serve-backing-services serve-webapp serve-backoffice serve-backoffice-stubs
 
 .PHONY: serve-webapp
 serve-webapp:
