@@ -8,7 +8,7 @@ export default defineConfig({
   base: "/backoffice",
   plugins: [react(), svgr(), tsconfigPaths()],
   server: {
-    open: true,
+    open: false,
     port: 3001,
     proxy: {
       "/backoffice/client-id": "http://localhost:3005",
