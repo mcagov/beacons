@@ -5,8 +5,12 @@
 #
 ###
 
+MAKEFLAGS += -j
+
 .PHONY: setup
 setup: setup-root setup-backoffice setup-webapp
+	brew install asdf
+	asdf plugin add nodejs
 
 .PHONY: setup-root
 setup-root:
