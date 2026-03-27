@@ -15,5 +15,6 @@ export class BeaconsPageRouter implements PageRouter {
         return await rule.action();
       }
     }
+    return { props: {} };
   }
 }
