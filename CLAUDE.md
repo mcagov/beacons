@@ -173,3 +173,8 @@ Infrastructure is managed via Terraform in `/terraform/`.
 ## ADRs
 
 Architectural Decision Records are in `docs/adr/`. Run `npm run adr` from root to regenerate the ADR log.
+
+## Ways of working
+
+- Always use tests, if we ask for help with a bug, start with a failing test, even if you have to write it.
+- When fixing bugs, always try for the smallest, lowest impact change that will fix the bug.
