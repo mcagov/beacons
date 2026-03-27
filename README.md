@@ -44,7 +44,7 @@ Before you start...
 - Make sure you have the required versions of things installed.
   - Install [asdf](asdf-vm.com), or 'brew install asdf' which will automatically manage this.
   - See the `.tool-versions` if you want to manage them some other way.
-- Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password.
+- Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password. Please ensure you click "Edit" in 1Password before copying the config.
 - Get the Microsoft Graph secrets into your environment variables from "Microsoft Graph Secrets - TEST" from 1Password to your terminal.
   - We recommend using [direnv](https://direnv.net/) to manage this.
   - Save the `.envrc.example` file in the root of the repository as `.envrc` and populate the values with what's in "Microsoft Graph Secrets - TEST" in 1Password
