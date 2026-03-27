@@ -145,7 +145,7 @@ describe("AdditionalBeaconUse page", () => {
 
       const result = await getServerSideProps(context as any);
 
-      expect(result).toBeUndefined();
+      expect(result).toEqual({ props: {} });
     });
   });
 });

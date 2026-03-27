@@ -2,3 +2,4 @@
 
 java adoptopenjdk-17.0.15+6
 nodejs 20.19.1
+terraform 1.1.0
