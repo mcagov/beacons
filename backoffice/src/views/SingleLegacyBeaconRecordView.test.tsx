@@ -48,9 +48,9 @@ describe("SingleLegacyBeaconRecordView", () => {
     );
 
     await waitFor(() => {
-      expect(legacyBeaconsGatewayDouble.getLegacyBeacon).not.toHaveBeenCalledWith(
-        undefined,
-      );
+      expect(
+        legacyBeaconsGatewayDouble.getLegacyBeacon,
+      ).not.toHaveBeenCalledWith(undefined);
     });
   });
 });

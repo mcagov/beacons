@@ -35,9 +35,7 @@ describe("BeaconsPageRouter", () => {
   });
 
   it("returns a valid object when no rules match, preventing the Next.js getServerSideProps error", async () => {
-    const result = await new BeaconsPageRouter([
-      neverMatchingRule(),
-    ]).execute();
+    const result = await new BeaconsPageRouter([neverMatchingRule()]).execute();
 
     expect(result).toBeDefined();
     expect(result).toEqual(expect.objectContaining({}));

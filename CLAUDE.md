@@ -120,6 +120,7 @@ Users register beacons via **Webapp** → **Spring API** → **Postgres** (prima
 - OpenAPI docs available at `/spring-api/swagger-ui.html` when running
 
 Each domain (registration, beacon, beaconowner, beaconuse, accountholder, emergencycontact) follows this layered structure:
+
 ```
 api/<domain>/
   domain/       # JPA entities and value objects
@@ -134,6 +135,7 @@ Test classes are named `*UnitTest` (JUnit, no Spring context) and `*IntegrationT
 ### Frontend source structure
 
 Both `webapp/src` and `backoffice/src` share a similar layout:
+
 - `gateways/` — API integration layer (all calls to the Spring API go here)
 - `entities/` — TypeScript type definitions
 - `useCases/` — Business logic functions (webapp only)
@@ -150,20 +152,21 @@ Webapp uses `govuk-frontend` (GOV.UK Design System) for UI components.
 
 ### Docker Compose services
 
-| Service | Port | Purpose |
-|---|---|---|
-| postgres | 5432 | Primary database (beacons / beacons_service:password) |
-| opensearch | 9200 | Search engine |
-| opensearch-proxy | 8081 | Authenticated proxy to OpenSearch |
-| opensearch-dashboards | 5601 | OpenSearch UI |
-| redis | 6379 | NextJS session storage |
-| service | 8080 | Spring Boot API |
-| backoffice | 3001 | Backoffice SPA (production build in Docker) |
-| webapp | 3000 | NextJS (production build in Docker) |
+| Service               | Port | Purpose                                               |
+| --------------------- | ---- | ----------------------------------------------------- |
+| postgres              | 5432 | Primary database (beacons / beacons_service:password) |
+| opensearch            | 9200 | Search engine                                         |
+| opensearch-proxy      | 8081 | Authenticated proxy to OpenSearch                     |
+| opensearch-dashboards | 5601 | OpenSearch UI                                         |
+| redis                 | 6379 | NextJS session storage                                |
+| service               | 8080 | Spring Boot API                                       |
+| backoffice            | 3001 | Backoffice SPA (production build in Docker)           |
+| webapp                | 3000 | NextJS (production build in Docker)                   |
 
 ### CI/CD
 
 GitHub Actions workflows in `.github/workflows/`:
+
 - `on-merge-to-main.yml` — build + deploy to dev
 - `on-pre-release.yml` — build versioned images for staging
 - `on-release-published.yml` — deploy to production (requires approval)
