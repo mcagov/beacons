@@ -1,4 +1,5 @@
 import {
+  Button,
   CardHeader,
   Table,
   TableBody,
@@ -36,6 +37,7 @@ export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
               <TableCell>Type of note</TableCell>
               <TableCell>Note</TableCell>
               <TableCell>Noted by</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -45,6 +47,12 @@ export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
                 <TableCell>{titleCase(note.type)}</TableCell>
                 <TableCell>{note.text}</TableCell>
                 <TableCell>{note.fullName}</TableCell>
+                <TableCell>
+                  <Button size="small">Edit</Button>
+                  <Button size="small" color="error">
+                    Delete
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
