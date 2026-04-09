@@ -18,7 +18,8 @@ setup-root:
 	cd . && \
 		asdf install && \
 		node --version && \
-		npm install
+		npm install && \
+		npm run prepare
 
 .PHONY: setup-backoffice
 setup-backoffice:
