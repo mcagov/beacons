@@ -58,6 +58,9 @@ Before you start...
     # From the root of this repository
     make serve
     ```
+  - The application will be available at the following URLs:
+    - Webapp http://localhost:3000
+    - Backoffice http://localhost:3001
 
 ## Infrastructure-as-code
 
