@@ -62,6 +62,8 @@ Before you start...
     - Webapp http://localhost:3000
     - Backoffice http://localhost:3001
 
+Todo: mention running the tests
+
 ## Infrastructure-as-code
 
 The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Beacons

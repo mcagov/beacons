@@ -11,15 +11,28 @@ To run end-to-end tests locally:
 
 - Copy `tests/.env.example` as `tests/.env` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password for the corresponding environment variables.
 
-```sh
-$ docker compose -f docker-compose.e2e.yml up
-$ npm run test:e2e
+```shell
+docker compose -f docker-compose.e2e.yml up
+```
+
+In another terminal window...
+
+```shell
+npm run test:e2e
 ```
 
 ### Occasional Cypress test failures
 
-- Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens. To resolve this, log into local/dev/staging webapp using the test account. Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
-- Copy this value and update the corresponding secret in the GitHub repository.
+Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens.
+
+To resolve this:
+
+- Log into local, dev or staging using the "Test B2C account" from 1Password.
+- Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
+- Copy this value and update the corresponding secret:
+  - `SESSION_TOKEN` in your local `.env` files.
+  - `SESSION_TOKEN` in the "Beacons Webapp Local .env.local config" secure note in 1Password.
+  - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in the GitHub repository.
 
 ## Smoke testing
 
