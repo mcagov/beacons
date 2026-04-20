@@ -24,13 +24,22 @@ It comprises three applications:
    - The SPA is served by Spring Boot.
    - Application specific documentation is in the [README](./backoffice/README.md).
 
+## Documentation available
+
+We have the Beacons Runbook in Google Drive.
+
+In this repository you can find:
+
+- [The main README](./README.md)
+- ??????
+
 ## Testing
 
 Application specific tests are covered in the READMEs linked to above.
 
 If you are working towards a release, look at the [end-to-end and smoke test documentation](./tests/README.md).
 
-Known issues and resolution for Unit, Integration and End-to-end testing are documented in the [tests README.md file](./tests/README.md).
+Known issues and resolutions for Unit, Integration and End-to-end testing are documented in the [tests README.md file](./tests/README.md).
 
 ## Architecture
 
