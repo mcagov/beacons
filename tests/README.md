@@ -34,6 +34,15 @@ To resolve this:
   - `SESSION_TOKEN` in the "Beacons Webapp Local .env.local config" secure note in 1Password.
   - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in the GitHub repository.
 
+## Integration testing
+
+As part of our integration tests, a test user "test@test.com" is created in the Azure TEST tenancy. As a part of these tests, this user should be automatically deleted.
+In the event that the test user is not deleted, the integration tests can fail:
+
+- "Another object with the same value for property proxyAddresses already exists."
+
+In order to remediate this failure, the "test@test.com" user will need to be deleted from the test tenancy. The tests should then succeed.
+
 ## Smoke testing
 
 The smoke tests are currently manual. We are looking to automate these.
