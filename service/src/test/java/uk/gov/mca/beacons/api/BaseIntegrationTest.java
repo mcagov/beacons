@@ -37,7 +37,7 @@ public abstract class BaseIntegrationTest {
   }
 
   static final PostgreSQLContainer<?> POSTGRE_SQL_CONTAINER =
-    new PostgreSQLContainer<>(DockerImageName.parse("postgres:12"))
+    new PostgreSQLContainer<>(DockerImageName.parse("postgres:17"))
       .withDatabaseName("beacons")
       .withUsername("beacons_service")
       .withPassword("password");
