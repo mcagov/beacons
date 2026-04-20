@@ -116,7 +116,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   public void whenUpdatingAccountHolder_ShouldPublishEvent() throws Exception {
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(UUID.randomUUID().toString());
-    accountHolder.setEmail("test@test.com");
+    accountHolder.setEmail(UUID.randomUUID() + "@mt-test.com");
     accountHolder.setFullName("Wrong Name");
     accountHolder.setAuthId(createdAzAdUser.getUserId().toString());
 
