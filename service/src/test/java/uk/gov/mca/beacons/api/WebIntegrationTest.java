@@ -245,7 +245,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
   protected void pollJobStatusUntilFinished(String endpoint)
     throws InterruptedException {
-    int maxRetries = 10;
+    int maxRetries = 60;
 
     for (int i = 0; i < maxRetries; i++) {
       String status = JsonPath.read(
@@ -264,12 +264,12 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
       if (status.equals("COMPLETED")) break;
 
-      TimeUnit.SECONDS.sleep(1);
+      TimeUnit.MILLISECONDS.sleep(250);
     }
   }
 
   protected void pollUntil2xx(String endpoint) throws InterruptedException {
-    int maxRetries = 10;
+    int maxRetries = 60;
 
     for (int i = 0; i < maxRetries; i++) {
       int statusCode = webTestClient
@@ -282,7 +282,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
       if (statusCode >= 200 && statusCode < 300) break;
 
-      TimeUnit.SECONDS.sleep(1);
+      TimeUnit.MILLISECONDS.sleep(250);
     }
   }
 

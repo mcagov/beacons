@@ -37,7 +37,7 @@ public abstract class BaseIntegrationTest {
   }
 
   static final PostgreSQLContainer<?> POSTGRE_SQL_CONTAINER =
-    new PostgreSQLContainer<>(DockerImageName.parse("postgres:12"))
+    new PostgreSQLContainer<>(DockerImageName.parse("postgres:17"))
       .withDatabaseName("beacons")
       .withUsername("beacons_service")
       .withPassword("password");
@@ -116,7 +116,7 @@ public abstract class BaseIntegrationTest {
   public void cleanElasticSearch() throws Exception {
     Request request = new Request(
       "POST",
-      "/beacon_search/_delete_by_query?conflicts=proceed"
+      "/beacon_search/_delete_by_query?conflicts=proceed&refresh=true"
     );
     request.setJsonEntity("{\"query\":{\"match_all\":{}}}");
     restClient.performRequest(request);
