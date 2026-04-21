@@ -196,7 +196,10 @@ public class MicrosoftGraphClient {
   }
 
   private boolean isNotFound(GraphServiceException e) {
-    return e.getResponseCode() == 404 ||
-      (e.getMessage() != null && e.getMessage().contains("Request_ResourceNotFound"));
+    return (
+      e.getResponseCode() == 404 ||
+      (e.getMessage() != null &&
+        e.getMessage().contains("Request_ResourceNotFound"))
+    );
   }
 }

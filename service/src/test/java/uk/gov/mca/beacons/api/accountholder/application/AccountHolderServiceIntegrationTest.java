@@ -187,7 +187,10 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
         break;
       }
     }
-    assertTrue(userDeleted, "Azure AD user was not deleted within expected time");
+    assertTrue(
+      userDeleted,
+      "Azure AD user was not deleted within expected time"
+    );
 
     createdAzAdUser = null;
   }
