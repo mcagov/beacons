@@ -264,7 +264,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
       if (status.equals("COMPLETED")) break;
 
-      TimeUnit.SECONDS.sleep(1);
+      TimeUnit.MILLISECONDS.sleep(250);
     }
   }
 
@@ -282,7 +282,7 @@ public abstract class WebIntegrationTest extends BaseIntegrationTest {
 
       if (statusCode >= 200 && statusCode < 300) break;
 
-      TimeUnit.SECONDS.sleep(1);
+      TimeUnit.MILLISECONDS.sleep(250);
     }
   }
 
