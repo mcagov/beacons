@@ -81,7 +81,16 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @AfterEach
   public void tearDownAzureAdUser() {
     if (createdAzAdUser != null) {
-      graphService.deleteUser(createdAzAdUser.getUserId().toString());
+      try {
+        graphService.deleteUser(createdAzAdUser.getUserId().toString());
+      } catch (GraphServiceException e) {
+        System.err.println(
+          "WARNING: Failed to clean up Azure AD user " +
+          createdAzAdUser.getUserId() +
+          " after test — manual cleanup may be required. Cause: " +
+          e.getMessage()
+        );
+      }
     }
   }
 
