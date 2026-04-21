@@ -78,6 +78,10 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     createdAzAdUser = (AzureAdAccountHolder) graphService.createAzureAdUser(
       azAdUser
     );
+
+    try {
+      graphService.getUser(createdAzAdUser.getUserId().toString());
+    } catch (Exception ignored) {}
   }
 
   @AfterEach
