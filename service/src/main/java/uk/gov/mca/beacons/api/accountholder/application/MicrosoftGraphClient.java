@@ -153,7 +153,7 @@ public class MicrosoftGraphClient {
           .email(azAdUser.mail)
           .build();
       } catch (GraphServiceException e) {
-        if (e.getResponseCode() == 404 && attempt < maxAttempts - 1) {
+        if (isNotFound(e) && attempt < maxAttempts - 1) {
           try {
             Thread.sleep(500L * (attempt + 1));
           } catch (InterruptedException ie) {
@@ -173,11 +173,30 @@ public class MicrosoftGraphClient {
   }
 
   public void deleteUser(String id) {
-    try {
-      graphClient.users(id).buildRequest().delete();
-    } catch (Exception error) {
-      log.error(error.getMessage());
-      throw error;
+    int maxAttempts = 5;
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        graphClient.users(id).buildRequest().delete();
+        return;
+      } catch (GraphServiceException e) {
+        if (isNotFound(e) && attempt < maxAttempts - 1) {
+          try {
+            Thread.sleep(500L * (attempt + 1));
+          } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            log.error(e.getMessage());
+            throw e;
+          }
+        } else {
+          log.error(e.getMessage());
+          throw e;
+        }
+      }
     }
+  }
+
+  private boolean isNotFound(GraphServiceException e) {
+    return e.getResponseCode() == 404 ||
+      (e.getMessage() != null && e.getMessage().contains("Request_ResourceNotFound"));
   }
 }

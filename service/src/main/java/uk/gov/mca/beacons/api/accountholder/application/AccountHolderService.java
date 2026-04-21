@@ -57,7 +57,16 @@ public class AccountHolderService {
 
   public AccountHolder create(AccountHolder accountHolder) {
     accountHolder.registerCreatedEvent();
-    return accountHolderRepository.save(accountHolder);
+    AccountHolder saved = accountHolderRepository.save(accountHolder);
+    awaitAzureAdUserPropagation(accountHolder.getAuthId());
+    return saved;
+  }
+
+  private void awaitAzureAdUserPropagation(String authId) {
+    if (authId == null) return;
+    try {
+      graphService.getUser(authId);
+    } catch (Exception ignored) {}
   }
 
   public Optional<AccountHolder> getAccountHolder(AccountHolderId id) {
