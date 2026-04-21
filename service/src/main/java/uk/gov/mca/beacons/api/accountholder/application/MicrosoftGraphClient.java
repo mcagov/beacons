@@ -143,7 +143,7 @@ public class MicrosoftGraphClient {
   }
 
   public AzureAdAccountHolder getUser(String id) throws GetAzAdUserError {
-    // We have retries here because Microsoft Active Directory is eventually consistent, and we want to give a recently created user a chance to take a moment to properly exist
+    // We have retries here because Microsoft Active Directory is eventually consistent, and we want to give a recently created user a chance to actually exist
     int maxAttempts = 5;
     for (int attempt = 0; attempt < maxAttempts; attempt++) {
       try {

@@ -1,7 +1,6 @@
 package uk.gov.mca.beacons.api.accountholder.application;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -80,7 +79,14 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
     try {
       graphService.getUser(createdAzAdUser.getUserId().toString());
-    } catch (Exception ignored) {}
+    } catch (Exception e) {
+      System.err.println(
+        "WARNING: Failed to create Azure AD user " +
+        createdAzAdUser.getUserId() +
+        " Cause: " +
+        e.getMessage()
+      );
+    }
   }
 
   @AfterEach
