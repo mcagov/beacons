@@ -63,8 +63,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
   private AzureAdAccountHolder createdAzAdUser;
 
-  @BeforeEach
-  public void setUpAzureAdUser() {
+  private void createAzureAdUser() {
     PasswordProfile passwordProfile = new PasswordProfile();
     passwordProfile.password = UUID.randomUUID().toString();
     AzureAdAccountHolder azAdUser = AzureAdAccountHolder.builder()
@@ -96,6 +95,8 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
           " after test — manual cleanup may be required. Cause: " +
           e.getMessage()
         );
+      } finally {
+        createdAzAdUser = null;
       }
     }
   }
@@ -129,6 +130,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
   @Test
   public void whenUpdatingAccountHolder_ShouldPublishEvent() throws Exception {
+    createAzureAdUser();
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(UUID.randomUUID().toString());
     accountHolder.setEmail(UUID.randomUUID() + "@mt-test.com");
@@ -164,6 +166,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenDeletingAccountHolderWithoutBeacons_ShouldSucceed()
     throws Exception {
+    createAzureAdUser();
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(createdAzAdUser.getUserId().toString());
     accountHolder.setEmail(UUID.randomUUID() + "@mt-test.com");
@@ -198,6 +201,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenDeletingAccountHolderWithBeacons_ShouldThrowException()
     throws Exception {
+    createAzureAdUser();
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(createdAzAdUser.getUserId().toString());
     accountHolder.setEmail(UUID.randomUUID() + "@mt-test.com");
