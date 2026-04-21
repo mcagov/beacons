@@ -143,6 +143,7 @@ public class MicrosoftGraphClient {
   }
 
   public AzureAdAccountHolder getUser(String id) throws GetAzAdUserError {
+    // We have retries here because Microsoft Active Directory is eventually consistent, and we want to give a recently created user a chance to take a moment to properly exist
     int maxAttempts = 5;
     for (int attempt = 0; attempt < maxAttempts; attempt++) {
       try {
@@ -173,6 +174,7 @@ public class MicrosoftGraphClient {
   }
 
   public void deleteUser(String id) {
+    // We have retries here because Microsoft Active Directory is eventually consistent, and we want to be sure the user is deleted before we return
     int maxAttempts = 5;
     for (int attempt = 0; attempt < maxAttempts; attempt++) {
       try {
