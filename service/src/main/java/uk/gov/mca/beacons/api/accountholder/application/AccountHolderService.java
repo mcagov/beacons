@@ -206,7 +206,6 @@ public class AccountHolderService {
         ),
         e
       );
-      throw e;
     }
 
     accountHolderRepository.deleteById(accountHolderId);
