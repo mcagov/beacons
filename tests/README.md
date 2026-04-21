@@ -5,30 +5,45 @@ the Beacons system, see the `../webapp/`, `../service/` and `../backoffice/` dir
 
 ## End-to-end testing
 
-Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in GitHub Actions against the publish images before deploying to the `dev` and `staging` environments.
+Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in GitHub Actions against the published images before deploying to the `dev` and `staging` environments.
 
 To run end-to-end tests locally:
 
 - Copy `tests/.env.example` as `tests/.env` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password for the corresponding environment variables.
 
-```sh
-$ docker compose -f docker-compose.e2e.yml up
-$ npm run test:e2e
+```shell
+docker compose -f docker-compose.e2e.yml up
+```
+
+In another terminal window...
+
+```shell
+npm run test:e2e
 ```
 
 ### Occasional Cypress test failures
 
-- Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens. To resolve this, log into local/dev/staging webapp using the test account. Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
-- Copy this value and update the corresponding secret in the GitHub repository.
+Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens.
+
+To resolve this:
+
+- Log into local, dev or staging using the "Test B2C account" from 1Password.
+- Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
+- Copy this value and update the corresponding secret:
+  - `SESSION_TOKEN` in your local `.env` files.
+  - `SESSION_TOKEN` in the "Beacons Webapp Local .env.local config" secure note in 1Password.
+  - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in the GitHub Actions secrets.
 
 ## Integration testing
+
+Todo: Does this belong in Service?
 
 As part of our integration tests, a test user "test@test.com" is created in the Azure TEST tenancy. As a part of these tests, this user should be automatically deleted.
 In the event that the test user is not deleted, the integration tests can fail:
 
 - "Another object with the same value for property proxyAddresses already exists."
 
-In order to remediate this failure, the "test@test.com" user will need to be deleted from the test tenancy. The tests should then succeed.
+In order to remediate this failure, the "test@test.com" user will need to be deleted from the test B2C tenant in Azure. The tests should then succeed.
 
 ## Smoke testing
 
