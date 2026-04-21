@@ -7,14 +7,6 @@ import { IOwner } from "../entities/IOwner";
 import { Activities, IUse } from "../entities/IUse";
 import { formatDateTime } from "./dateTime";
 
-export const isDate = (dateString: string | null) => {
-  return (
-    !!dateString &&
-    (/^(\d{2}\/\d{2}\/\d{4}|\d{2}\/\d{4})$/.test(dateString) ||
-      !isNaN(new Date(dateString).getTime()))
-  );
-};
-
 export enum WritingStyle {
   KeyValueSeparator = ":",
 }
@@ -125,7 +117,7 @@ export function parseNotesData(notes: INote[]): Record<string, any> {
       note: note.text,
       notedBy: note.fullName,
       notedByEmailAddress: note.email,
-      date: note.createdDate,
+      date: formatDateTime(note.createdDate),
     })),
   };
 }
@@ -159,8 +151,6 @@ export function formatForClipboard(entity: Record<any, any>): string {
         ).toUpperCase()}=====\n${formatForClipboard(value)}`;
       } else if (typeof value === "boolean") {
         return `${_.startCase(key)}:    ${value ? "Yes" : "No"}\n`;
-      } else if (isDate(value)) {
-        return `${_.startCase(key)}:    ${formatDateTime(value)}\n`;
       } else if (!_.isNumber(value) && _.isEmpty(value)) {
         return `${_.startCase(key)}:    N/A\n`;
       } else {
