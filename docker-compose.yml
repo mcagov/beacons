@@ -10,7 +10,7 @@ version: "3.9"
 
 services:
   postgres:
-    image: library/postgres:12
+    image: library/postgres:17
     environment:
       POSTGRES_USER: beacons_service
       POSTGRES_PASSWORD: password
