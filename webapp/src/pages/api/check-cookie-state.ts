@@ -2,7 +2,7 @@ import { SerializeOptions, serialize } from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 import { acceptRejectCookieId } from "../../lib/types";
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+const cookieState = (req: NextApiRequest, res: NextApiResponse): void => {
   const cookies: Record<string, string> = req.cookies;
   const oneYearFromNow: Date = new Date();
   oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
@@ -23,3 +23,5 @@ export default (req: NextApiRequest, res: NextApiResponse): void => {
 
   res.redirect(303, req.headers.referer);
 };
+
+export default cookieState;

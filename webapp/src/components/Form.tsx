@@ -1,4 +1,9 @@
-import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
+import React, {
+  FunctionComponent,
+  PropsWithChildren,
+  ReactNode,
+  type JSX,
+} from "react";
 import { HttpMethod } from "../lib/types";
 import { FieldErrorList } from "./ErrorSummary";
 

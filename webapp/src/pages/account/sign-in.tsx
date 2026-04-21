@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import { signIn } from "next-auth/react";
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, type JSX } from "react";
 import { AccountPageURLs } from "../../lib/urls";
 
 interface SignInPageProps {

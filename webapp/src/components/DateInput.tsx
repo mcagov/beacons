@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent, ReactNode, type JSX } from "react";
 import { FormGroup, FormHint, FormLabel } from "./Form";
 
 interface DateListInputProps {

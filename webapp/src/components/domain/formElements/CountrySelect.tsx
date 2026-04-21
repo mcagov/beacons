@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type JSX } from "react";
 import { Select, SelectOption } from "../../Select";
 import countriesJson from "../../../lib/countries/countries.json";
 

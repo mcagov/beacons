@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React, { FunctionComponent } from "react";
 
 export const Footer: FunctionComponent = () => (
@@ -32,23 +33,23 @@ export const Footer: FunctionComponent = () => (
             <h2 className="govuk-visually-hidden">Support links</h2>
             <ul className="govuk-footer__inline-list">
               <li className="govuk-footer__inline-list-item">
-                <a className="govuk-footer__link" href="/help/cookies">
+                <Link className="govuk-footer__link" href="/help/cookies">
                   Cookies
-                </a>
+                </Link>
               </li>
               <li className="govuk-footer__inline-list-item">
-                <a
+                <Link
                   className="govuk-footer__link"
                   href="/accessibility-statement"
                 >
                   Accessibility
-                </a>
+                </Link>
               </li>
               <li className="govuk-footer__inline-list-item">
                 Built by the&nbsp;
-                <a className="govuk-footer__link" href="/help/cookies">
+                <Link className="govuk-footer__link" href="/help/cookies">
                   Government Digital Service
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -69,13 +70,13 @@ export const Footer: FunctionComponent = () => (
           </svg>
           <span className="govuk-footer__licence-description">
             All content is available under the &nbsp;
-            <a
+            <Link
               className="govuk-footer__link"
               href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
               rel="license"
             >
               Open Government Licence v3.0
-            </a>
+            </Link>
             , except where otherwise stated
           </span>
         </div>

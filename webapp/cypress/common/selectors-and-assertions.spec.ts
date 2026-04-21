@@ -23,6 +23,16 @@ export const givenIHaveACookieSetAndIVisit = (url: string): void => {
   cy.visit(url);
 };
 
+export const givenIHaveACookieSetIVisitAndHideCookieBanner = (
+  url: string,
+): void => {
+  cy.setCookie("submissionId", v4());
+  cy.visit(url);
+  cy.get(".govuk-button")
+    .contains(/hide this message/i)
+    .click();
+};
+
 export const ifIAmAskedForAccountHolderDetailsIProvideThem = (): void => {
   cy.get("h1").then(($heading) => {
     if ($heading.text().includes("Do you live in the United Kingdom?")) {

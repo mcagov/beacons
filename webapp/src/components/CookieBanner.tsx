@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { Button, ButtonGroup } from "./Button";
 import { Form } from "./Form";
 import { Grid } from "./Grid";

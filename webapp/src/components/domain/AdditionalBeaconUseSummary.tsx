@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { BeaconUse } from "../../entities/BeaconUse";
 import { DraftBeaconUse } from "../../entities/DraftBeaconUse";
 import { ordinal, prettyUseName, sentenceCase } from "../../lib/writingStyle";

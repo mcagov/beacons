@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.beaconsearch.rest;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -203,7 +205,9 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
       final var accountHolderId = createAccountHolder(testAuthId);
 
       createBeacon(request ->
-        request.replace("account-holder-id-placeholder", accountHolderId)
+        request
+          .replace("account-holder-id-placeholder", accountHolderId)
+          .replace("vessel-name-placeholder", "HMS Victory")
       );
 
       webTestClient
@@ -216,6 +220,103 @@ class BeaconSearchControllerIntegrationTest extends WebIntegrationTest {
             )
             .queryParam("email", "")
             .queryParam("accountHolderId", accountHolderId)
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("length()")
+        .isEqualTo(1)
+        .jsonPath("[0].accountHolderId")
+        .isEqualTo(accountHolderId)
+        .jsonPath("[0].ownerEmail")
+        .isEqualTo("nelson@royalnavy.mod.uk")
+        .jsonPath("[0].mainUseName")
+        .isEqualTo("HMS Victory");
+    }
+
+    @Test
+    void shouldFindAllAndResolveMainUseName_WithoutException()
+      throws Exception {
+      String testAuthId = UUID.randomUUID().toString();
+      final var accountHolderId = createAccountHolder(testAuthId);
+
+      createBeacon(request ->
+        request
+          .replace("account-holder-id-placeholder", accountHolderId)
+          .replace("vessel-name-placeholder", "Vessel Name")
+          .replace("registration-mark-placeholder", "")
+      );
+
+      createBeacon(request ->
+        request
+          .replace("account-holder-id-placeholder", accountHolderId)
+          .replace("vessel-name-placeholder", "")
+          .replace("registration-mark-placeholder", "Registration Mark")
+      );
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(
+              Endpoints.BeaconSearch.value +
+              "/find-all-by-account-holder-and-email"
+            )
+            .queryParam("email", "")
+            .queryParam("accountHolderId", accountHolderId)
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("length()")
+        .isEqualTo(2)
+        .jsonPath("[0].accountHolderId")
+        .isEqualTo(accountHolderId)
+        .jsonPath("$..mainUseName")
+        .value(containsInAnyOrder("Vessel Name", "Registration Mark"));
+    }
+  }
+
+  @Nested
+  class GetBeaconSearchResultsForFullExport {
+
+    @Test
+    void shouldReturnAllBeaconsWhenNoFiltersAreProvided() throws Exception {
+      final String accountHolderId = seedAccountHolder();
+      final var randomHexId = UUID.randomUUID().toString();
+      createBeacon(randomHexId, accountHolderId);
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(Endpoints.BeaconSearch.value + "/full-export-search")
+            .build()
+        )
+        .exchange()
+        .expectStatus()
+        .isOk()
+        .expectBody()
+        .jsonPath("length()")
+        .isEqualTo(1);
+    }
+
+    @Test
+    void shouldFindTheBeaconWhenFiltersAreProvided() throws Exception {
+      final String accountHolderId = seedAccountHolder();
+      final var randomHexId = UUID.randomUUID().toString();
+      createBeacon(randomHexId, accountHolderId);
+
+      webTestClient
+        .get()
+        .uri(uriBuilder ->
+          uriBuilder
+            .path(Endpoints.BeaconSearch.value + "/full-export-search")
+            .queryParam("name", "Nelson")
             .build()
         )
         .exchange()

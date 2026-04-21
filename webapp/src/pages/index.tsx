@@ -1,5 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import Aside from "../components/Aside";
 import { StartButton } from "../components/Button";
 import { Grid } from "../components/Grid";

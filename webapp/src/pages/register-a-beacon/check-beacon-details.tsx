@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { BeaconsForm, BeaconsFormHeading } from "../../components/BeaconsForm";
 import { BeaconManufacturerInput } from "../../components/domain/formElements/BeaconManufacturerInput";
 import { BeaconModelInput } from "../../components/domain/formElements/BeaconModelInput";
@@ -18,7 +18,7 @@ import { AccountPageURLs, CreateRegistrationPageURLs } from "../../lib/urls";
 import { toUpperCase } from "../../lib/writingStyle";
 import { DraftRegistrationFormMapper } from "../../presenters/DraftRegistrationFormMapper";
 import { BeaconsPageRouter } from "../../router/BeaconsPageRouter";
-import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage";
+import { GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToRegistryAccountPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToRegistryAccountPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenShowErrors";
 import { GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserSubmitsValidForm_ThenSaveAndGoToNextPage";
 import { GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm } from "../../router/rules/GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm";
@@ -119,7 +119,7 @@ export const getServerSideProps: GetServerSideProps = withContainer(
     return withAdditionalProps(
       new BeaconsPageRouter([
         new WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError(context),
-        new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToStartPage(
+        new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToRegistryAccountPage(
           context,
         ),
         new GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm(

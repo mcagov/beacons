@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { AccountPageURLs } from "../../lib/urls";
 import { LinkButton } from "../Button";
 

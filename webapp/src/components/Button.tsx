@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent, ReactNode, type JSX } from "react";
 
 interface ButtonGroupProps {
   children: ReactNode;

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { FunctionComponent, ReactNode, type JSX } from "react";
 import { FormError } from "../lib/form/FormManager";
 import { BackButton, Button } from "./Button";
 import { FormErrorSummary } from "./ErrorSummary";

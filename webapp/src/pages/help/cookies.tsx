@@ -1,5 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, type JSX } from "react";
 import { Grid } from "../../components/Grid";
 import { Layout } from "../../components/Layout";
 import {

@@ -2,6 +2,7 @@ package uk.gov.mca.beacons.api.beaconsearch.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,18 +75,48 @@ public class BeaconSearchController {
   @Operation(
     summary = "Find all beacons for an account holder or by migrated email"
   )
-  public ResponseEntity<
-    List<BeaconSearchEntity>
-  > findAllByAccountHolderIdAndEmail(
+  public ResponseEntity<List<BeaconSearchDTO>> findAllByAccountHolderIdAndEmail(
     @RequestParam(required = false, defaultValue = "") String email,
     @RequestParam(required = false, defaultValue = "") UUID accountHolderId,
     Sort sort
   ) {
-    List<BeaconSearchEntity> results =
+    List<BeaconSearchDTO> results =
       beaconSpecificationSearchService.findAllByAccountHolderIdAndEmail(
         email,
         accountHolderId,
         sort
+      );
+    return ResponseEntity.ok(results);
+  }
+
+  @GetMapping("/full-export-search")
+  @Operation(summary = "Find all beacons matching export criteria")
+  public ResponseEntity<List<BeaconSearchEntity>> findAllBeaconsForFullExport(
+    @RequestParam(required = false, defaultValue = "") String name,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime registrationFrom,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime registrationTo,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime lastModifiedFrom,
+    @RequestParam(required = false) @DateTimeFormat(
+      iso = DateTimeFormat.ISO.DATE_TIME,
+      fallbackPatterns = { "yyyy-MM-dd" }
+    ) OffsetDateTime lastModifiedTo
+  ) {
+    List<BeaconSearchEntity> results =
+      beaconSpecificationSearchService.findAllBeaconsForFullExport(
+        name,
+        registrationFrom,
+        registrationTo,
+        lastModifiedFrom,
+        lastModifiedTo
       );
     return ResponseEntity.ok(results);
   }

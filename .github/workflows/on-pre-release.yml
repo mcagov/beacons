@@ -17,7 +17,7 @@ jobs:
       run:
         working-directory: terraform
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.0.0
@@ -28,10 +28,10 @@ jobs:
     name: Prettier check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: "16.17.0"
+          node-version: "22.17.0"
       - name: Prettier check
         run: |
           npm ci
@@ -41,7 +41,7 @@ jobs:
     name: Test Webapp
     uses: ./.github/workflows/_reusable-test-webapp.yml
     secrets:
-      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN_V4 }}
+      test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
   test_service:
@@ -133,7 +133,7 @@ jobs:
     secrets:
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      test_webapp_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN_V4}}
+      test_webapp_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN}}
       test_webapp_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
       test_webapp_azure_b2c_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_CLIENT_SECRET }}
       test_webapp_azure_ad_client_secret: ${{ secrets.TEST_WEBAPP_AZURE_AD_CLIENT_SECRET }}
@@ -158,6 +158,7 @@ jobs:
       trello_list_id: 6157064b4d7e1b3b1ea839ad
     secrets:
       alert_email_address: ${{ secrets.ALERT_EMAIL_ADDRESS }}
+      alert_pagerduty_integration_url: ${{ secrets.ALERT_PAGERDUTY_INTEGRATION_URL }}
       aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       db_password: ${{ secrets.DB_PASSWORD }}

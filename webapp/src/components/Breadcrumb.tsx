@@ -1,5 +1,10 @@
 import Link from "next/link";
-import React, { FunctionComponent, PropsWithChildren, ReactNode } from "react";
+import React, {
+  FunctionComponent,
+  PropsWithChildren,
+  ReactNode,
+  type JSX,
+} from "react";
 
 interface BreadcrumbListItemProps {
   children: ReactNode;

@@ -7,48 +7,13 @@ The frontend application for the Beacons Registration service enables:
 - [406Mhz beacon](https://www.gov.uk/maritime-safety-weather-and-navigation/register-406-mhz-beacons) owners to register their details with the Maritime & Coastguard Agency
 - Search and rescue [Mission Control Centres](<https://en.wikipedia.org/wiki/Mission_control_centre_(Cospas-Sarsat)>) to retrieve information about beacons during distress signal activations
 
-This directory contains the frontend application of the service. It is built using [NextJS](https://nextjs.org/) and
-based on the [GOV.UK Design System](https://design-system.service.gov.uk/).
+This directory contains the frontend application of the service. It is built using [NextJS](https://nextjs.org/) and based on the [GOV.UK Design System](https://design-system.service.gov.uk/).
 
 This application depends on the [Beacons Registration API](https://github.com/mcagov/beacons-service).
 
-## Getting started
+## Local development
 
-### Dependencies
-
-To develop locally, you'll need:
-
-- [Node.JS](https://nodejs.org/en/)
-- [Docker](https://www.docker.com/)
-
-#### Environment variables
-
-Included in the repo is a `.env.example` file containing non-secret environment variables. This file should be copied
-to `.env.local` on first pull and augmented with the secrets contained in 1Password.
-
-### Running the application
-
-First, install dependencies:
-
-```bash
-npm install
-```
-
-Then, start the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-### Running in Docker
-
-To run the application in a production-like environment:
-
-```bash
-docker-compose up --force-recreate
-```
+Follow [the instructions in the root README to get started](../README.md#local-development).
 
 ## Testing
 
@@ -84,13 +49,17 @@ The UI tests are a part of our CI/CD pipeline.
 - Bring up the: Service, Database and Webapp
 - Cypress needs the `SESSION_TOKEN` environment variable to be set
   - This value is set in env.local
-  - The value is in 1Password - the token has been set to expire in 2031
+  - The value is in 1Password
 - `npm run cypress:open` or `npm run cypress:watch` -- Run Cypress tests in the `cypress/endToEnd` directory with the Test Runner
 - `npm run cypress:e2e` -- Run Cypress tests in the `cypress/endToEnd` directory in the command line
 
 The end-to-end tests are also a part of our CI/CD pipeline
 
 - They require the env vars `SESSION_TOKEN`, `JWT_SECRET` and `WEBAPP_CLIENT_SECRET`
-  - These have been set as Github secrets in the repository
+  - These have been set as GitHub secrets in the repository
 - Currently, the values are the same as the ones used locally (`.env.local`)
   - They're listed in 1Password in case the local or repository values change
+
+  #### Testing authentication pages:
+
+- If you are working on authentication pages, look at the [auth documentation here](./public/auth/README.md).

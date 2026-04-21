@@ -109,7 +109,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
             otherCommunication: use.otherCommunication || "",
             otherCommunicationValue: use.otherCommunicationValue || "",
             maxCapacity: use.maxCapacity || "",
-            vesselName: use.vesselName || "",
+            vesselName: use.vesselName,
             portLetterNumber: use.portLetterNumber || "",
             homeport: use.homeport || "",
             areaOfOperation: use.areaOfOperation || "",

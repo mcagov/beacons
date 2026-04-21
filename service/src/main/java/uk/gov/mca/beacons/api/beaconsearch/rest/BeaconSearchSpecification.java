@@ -1,5 +1,6 @@
 package uk.gov.mca.beacons.api.beaconsearch.rest;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -42,6 +43,12 @@ public class BeaconSearchSpecification {
 
   public static @Nullable Specification<
     BeaconSearchEntity
+  > hasAccountHolderName(String accountHolderName) {
+    return hasFuzzySearchCriteria(accountHolderName, "accountHolderName");
+  }
+
+  public static @Nullable Specification<
+    BeaconSearchEntity
   > hasCospasSarsatNumber(String cospasSarsatNumber) {
     return hasFuzzySearchCriteria(cospasSarsatNumber, "cospasSarsatNumber");
   }
@@ -58,24 +65,55 @@ public class BeaconSearchSpecification {
   public static @Nullable Specification<
     BeaconSearchEntity
   > hasEmailOrRecoveryEmail(String email) {
-    return (root, query, cb) ->
-      cb.and(
+    if (StringUtils.hasText(email)) {
+      return (root, query, cb) ->
         cb.or(
           cb.equal(root.get("ownerEmail"), email),
           cb.equal(root.get("legacyBeaconRecoveryEmail"), email)
-        ),
-        cb.equal(root.get("beaconStatus"), "MIGRATED")
-      );
+        );
+    }
+    return null;
   }
 
-  public static @Nullable Specification<BeaconSearchEntity> hasAccountHolder(
+  public static Specification<BeaconSearchEntity> hasMigratedStatus() {
+    return (root, query, cb) -> cb.equal(root.get("beaconStatus"), "MIGRATED");
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasAccountHolderId(
     UUID accountHolderId
   ) {
+    if (accountHolderId != null) {
+      return (root, query, cb) ->
+        cb.equal(root.get("accountHolderId"), accountHolderId);
+    }
+    return null;
+  }
+
+  public static Specification<BeaconSearchEntity> hasNewOrChangeStatus() {
     return (root, query, cb) ->
-      cb.and(
-        cb.equal(root.get("accountHolderId"), accountHolderId),
-        root.get("beaconStatus").in(Arrays.asList("NEW", "CHANGE"))
-      );
+      root.get("beaconStatus").in(Arrays.asList("NEW", "CHANGE"));
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasDateOnAfter(
+    OffsetDateTime dateTime,
+    String criteriaName
+  ) {
+    if (dateTime != null) {
+      return (root, query, cb) ->
+        hasDateGreaterThanOrEqualTo(cb, root.get(criteriaName), dateTime);
+    }
+    return null;
+  }
+
+  public static @Nullable Specification<BeaconSearchEntity> hasDateOnBefore(
+    OffsetDateTime dateTime,
+    String criteriaName
+  ) {
+    if (dateTime != null) {
+      return (root, query, cb) ->
+        hasDateLessThanOrEqualTo(cb, root.get(criteriaName), dateTime);
+    }
+    return null;
   }
 
   private static @Nullable Specification<
@@ -97,5 +135,21 @@ public class BeaconSearchSpecification {
       cb.lower(cb.coalesce(expression, "")),
       "%" + pattern.toLowerCase() + "%"
     );
+  }
+
+  private static Predicate hasDateGreaterThanOrEqualTo(
+    @NotNull CriteriaBuilder cb,
+    Expression<OffsetDateTime> expression,
+    @NotNull OffsetDateTime pattern
+  ) {
+    return cb.greaterThanOrEqualTo(expression, pattern);
+  }
+
+  private static Predicate hasDateLessThanOrEqualTo(
+    @NotNull CriteriaBuilder cb,
+    Expression<OffsetDateTime> expression,
+    @NotNull OffsetDateTime pattern
+  ) {
+    return cb.lessThanOrEqualTo(expression, pattern);
   }
 }
