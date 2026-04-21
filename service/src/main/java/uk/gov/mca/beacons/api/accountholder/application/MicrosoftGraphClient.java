@@ -143,18 +143,33 @@ public class MicrosoftGraphClient {
   }
 
   public AzureAdAccountHolder getUser(String id) throws GetAzAdUserError {
-    try {
-      User azAdUser = graphClient.users(id).buildRequest().get();
-
-      return AzureAdAccountHolder.builder()
-        .azureAdUserId(UUID.fromString(azAdUser.id))
-        .displayName(azAdUser.displayName)
-        .email(azAdUser.mail)
-        .build();
-    } catch (GetAzAdUserError error) {
-      log.error(error.getMessage());
-      throw error;
+    int maxAttempts = 5;
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        User azAdUser = graphClient.users(id).buildRequest().get();
+        return AzureAdAccountHolder.builder()
+          .azureAdUserId(UUID.fromString(azAdUser.id))
+          .displayName(azAdUser.displayName)
+          .email(azAdUser.mail)
+          .build();
+      } catch (GraphServiceException e) {
+        if (e.getResponseCode() == 404 && attempt < maxAttempts - 1) {
+          try {
+            Thread.sleep(500L * (attempt + 1));
+          } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw e;
+          }
+        } else {
+          log.error(e.getMessage());
+          throw e;
+        }
+      } catch (GetAzAdUserError error) {
+        log.error(error.getMessage());
+        throw error;
+      }
     }
+    throw new GetAzAdUserError("User " + id + " not found after retries", null);
   }
 
   public void deleteUser(String id) {
