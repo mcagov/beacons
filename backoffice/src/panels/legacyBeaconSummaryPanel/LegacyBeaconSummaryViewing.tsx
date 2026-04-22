@@ -3,6 +3,7 @@ import { ILegacyBeacon } from "entities/ILegacyBeacon";
 import { FunctionComponent } from "react";
 import { formatLegacyOwners, formatLegacyUses } from "utils/writingStyle";
 import { PanelViewingState } from "../../components/dataPanel/PanelViewingState";
+import { formatDateTime } from "../../utils/dateTime";
 
 export const LegacyBeaconSummaryViewing: FunctionComponent<{
   legacyBeacon: ILegacyBeacon;
@@ -50,11 +51,11 @@ export const LegacyBeaconSummaryViewing: FunctionComponent<{
     },
     {
       key: "Battery expiry date",
-      value: legacyBeacon?.batteryExpiryDate,
+      value: formatDateTime(legacyBeacon?.batteryExpiryDate),
     },
     {
       key: "Last serviced date",
-      value: legacyBeacon?.lastServiceDate,
+      value: formatDateTime(legacyBeacon?.lastServiceDate),
     },
     {
       key: "First registration date",

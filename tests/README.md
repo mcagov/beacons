@@ -9,15 +9,26 @@ Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in
 
 To run end-to-end tests locally:
 
+- Copy `tests/.env.example` as `tests/.env` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password for the corresponding environment variables.
+
 ```sh
 $ docker compose -f docker-compose.e2e.yml up
 $ npm run test:e2e
 ```
 
-### Occasional Failures
+### Occasional Cypress test failures
 
 - Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens. To resolve this, log into local/dev/staging webapp using the test account. Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
 - Copy this value and update the corresponding secret in the GitHub repository.
+
+## Integration testing
+
+As part of our integration tests, a test user "test@test.com" is created in the Azure TEST tenancy. As a part of these tests, this user should be automatically deleted.
+In the event that the test user is not deleted, the integration tests can fail:
+
+- "Another object with the same value for property proxyAddresses already exists."
+
+In order to remediate this failure, the "test@test.com" user will need to be deleted from the test tenancy. The tests should then succeed.
 
 ## Smoke testing
 

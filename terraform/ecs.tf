@@ -78,6 +78,10 @@ resource "aws_ecs_task_definition" "webapp" {
       {
         name : "GOV_NOTIFY_FEEDBACK_EMAIL_ADDRESS",
         value : var.gov_notify_feedback_email_address
+      },
+      {
+        name : "REDIS_DRAFT_REGISTRATION_TTL",
+        value : var.redis_draft_registration_ttl
       }
     ],
     logConfiguration : {

@@ -43,3 +43,4 @@ opensearch_instance_count               = 2
 opensearch_ebs_volume_size              = 10
 ssl_certificate_arn                     = "arn:aws:acm:eu-west-2:232705206979:certificate/92ae8cc4-6c93-40a7-93e5-6977df2bb705"
 load_balancer_idle_time                 = 120
+redis_draft_registration_ttl            = 2592000

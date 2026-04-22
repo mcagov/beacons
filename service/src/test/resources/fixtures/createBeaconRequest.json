@@ -42,7 +42,7 @@
       "aircraftManufacturer": "Boeing",
       "principalAirport": "Bristol",
       "secondaryAirport": "Belfast",
-      "registrationMark": "1",
+      "registrationMark": "registration-mark-placeholder",
       "hexAddress": "123456",
       "cnOrMsnNumber": "cn",
       "dongle": "true",

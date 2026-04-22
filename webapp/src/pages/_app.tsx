@@ -10,9 +10,11 @@ const BeaconRegistrationApp: FunctionComponent<AppProps> = ({
   pageProps,
 }: AppProps<{ session: Session }>): JSX.Element => {
   useEffect(() => {
-    document.body.className = document.body.className
-      ? document.body.className + " js-enabled"
-      : "js-enabled";
+    document.body.className +=
+      " js-enabled" +
+      ("noModule" in HTMLScriptElement.prototype
+        ? " govuk-frontend-supported"
+        : "");
     // TODO investigate alternative syntax to avoid linter catching require()
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     const GOVUKFrontend = require("govuk-frontend");
@@ -40,7 +42,7 @@ const GovUKMetadata: FunctionComponent = () => (
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta charSet="utf-8" />
-    <meta name="theme-color" content="#0b0c0c" />
+    <meta name="theme-color" content="#1d70b8" />
 
     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
 

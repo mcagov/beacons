@@ -28,12 +28,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{inputs.git-reference}}
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "22.17.0"
       - name: Install npm dependencies
@@ -45,7 +45,7 @@ jobs:
         run: npm run lint
 
       - name: Docker linting
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.3.0
         with:
           dockerfile: webapp/Dockerfile
 
@@ -53,11 +53,11 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{inputs.git-reference}}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "22.17.0"
       - name: Install npm dependencies
@@ -83,12 +83,12 @@ jobs:
       NEXTAUTH_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{inputs.git-reference}}
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "22.17.0"
       - name: Install npm dependencies
@@ -100,7 +100,7 @@ jobs:
         run: cp .env.example .env
 
       - name: Run Cypress UI tests
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           working-directory: webapp
           spec: cypress/integration/**/*.spec.ts
@@ -109,7 +109,7 @@ jobs:
           build: npm run build
           wait-on: "http://localhost:3000"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: cypress-screenshots

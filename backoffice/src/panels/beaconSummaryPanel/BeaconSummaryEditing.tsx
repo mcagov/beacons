@@ -12,7 +12,7 @@ import { Field, Form, Formik, FormikHelpers } from "formik";
 import React, { FunctionComponent } from "react";
 import { PanelViewingState } from "../../components/dataPanel/PanelViewingState";
 import { TabulatedRow } from "../../components/dataPanel/TabulatedRow";
-import { BeaconTypes, IBeacon } from "../../entities/IBeacon";
+import { IBeacon } from "../../entities/IBeacon";
 import manufacturerModelJson from "../../lib/manufacturerModel/manufacturerModel.json";
 import mtiJson from "../../lib/mti/mtis.json";
 import protocolJson from "../../lib/protocol/protocols.json";
@@ -24,6 +24,7 @@ import {
   WritingStyle,
 } from "../../utils/writingStyle";
 import { TabulatedRowEditField } from "views/TabulatedRowEditField";
+import { BEACON_TYPES } from "../../entities/BeaconType";
 
 export const BeaconSummaryEditing: FunctionComponent<{
   beacon: IBeacon;
@@ -139,17 +140,20 @@ export const BeaconSummaryEditing: FunctionComponent<{
                         </label>
                       }
                       value={
-                        <Field as="select" name="beaconType">
+                        <Field
+                          id="beaconType"
+                          as="select"
+                          name="beaconType"
+                          style={{ minWidth: 330 }}
+                        >
                           <option value="">{Placeholders.NoData}</option>
-                          {Object.values(BeaconTypes).map(
-                            (beaconType: string, index) => {
-                              return (
-                                <option key={index} value={beaconType}>
-                                  {beaconType}
-                                </option>
-                              );
-                            },
-                          )}
+                          {BEACON_TYPES.map((beaconType: string, index) => {
+                            return (
+                              <option key={index} value={beaconType}>
+                                {beaconType}
+                              </option>
+                            );
+                          })}
                         </Field>
                       }
                     />

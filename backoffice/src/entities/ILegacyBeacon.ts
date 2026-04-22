@@ -1,4 +1,4 @@
-import { BeaconStatuses, BeaconTypes } from "./IBeacon";
+import { BeaconStatuses } from "./IBeacon";
 
 export interface ILegacyBeacon {
   id: string;
@@ -10,7 +10,7 @@ export interface ILegacyBeacon {
   model: string;
   manufacturerSerialNumber: string;
   serialNumber: number;
-  beaconType: BeaconTypes;
+  beaconType: string;
   coding: string;
   protocol: string;
   csta: string;

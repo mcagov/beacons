@@ -5,6 +5,7 @@ import { FieldValueTypes } from "../components/dataPanel/FieldValue";
 import { IEmergencyContact } from "../entities/IEmergencyContact";
 import { IOwner } from "../entities/IOwner";
 import { Activities, IUse } from "../entities/IUse";
+import { formatDateTime } from "./dateTime";
 
 export enum WritingStyle {
   KeyValueSeparator = ":",
@@ -116,7 +117,7 @@ export function parseNotesData(notes: INote[]): Record<string, any> {
       note: note.text,
       notedBy: note.fullName,
       notedByEmailAddress: note.email,
-      date: note.createdDate,
+      date: formatDateTime(note.createdDate),
     })),
   };
 }

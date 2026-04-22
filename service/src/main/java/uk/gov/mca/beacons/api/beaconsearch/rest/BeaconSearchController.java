@@ -75,14 +75,12 @@ public class BeaconSearchController {
   @Operation(
     summary = "Find all beacons for an account holder or by migrated email"
   )
-  public ResponseEntity<
-    List<BeaconSearchEntity>
-  > findAllByAccountHolderIdAndEmail(
+  public ResponseEntity<List<BeaconSearchDTO>> findAllByAccountHolderIdAndEmail(
     @RequestParam(required = false, defaultValue = "") String email,
     @RequestParam(required = false, defaultValue = "") UUID accountHolderId,
     Sort sort
   ) {
-    List<BeaconSearchEntity> results =
+    List<BeaconSearchDTO> results =
       beaconSpecificationSearchService.findAllByAccountHolderIdAndEmail(
         email,
         accountHolderId,

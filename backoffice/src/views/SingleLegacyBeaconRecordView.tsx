@@ -26,6 +26,7 @@ import { IConfirmDialogueModel } from "components/ConfirmDialogue";
 import { SingleBeaconExportButtons } from "./exports/SingleBeaconExportButtons";
 import { ILegacyBeaconsGateway } from "gateways/legacy-beacons/ILegacyBeaconsGateway";
 import { IBeaconsGateway } from "gateways/beacons/IBeaconsGateway";
+import { formatDateTime } from "../utils/dateTime";
 
 interface ISingleLegacyBeaconRecordViewProps {
   beaconsGateway: IBeaconsGateway;
@@ -109,7 +110,19 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
         Hex ID/UIN: {hexId}{" "}
         <span className={classes.button}>
           <CopyToClipboardButton
-            text={formatForClipboard(beacon)}
+            text={(() => {
+              const formattedBeacon: ILegacyBeacon = {
+                ...beacon,
+                batteryExpiryDate: formatDateTime(beacon.batteryExpiryDate),
+                lastServiceDate: formatDateTime(beacon.lastServiceDate),
+                firstRegistrationDate: formatDateTime(
+                  beacon.firstRegistrationDate,
+                ),
+                lastModifiedDate: formatDateTime(beacon.lastModifiedDate),
+                createdDate: formatDateTime(beacon.createdDate),
+              };
+              return formatForClipboard(formattedBeacon);
+            })()}
             variant="outlined"
           />
         </span>

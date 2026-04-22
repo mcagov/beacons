@@ -1,4 +1,4 @@
-import { BeaconStatuses, BeaconTypes } from "../entities/IBeacon";
+import { BeaconStatuses } from "../entities/IBeacon";
 import { ILegacyBeacon } from "../entities/ILegacyBeacon";
 import { deepFreeze } from "../utils/utils";
 
@@ -11,7 +11,7 @@ export const legacyBeaconFixture = deepFreeze<ILegacyBeacon>({
   departRefId: "1187/02",
   hexId: "9D0E1D1B8C00001",
   manufacturer: "ACR",
-  beaconType: BeaconTypes.Epirb,
+  beaconType: "EPIRB",
   model: "CSTA 107, RLB 32 Cat 2 (Serialised non-TAC)",
   protocol: "None",
   serialNumber: 1763,
