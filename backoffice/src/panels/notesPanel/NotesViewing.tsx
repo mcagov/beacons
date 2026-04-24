@@ -1,4 +1,5 @@
 import {
+  Button,
   CardHeader,
   Table,
   TableBody,
@@ -14,12 +15,16 @@ import { titleCase } from "utils/writingStyle";
 
 interface INotesViewingProps {
   notes: INote[];
+  onEdit?: (note: INote) => void;
+  onDelete?: (noteId: string) => void;
 }
 
 export const noNotesMessage = "No notes associated with this record";
 
 export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
   notes,
+  onEdit,
+  onDelete,
 }: INotesViewingProps): JSX.Element => {
   if (notes.length === 0) {
     return <CardHeader title={noNotesMessage} />;
@@ -36,6 +41,7 @@ export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
               <TableCell>Type of note</TableCell>
               <TableCell>Note</TableCell>
               <TableCell>Noted by</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -45,6 +51,22 @@ export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
                 <TableCell>{titleCase(note.type)}</TableCell>
                 <TableCell>{note.text}</TableCell>
                 <TableCell>{note.fullName}</TableCell>
+                <TableCell>
+                  {onEdit && (
+                    <Button size="small" onClick={() => onEdit(note)}>
+                      Edit
+                    </Button>
+                  )}
+                  {onDelete && (
+                    <Button
+                      size="small"
+                      color="error"
+                      onClick={() => onDelete(note.id)}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

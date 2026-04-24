@@ -25,6 +25,7 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
   const [userState, setUserState] = useState<DataPanelStates>(
     DataPanelStates.Viewing,
   );
+  const [editingNote, setEditingNote] = useState<INote | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -55,7 +56,45 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
     }
   };
 
+  const handleEditSave = async (note: Partial<INote>): Promise<void> => {
+    try {
+      note.beaconId = beaconId;
+      const updated = await notesGateway.updateNote(editingNote!.id, note);
+      setNotes(notes.map((n) => (n.id === updated.id ? updated : n)));
+      setEditingNote(null);
+    } catch (error) {
+      logToServer.error(error);
+      setError(true);
+    }
+  };
+
+  const handleDelete = async (noteId: string): Promise<void> => {
+    try {
+      await notesGateway.deleteNote(noteId);
+      setNotes(notes.filter((n) => n.id !== noteId));
+    } catch (error) {
+      logToServer.error(error);
+      setError(true);
+    }
+  };
+
   const renderState = (state: DataPanelStates) => {
+    if (editingNote) {
+      return (
+        <OnlyVisibleToUsersWith role={"ADD_BEACON_NOTES"}>
+          <NotesEditing
+            title="Edit note"
+            initialValues={{
+              type: editingNote.type as string,
+              text: editingNote.text,
+            }}
+            onSave={handleEditSave}
+            onCancel={() => setEditingNote(null)}
+          />
+        </OnlyVisibleToUsersWith>
+      );
+    }
+
     switch (state) {
       case DataPanelStates.Viewing:
         return (
@@ -63,7 +102,11 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
             <PanelButton onClick={() => setUserState(DataPanelStates.Editing)}>
               Add a new note
             </PanelButton>
-            <NotesViewing notes={notes} />
+            <NotesViewing
+              notes={notes}
+              onEdit={setEditingNote}
+              onDelete={handleDelete}
+            />
           </OnlyVisibleToUsersWith>
         );
       case DataPanelStates.Editing:
