@@ -16,10 +16,24 @@ $ docker compose -f docker-compose.e2e.yml up
 $ npm run test:e2e
 ```
 
-### Occasional Cypress test failures
+### The Cypress end-to-end tests need a valid `SESSION_TOKEN` to run
 
-- Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens. To resolve this, log into local/dev/staging webapp using the test account. Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
-- Copy this value and update the corresponding secret in the GitHub repository.
+If you experience unexpected Cypress test failures with errors like...
+
+```console
+TypeError: Cannot destructure property 'authId' of 'session.body.user' as it is undefined.
+```
+
+...you may well need to update the `SESSION_TOKEN` used by the tests locally and in GitHub Actions.
+
+- Log into local/dev/staging webapp using the "Test B2C account" credentials from 1Password.
+  - Note that any time you use this account, it will create a new session token, so the following steps need carrying out regardless.
+- Locate the session token in your broswer's development tools: Application -> cookies -> __Secure-next-auth.session-token -> value.
+- Copy this value.
+- Update the following with this value:
+  - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in https://github.com/mcagov/beacons/settings/secrets/actions.
+  - `SESSION_TOKEN` in the "Beacons Webapp Local .env.local config" in 1Password.
+- Make sure all the engineers know to update their local `webapp/.env.local` and `tests/.env` files.
 
 ## Integration testing
 
