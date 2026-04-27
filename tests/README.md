@@ -28,7 +28,7 @@ TypeError: Cannot destructure property 'authId' of 'session.body.user' as it is 
 
 - Log into local/dev/staging webapp using the "Test B2C account" credentials from 1Password.
   - Note that any time you use this account, it will create a new session token, so the following steps need carrying out regardless.
-- Locate the session token in your broswer's development tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
+- Locate the session token in your browser's development tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
 - Copy this value.
 - Update the following with this value:
   - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in https://github.com/mcagov/beacons/settings/secrets/actions.
