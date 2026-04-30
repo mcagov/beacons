@@ -269,5 +269,12 @@ describe("NotesGateway", () => {
         "403 Forbidden",
       );
     });
+
+    it("should re-throw if the note does not exist", async () => {
+      mockedAxios.delete.mockRejectedValue(new Error("404 Not Found"));
+      await expect(notesGateway.deleteNote(noteId)).rejects.toThrow(
+        "404 Not Found",
+      );
+    });
   });
 });
