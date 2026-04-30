@@ -1,4 +1,13 @@
-import { Card, CardContent } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { PanelButton } from "../../components/dataPanel/EditPanelButton";
@@ -26,6 +35,8 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
     DataPanelStates.Viewing,
   );
   const [editingNote, setEditingNote] = useState<INote | null>(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -68,14 +79,25 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
     }
   };
 
-  const handleDelete = async (noteId: string): Promise<void> => {
+  const handleDeleteClick = (noteId: string) => {
+    setNoteToDelete(noteId);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
-      await notesGateway.deleteNote(noteId);
-      setNotes(notes.filter((n) => n.id !== noteId));
+      await notesGateway.deleteNote(noteToDelete!);
+      setNotes(notes.filter((n) => n.id !== noteToDelete));
+      setOpenDeleteDialog(false);
     } catch (error) {
       logToServer.error(error);
       setError(true);
+      setOpenDeleteDialog(false);
     }
+  };
+
+  const handleCancelDelete = () => {
+    setOpenDeleteDialog(false);
   };
 
   const renderState = (state: DataPanelStates) => {
@@ -105,7 +127,7 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
             <NotesViewing
               notes={notes}
               onEdit={setEditingNote}
-              onDelete={handleDelete}
+              onDelete={handleDeleteClick}
             />
           </OnlyVisibleToUsersWith>
         );
@@ -130,6 +152,33 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
           {error && <ErrorState message={Placeholders.UnspecifiedError} />}
           {loading && <LoadingState />}
           {error || loading || renderState(userState)}
+          <Dialog
+            open={openDeleteDialog}
+            onClose={handleCancelDelete}
+            maxWidth="sm"
+            fullWidth
+          >
+            <DialogTitle>Confirm Delete</DialogTitle>
+            <DialogContent>
+              <Box>Are you sure you want to delete this note?</Box>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={handleCancelDelete}
+                color="primary"
+                variant="outlined"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleConfirmDelete}
+                color="error"
+                variant="outlined"
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>
       </CardContent>
     </Card>

@@ -113,6 +113,9 @@ describe("NotesPanel", () => {
       name: "Delete",
     });
     await userEvent.click(deleteButtons[0]);
+    await userEvent.click(
+      await screen.findByRole("button", { name: "Delete" }),
+    );
 
     await waitFor(() => {
       expect(notesGateway.deleteNote).toHaveBeenCalledWith(notesFixture[0].id);
@@ -151,6 +154,9 @@ describe("NotesPanel", () => {
       name: "Delete",
     });
     await userEvent.click(deleteButtons[0]);
+    await userEvent.click(
+      await screen.findByRole("button", { name: "Delete" }),
+    );
 
     expect(await screen.findByRole("alert")).toBeVisible();
   });
