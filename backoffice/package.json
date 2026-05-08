@@ -152,7 +152,7 @@
     "lint-staged": "^16.0.0",
     "sass": "^1.54.5",
     "typescript-eslint": "^8.32.1",
-    "vite": "^6.4.1",
+    "vite": "^6.4.2",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4"
   },
