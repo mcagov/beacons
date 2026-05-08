@@ -76,6 +76,42 @@ describe("NotesEditing", () => {
     });
   });
 
+  it("renders 'Edit note' title when title prop is provided", () => {
+    render(
+      <NotesEditing
+        onSave={jest.fn()}
+        onCancel={jest.fn()}
+        title="Edit note"
+      />,
+    );
+
+    expect(screen.getByText("Edit note")).toBeVisible();
+  });
+
+  it("pre-fills the form when initialValues are provided", async () => {
+    render(
+      <NotesEditing
+        onSave={jest.fn()}
+        onCancel={jest.fn()}
+        initialValues={{ type: NoteType.GENERAL, text: "Existing note text" }}
+      />,
+    );
+
+    expect(screen.getByDisplayValue("Existing note text")).toBeVisible();
+  });
+
+  it("enables the save button immediately when initialValues are provided", async () => {
+    render(
+      <NotesEditing
+        onSave={jest.fn()}
+        onCancel={jest.fn()}
+        initialValues={{ type: NoteType.GENERAL, text: "Existing note text" }}
+      />,
+    );
+
+    expect(screen.getByTestId("save")).toBeEnabled();
+  });
+
   it("does not allow user to submit an incomplete note", async () => {
     render(<NotesEditing onSave={jest.fn()} onCancel={jest.fn()} />);
     const noteInputField = screen.getByPlaceholderText("Add a note here");
