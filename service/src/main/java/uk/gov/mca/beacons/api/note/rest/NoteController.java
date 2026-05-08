@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.gov.mca.beacons.api.auth.application.GetUserService;
@@ -13,7 +14,9 @@ import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.dto.WrapperDTO;
 import uk.gov.mca.beacons.api.note.application.NoteService;
 import uk.gov.mca.beacons.api.note.domain.Note;
+import uk.gov.mca.beacons.api.note.domain.NoteId;
 import uk.gov.mca.beacons.api.note.mappers.NoteMapper;
+import uk.gov.mca.beacons.api.note.rest.UpdateNoteDTO;
 import uk.gov.mca.beacons.api.shared.domain.user.User;
 
 @RestController
@@ -56,5 +59,27 @@ public class NoteController {
     BeaconId beaconId = new BeaconId(rawBeaconId);
     List<Note> notes = noteService.getByBeaconId(beaconId);
     return noteMapper.toOrderedWrapperDTO(notes);
+  }
+
+  @PatchMapping("/{noteId}")
+  @PreAuthorize("hasAuthority('APPROLE_ADD_BEACON_NOTES')")
+  public ResponseEntity<WrapperDTO<NoteDTO>> updateNote(
+    @PathVariable("noteId") UUID rawNoteId,
+    @RequestBody @Valid WrapperDTO<UpdateNoteDTO> dto
+  ) {
+    NoteId noteId = new NoteId(rawNoteId);
+    Note noteUpdate = noteMapper.fromDTO(dto.getData());
+    Note updatedNote = noteService.update(noteId, noteUpdate);
+    return ResponseEntity.ok(noteMapper.toWrapperDTO(updatedNote));
+  }
+
+  @DeleteMapping("/{noteId}")
+  @PreAuthorize("hasAuthority('APPROLE_ADD_BEACON_NOTES')")
+  public ResponseEntity<Void> deleteNote(
+    @PathVariable("noteId") UUID rawNoteId
+  ) {
+    NoteId noteId = new NoteId(rawNoteId);
+    noteService.delete(noteId);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
