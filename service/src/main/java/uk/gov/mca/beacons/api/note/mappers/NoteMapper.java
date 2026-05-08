@@ -11,11 +11,21 @@ import uk.gov.mca.beacons.api.dto.WrapperDTO;
 import uk.gov.mca.beacons.api.note.domain.Note;
 import uk.gov.mca.beacons.api.note.rest.CreateNoteDTO;
 import uk.gov.mca.beacons.api.note.rest.NoteDTO;
+import uk.gov.mca.beacons.api.note.rest.UpdateNoteDTO;
 
 @Component("NoteMapperV2")
 public class NoteMapper {
 
   public Note fromDTO(CreateNoteDTO dto) {
+    var attributes = dto.getAttributes();
+    Note note = new Note();
+    note.setBeaconId(new BeaconId(attributes.getBeaconId()));
+    note.setType(attributes.getType());
+    note.setText(attributes.getText());
+    return note;
+  }
+
+  public Note fromDTO(UpdateNoteDTO dto) {
     var attributes = dto.getAttributes();
     Note note = new Note();
     note.setBeaconId(new BeaconId(attributes.getBeaconId()));
