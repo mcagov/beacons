@@ -40,7 +40,7 @@
     "react-dom": "^19.2.3",
     "redis-json": "^6.0.3",
     "urlencoded-body-parser": "^3.0.0",
-    "uuid": "^11.1.0",
+    "uuid": "^14.0.0",
     "winston": "^3.17.0"
   },
   "devDependencies": {
