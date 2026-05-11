@@ -141,7 +141,7 @@ const App: FunctionComponent = () => {
 
   const CertificatesViewWithParam: FunctionComponent = () => {
     const { ids } = useParams<ResourceListParams>();
-    let beaconIds = ids.split(",");
+    const beaconIds = ids.split(",");
     return (
       <CertificatesView exportsGateway={exportsGateway} beaconIds={beaconIds} />
     );
@@ -154,7 +154,7 @@ const App: FunctionComponent = () => {
 
   const LabelsViewWithParam: FunctionComponent = () => {
     const { ids } = useParams<ResourceListParams>();
-    let beaconIds = ids.split(",");
+    const beaconIds = ids.split(",");
     return <LabelsView exportsGateway={exportsGateway} beaconIds={beaconIds} />;
   };
 
@@ -171,7 +171,7 @@ const App: FunctionComponent = () => {
 
   const LettersViewWithParam: FunctionComponent = () => {
     const { ids, lettersType } = useParams<ResourceListParams>();
-    let beaconIds = ids.split(",");
+    const beaconIds = ids.split(",");
     return (
       <LettersView
         exportsGateway={exportsGateway}
