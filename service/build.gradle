@@ -52,7 +52,7 @@ dependencies {
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-cache:3.5.0'
-    implementation 'com.github.ben-manes.caffeine:caffeine:3.0.6'
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.2.2'
     implementation 'com.itextpdf:itext7-core:7.2.3'
 
     implementation 'com.microsoft.graph:microsoft-graph:5.+'
