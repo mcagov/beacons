@@ -28,6 +28,8 @@ describe("Beacon record page", () => {
     notesGatewayDouble = {
       getNotes: jest.fn(),
       createNote: jest.fn(),
+      updateNote: jest.fn(),
+      deleteNote: jest.fn(),
     };
   });
 
