@@ -10,9 +10,9 @@
 
 <!-- How could someone else check this work? Which parts do you want more feedback on? -->
 
-## Link to Trello card
+## Link to Jira ticket
 
-<!-- https://trello.com/b/p2XQo8jN/beacons-beta-private -->
+<!-- https://Jira link here. -->
 
 ## Things to check
 
