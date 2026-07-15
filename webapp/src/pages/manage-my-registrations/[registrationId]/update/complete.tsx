@@ -90,6 +90,9 @@ export const getServerSideProps: GetServerSideProps = withSession(
     const draftRegistration: DraftRegistration =
       await getDraftRegistration(submissionCookieId);
 
+    if (!draftRegistration || !draftRegistration.id)
+      return redirectUserTo(AccountPageURLs.accountHome);
+
     if (!draftRegistration.uses || draftRegistration.uses.length === 0) {
       return redirectUserTo(
         UrlBuilder.buildUseSummaryUrl(Actions.update, draftRegistration.id),
