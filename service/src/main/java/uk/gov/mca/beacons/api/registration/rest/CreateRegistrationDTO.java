@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import java.util.List;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import lombok.*;
 import uk.gov.mca.beacons.api.beacon.rest.CreateBeaconDTO;
 import uk.gov.mca.beacons.api.beaconowner.rest.CreateBeaconOwnerDTO;
@@ -22,6 +23,7 @@ public class CreateRegistrationDTO {
   private CreateBeaconDTO createBeaconDTO;
 
   @Valid
+  @NotEmpty
   @JsonProperty("uses")
   private List<CreateBeaconUseDTO> createBeaconUseDTOs;
 

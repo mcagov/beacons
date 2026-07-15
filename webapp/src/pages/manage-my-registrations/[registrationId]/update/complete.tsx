@@ -16,6 +16,8 @@ import { withSession } from "../../../../lib/middleware/withSession";
 import { redirectUserTo } from "../../../../lib/redirectUserTo";
 import { formSubmissionCookieId } from "../../../../lib/types";
 import { AccountPageURLs } from "../../../../lib/urls";
+import { Actions } from "../../../../lib/URLs/Actions";
+import { UrlBuilder } from "../../../../lib/URLs/UrlBuilder";
 import logger from "../../../../logger";
 import { WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError } from "../../../../router/rules/WhenUserIsNotSignedIn_ThenShowAnUnauthenticatedError";
 
@@ -87,6 +89,12 @@ export const getServerSideProps: GetServerSideProps = withSession(
     const submissionCookieId = context.req.cookies[formSubmissionCookieId];
     const draftRegistration: DraftRegistration =
       await getDraftRegistration(submissionCookieId);
+
+    if (!draftRegistration.uses || draftRegistration.uses.length === 0) {
+      return redirectUserTo(
+        UrlBuilder.buildUseSummaryUrl(Actions.update, draftRegistration.id),
+      );
+    }
 
     try {
       const result = await updateRegistration(

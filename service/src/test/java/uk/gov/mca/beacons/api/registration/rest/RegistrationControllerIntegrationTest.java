@@ -41,6 +41,23 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
         .expectBody()
         .json(registrationBody);
     }
+
+    @Test
+    void shouldRejectRegistrationWithNoUses() throws Exception {
+      final String registrationBody = getRegistrationBody(
+        RegistrationUseCase.NO_USES,
+        accountHolderId
+      );
+
+      webTestClient
+        .post()
+        .uri(Endpoints.Registration.value + "/register")
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(registrationBody)
+        .exchange()
+        .expectStatus()
+        .isBadRequest();
+    }
   }
 
   @Nested
@@ -82,6 +99,23 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
         .isOk()
         .expectBody()
         .json(updateRegistrationBody);
+    }
+
+    @Test
+    void shouldRejectUpdateWithNoUses() throws Exception {
+      final String updateRegistrationBody = getRegistrationBody(
+        RegistrationUseCase.NO_USES,
+        accountHolderId
+      );
+
+      webTestClient
+        .patch()
+        .uri(Endpoints.Registration.value + "/register/" + beaconId)
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(updateRegistrationBody)
+        .exchange()
+        .expectStatus()
+        .isBadRequest();
     }
   }
 
