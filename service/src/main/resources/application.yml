@@ -43,6 +43,7 @@ management:
         include:
           - info
           - health
+          - threaddump
       base-path: /spring-api/actuator
 
 beacons:
