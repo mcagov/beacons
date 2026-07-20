@@ -44,6 +44,7 @@ management:
           - info
           - health
           - threaddump
+          - metrics
       base-path: /spring-api/actuator
 
 beacons:
