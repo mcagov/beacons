@@ -90,6 +90,12 @@ environment. [Environment protection](https://docs.github.com/en/actions/managin
 is applied to the `production` environment such that another member of the development team is prompted to approve
 deployments to production.
 
+### Manual deployment
+
+A specific version tag can also be deployed on demand. The `deploy-staging` and `deploy-production` workflows are
+triggered manually via `workflow_dispatch`, taking the tag to deploy as an input. `deploy-staging` runs the test suite
+before deploying to staging. `deploy-production` deploys the given tag to production.
+
 **Manual scenario testing that must be performed before and after each release is documented in [tests/](./tests).**
 
 ## Architectural Decision Records (ADRs)
