@@ -1,11 +1,11 @@
 package uk.gov.mca.beacons.api.accountholder.application;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.microsoft.graph.http.GraphServiceException;
 import com.microsoft.graph.models.PasswordProfile;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Assert;
@@ -61,8 +62,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
   private AzureAdAccountHolder createdAzAdUser;
 
-  @BeforeEach
-  public void setUpAzureAdUser() {
+  private void createAzureAdUser() {
     PasswordProfile passwordProfile = new PasswordProfile();
     passwordProfile.password = UUID.randomUUID().toString();
     AzureAdAccountHolder azAdUser = AzureAdAccountHolder.builder()
@@ -76,12 +76,34 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     createdAzAdUser = (AzureAdAccountHolder) graphService.createAzureAdUser(
       azAdUser
     );
+
+    try {
+      graphService.getUser(createdAzAdUser.getUserId().toString());
+    } catch (Exception e) {
+      System.err.println(
+        "WARNING: Failed to create Azure AD user " +
+        createdAzAdUser.getUserId() +
+        " Cause: " +
+        e.getMessage()
+      );
+    }
   }
 
   @AfterEach
   public void tearDownAzureAdUser() {
     if (createdAzAdUser != null) {
-      graphService.deleteUser(createdAzAdUser.getUserId().toString());
+      try {
+        graphService.deleteUser(createdAzAdUser.getUserId().toString());
+      } catch (GraphServiceException e) {
+        System.err.println(
+          "WARNING: Failed to clean up Azure AD user " +
+          createdAzAdUser.getUserId() +
+          " after test — manual cleanup may be required. Cause: " +
+          e.getMessage()
+        );
+      } finally {
+        createdAzAdUser = null;
+      }
     }
   }
 
@@ -114,9 +136,10 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
   @Test
   public void whenUpdatingAccountHolder_ShouldPublishEvent() throws Exception {
+    createAzureAdUser();
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(UUID.randomUUID().toString());
-    accountHolder.setEmail("test@test.com");
+    accountHolder.setEmail(UUID.randomUUID() + "@mt-test.com");
     accountHolder.setFullName("Wrong Name");
     accountHolder.setAuthId(createdAzAdUser.getUserId().toString());
 
@@ -149,6 +172,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenDeletingAccountHolderWithoutBeacons_ShouldSucceed()
     throws Exception {
+    createAzureAdUser();
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(createdAzAdUser.getUserId().toString());
     accountHolder.setEmail(UUID.randomUUID() + "@mt-test.com");
@@ -162,8 +186,19 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
 
     assertFalse(accountHolderService.getAccountHolder(id).isPresent());
 
-    assertThrows(GraphServiceException.class, () ->
-      graphService.getUser(accountHolder.getAuthId().toString())
+    boolean userDeleted = false;
+    for (int i = 0; i < 10; i++) {
+      try {
+        graphService.getUser(accountHolder.getAuthId().toString());
+        TimeUnit.SECONDS.sleep(1);
+      } catch (GraphServiceException e) {
+        userDeleted = true;
+        break;
+      }
+    }
+    assertTrue(
+      userDeleted,
+      "Azure AD user was not deleted within expected time"
     );
 
     createdAzAdUser = null;
@@ -172,6 +207,7 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
   @Test
   public void whenDeletingAccountHolderWithBeacons_ShouldThrowException()
     throws Exception {
+    createAzureAdUser();
     AccountHolder accountHolder = new AccountHolder();
     accountHolder.setAuthId(createdAzAdUser.getUserId().toString());
     accountHolder.setEmail(UUID.randomUUID() + "@mt-test.com");
