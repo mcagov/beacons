@@ -16,10 +16,33 @@ $ docker compose -f docker-compose.e2e.yml up
 $ npm run test:e2e
 ```
 
-### Occasional Cypress test failures
+### The Cypress end-to-end tests need a valid `SESSION_TOKEN` to run
 
-- Automated end-to-end tests require the `SESSION_TOKEN`, and may fail unexpectedly, due to rotating session tokens. To resolve this, log into local/dev/staging webapp using the test account. Locate the session token in dev tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
-- Copy this value and update the corresponding secret in the GitHub repository.
+If you experience unexpected Cypress test failures with errors like...
+
+```console
+TypeError: Cannot destructure property 'authId' of 'session.body.user' as it is undefined.
+```
+
+...you may well need to update the `SESSION_TOKEN` used by the tests locally and in GitHub Actions.
+
+- Log into local/dev/staging webapp using the "Test B2C account" credentials from 1Password.
+  - Note that any time you use this account, it will create a new session token, so the following steps need carrying out regardless.
+- Locate the session token in your browser's development tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
+- Copy this value.
+- Update the following with this value:
+  - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in https://github.com/mcagov/beacons/settings/secrets/actions.
+  - `SESSION_TOKEN` in the "Beacons Webapp Local .env.local config" in 1Password.
+- Make sure all the engineers know to update their local `webapp/.env.local` and `tests/.env` files.
+
+## Integration testing
+
+As part of our integration tests, a test user "test@test.com" is created in the Azure TEST tenancy. As a part of these tests, this user should be automatically deleted.
+In the event that the test user is not deleted, the integration tests can fail:
+
+- "Another object with the same value for property proxyAddresses already exists."
+
+In order to remediate this failure, the "test@test.com" user will need to be deleted from the test tenancy. The tests should then succeed.
 
 ## Smoke testing
 
