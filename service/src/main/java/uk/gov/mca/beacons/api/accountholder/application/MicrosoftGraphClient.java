@@ -143,26 +143,65 @@ public class MicrosoftGraphClient {
   }
 
   public AzureAdAccountHolder getUser(String id) throws GetAzAdUserError {
-    try {
-      User azAdUser = graphClient.users(id).buildRequest().get();
-
-      return AzureAdAccountHolder.builder()
-        .azureAdUserId(UUID.fromString(azAdUser.id))
-        .displayName(azAdUser.displayName)
-        .email(azAdUser.mail)
-        .build();
-    } catch (GetAzAdUserError error) {
-      log.error(error.getMessage());
-      throw error;
+    // We have retries here because Microsoft Active Directory is eventually consistent, and we want to give a recently created user a chance to actually exist
+    int maxAttempts = 5;
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        User azAdUser = graphClient.users(id).buildRequest().get();
+        return AzureAdAccountHolder.builder()
+          .azureAdUserId(UUID.fromString(azAdUser.id))
+          .displayName(azAdUser.displayName)
+          .email(azAdUser.mail)
+          .build();
+      } catch (GraphServiceException e) {
+        if (isNotFound(e) && attempt < maxAttempts - 1) {
+          try {
+            Thread.sleep(500L * (attempt + 1));
+          } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw e;
+          }
+        } else {
+          log.error(e.getMessage());
+          throw e;
+        }
+      } catch (GetAzAdUserError error) {
+        log.error(error.getMessage());
+        throw error;
+      }
     }
+    throw new GetAzAdUserError("User " + id + " not found after retries", null);
   }
 
   public void deleteUser(String id) {
-    try {
-      graphClient.users(id).buildRequest().delete();
-    } catch (Exception error) {
-      log.error(error.getMessage());
-      throw error;
+    // We have retries here because Microsoft Active Directory is eventually consistent, and we want to be sure the user is deleted before we return
+    int maxAttempts = 5;
+    for (int attempt = 0; attempt < maxAttempts; attempt++) {
+      try {
+        graphClient.users(id).buildRequest().delete();
+        return;
+      } catch (GraphServiceException e) {
+        if (isNotFound(e) && attempt < maxAttempts - 1) {
+          try {
+            Thread.sleep(500L * (attempt + 1));
+          } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            log.error(e.getMessage());
+            throw e;
+          }
+        } else {
+          log.error(e.getMessage());
+          throw e;
+        }
+      }
     }
+  }
+
+  private boolean isNotFound(GraphServiceException e) {
+    return (
+      e.getResponseCode() == 404 ||
+      (e.getMessage() != null &&
+        e.getMessage().contains("Request_ResourceNotFound"))
+    );
   }
 }

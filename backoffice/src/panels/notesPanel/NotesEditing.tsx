@@ -18,14 +18,15 @@ interface FormValues {
 
 interface NotesFormProps extends FormikProps<FormValues> {
   onCancel: () => void;
+  title?: string;
 }
 
 const NotesForm = (props: NotesFormProps) => {
-  const { errors, isSubmitting, onCancel } = props;
+  const { errors, isSubmitting, onCancel, title } = props;
 
   return (
     <>
-      <h2>Add a note</h2>
+      <h2>{title ?? "Add a note"}</h2>
       <Form>
         <FormControl component="fieldset">
           <FormLabel component="legend">
@@ -95,14 +96,21 @@ export const NotesEditing = withFormik<
   {
     onSave: (note: FormValues) => void;
     onCancel: () => void;
+    title?: string;
+    initialValues?: Partial<FormValues>;
   },
   FormValues
 >({
-  mapPropsToErrors: () => {
-    return {
-      type: "Required",
-      text: "Required",
-    };
+  mapPropsToValues: (props) => ({
+    type: props.initialValues?.type ?? "",
+    text: props.initialValues?.text ?? "",
+  }),
+
+  mapPropsToErrors: (props) => {
+    const errors: FormikErrors<FormValues> = {};
+    if (!props.initialValues?.type) errors.type = "Required";
+    if (!props.initialValues?.text) errors.text = "Required";
+    return errors;
   },
 
   validate: (values: FormValues) => {

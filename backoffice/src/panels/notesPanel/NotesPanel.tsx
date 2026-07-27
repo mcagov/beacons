@@ -1,4 +1,13 @@
-import { Card, CardContent } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { PanelButton } from "../../components/dataPanel/EditPanelButton";
@@ -25,6 +34,9 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
   const [userState, setUserState] = useState<DataPanelStates>(
     DataPanelStates.Viewing,
   );
+  const [editingNote, setEditingNote] = useState<INote | null>(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -55,7 +67,56 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
     }
   };
 
+  const handleEditSave = async (note: Partial<INote>): Promise<void> => {
+    try {
+      note.beaconId = beaconId;
+      const updated = await notesGateway.updateNote(editingNote!.id, note);
+      setNotes(notes.map((n) => (n.id === updated.id ? updated : n)));
+      setEditingNote(null);
+    } catch (error) {
+      logToServer.error(error);
+      setError(true);
+    }
+  };
+
+  const handleDeleteClick = (noteId: string) => {
+    setNoteToDelete(noteId);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await notesGateway.deleteNote(noteToDelete!);
+      setNotes(notes.filter((n) => n.id !== noteToDelete));
+      setOpenDeleteDialog(false);
+    } catch (error) {
+      logToServer.error(error);
+      setError(true);
+      setOpenDeleteDialog(false);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setOpenDeleteDialog(false);
+  };
+
   const renderState = (state: DataPanelStates) => {
+    if (editingNote) {
+      return (
+        <OnlyVisibleToUsersWith role={"ADD_BEACON_NOTES"}>
+          <NotesEditing
+            title="Edit note"
+            initialValues={{
+              type: editingNote.type as string,
+              text: editingNote.text,
+            }}
+            onSave={handleEditSave}
+            onCancel={() => setEditingNote(null)}
+          />
+        </OnlyVisibleToUsersWith>
+      );
+    }
+
     switch (state) {
       case DataPanelStates.Viewing:
         return (
@@ -63,7 +124,11 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
             <PanelButton onClick={() => setUserState(DataPanelStates.Editing)}>
               Add a new note
             </PanelButton>
-            <NotesViewing notes={notes} />
+            <NotesViewing
+              notes={notes}
+              onEdit={setEditingNote}
+              onDelete={handleDeleteClick}
+            />
           </OnlyVisibleToUsersWith>
         );
       case DataPanelStates.Editing:
@@ -87,6 +152,33 @@ export const NotesPanel: FunctionComponent<NotesPanelProps> = ({
           {error && <ErrorState message={Placeholders.UnspecifiedError} />}
           {loading && <LoadingState />}
           {error || loading || renderState(userState)}
+          <Dialog
+            open={openDeleteDialog}
+            onClose={handleCancelDelete}
+            maxWidth="sm"
+            fullWidth
+          >
+            <DialogTitle>Confirm Delete</DialogTitle>
+            <DialogContent>
+              <Box>Are you sure you want to delete this note?</Box>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={handleCancelDelete}
+                color="primary"
+                variant="outlined"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleConfirmDelete}
+                color="error"
+                variant="outlined"
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>
       </CardContent>
     </Card>
