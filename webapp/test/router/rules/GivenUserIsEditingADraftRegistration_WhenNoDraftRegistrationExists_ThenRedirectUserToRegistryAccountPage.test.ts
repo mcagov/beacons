@@ -34,6 +34,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
             [formSubmissionCookieId]: "test-draft-registration-id",
           },
         },
+        session: { user: { authId: "auth-id" } },
         container: {
           getDraftRegistration: jest.fn().mockResolvedValue(null),
         } as Partial<IAppContainer>,
@@ -60,6 +61,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
             [formSubmissionCookieId]: "test-draft-registration-id",
           },
         },
+        session: { user: { authId: "auth-id" } },
         container: {
           getDraftRegistration: jest
             .fn()
@@ -111,6 +113,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
             [formSubmissionCookieId]: "test-draft-registration-id",
           },
         } as Partial<IncomingMessage>,
+        session: { user: { authId: "auth-id" } },
         container: {
           saveDraftRegistration: jest.fn(),
         } as Partial<IAppContainer>,
@@ -121,6 +124,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
         );
       const blankRegistration: DraftRegistration = {
         uses: [],
+        ownerAuthId: "auth-id",
       };
 
       const result: GetServerSidePropsResult<any> = await rule.action();

@@ -29,7 +29,10 @@ export interface IAppContainer {
   sendConfirmationEmail: SendConfirmationEmailFn;
   updateRegistration: UpdateRegistrationFn;
 
-  getDraftRegistration: (id: string) => Promise<DraftRegistration>;
+  getDraftRegistration: (
+    id: string,
+    authId: string,
+  ) => Promise<DraftRegistration>;
   saveDraftRegistration: (
     id: string,
     updates: DraftRegistration,

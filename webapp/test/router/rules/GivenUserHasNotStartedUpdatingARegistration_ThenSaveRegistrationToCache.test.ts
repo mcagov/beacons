@@ -117,6 +117,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         res: {
           setHeader: jest.fn(),
         },
+        session: { user: { authId: "auth-id" } },
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
@@ -153,6 +154,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         res: {
           setHeader: jest.fn(),
         },
+        session: { user: { authId: "auth-id" } },
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
@@ -164,7 +166,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
 
       expect(context.container.saveDraftRegistration).toHaveBeenCalledWith(
         registration.id,
-        registration,
+        { ...registration, ownerAuthId: "auth-id" },
       );
     });
 
@@ -190,6 +192,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         res: {
           setHeader: jest.fn(),
         },
+        session: { user: { authId: "auth-id" } },
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(
@@ -221,6 +224,7 @@ describe("GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCach
         res: {
           setHeader: jest.fn(),
         },
+        session: { user: { authId: "auth-id" } },
       } as any;
       const rule =
         new GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToCache(

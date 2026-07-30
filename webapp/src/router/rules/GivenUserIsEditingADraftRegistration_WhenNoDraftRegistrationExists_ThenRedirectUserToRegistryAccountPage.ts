@@ -34,6 +34,7 @@ export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_
   private async createBlankDraftRegistration(): Promise<void> {
     const blankDraftRegistration: DraftRegistration = {
       uses: [],
+      ownerAuthId: this.context.session.user.authId,
     };
 
     await this.context.container.saveDraftRegistration(
@@ -57,6 +58,7 @@ export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_
   private async draftRegistrationDoesNotExist() {
     return !(await this.context.container.getDraftRegistration(
       this.cookieId(),
+      this.context.session.user.authId,
     ));
   }
 }

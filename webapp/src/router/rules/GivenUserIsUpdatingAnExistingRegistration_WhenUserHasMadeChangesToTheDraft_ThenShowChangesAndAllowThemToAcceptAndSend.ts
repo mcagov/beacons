@@ -29,8 +29,10 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
 
     const registrationId = this.context.params.registrationId as string;
 
-    const draftRegistration: DraftRegistration =
-      await getDraftRegistration(registrationId);
+    const draftRegistration: DraftRegistration = await getDraftRegistration(
+      registrationId,
+      this.context.session.user.authId,
+    );
 
     if (!draftRegistration) return false;
 
@@ -53,7 +55,10 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
       props: {
         showCookieBanner: showCookieBanner(this.context),
         userHasEdited: true,
-        registration: await getDraftRegistration(registrationId),
+        registration: await getDraftRegistration(
+          registrationId,
+          this.context.session.user.authId,
+        ),
       },
     };
   }

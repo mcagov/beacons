@@ -617,6 +617,7 @@ const nextPage = async (
   const environment = (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId],
+      context.session.user.authId,
     )
   ).uses[context.query.useId as string]?.environment;
 
@@ -642,6 +643,7 @@ const props = async (
   const use: DraftBeaconUse = (
     await context.container.getDraftRegistration(
       context.req.cookies[formSubmissionCookieId],
+      context.session.user.authId,
     )
   ).uses[context.query.useId as string];
 

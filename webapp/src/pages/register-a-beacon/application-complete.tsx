@@ -88,8 +88,10 @@ export const getServerSideProps: GetServerSideProps = withSession(
       return redirectUserTo(AccountPageURLs.accountHome);
 
     const submissionCookieId = context.req.cookies[formSubmissionCookieId];
-    const draftRegistration: DraftRegistration =
-      await getDraftRegistration(submissionCookieId);
+    const draftRegistration: DraftRegistration = await getDraftRegistration(
+      submissionCookieId,
+      context.session.user.authId,
+    );
 
     try {
       const result = await submitRegistration(

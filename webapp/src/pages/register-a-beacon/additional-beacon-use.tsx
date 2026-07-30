@@ -150,6 +150,7 @@ const props = async (
 ): Promise<Partial<AdditionalBeaconUseProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
     context.req.cookies[formSubmissionCookieId],
+    context.session.user.authId,
   );
 
   const useId = parseInt(context.query.useId as string);

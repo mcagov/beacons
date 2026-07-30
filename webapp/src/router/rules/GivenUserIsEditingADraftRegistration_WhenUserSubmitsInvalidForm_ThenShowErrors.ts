@@ -65,6 +65,7 @@ export class GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_The
   > {
     const draftRegistration = await this.context.container.getDraftRegistration(
       this.draftRegistrationId(),
+      this.context.session.user.authId,
     );
 
     return {

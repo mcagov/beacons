@@ -418,6 +418,7 @@ class IfUserIsSignedInAndHasValidAccountDetails implements Rule {
       const draftRegistrationId: string = uuidv4();
       const emptyDraftRegistration: DraftRegistration = {
         uses: [],
+        ownerAuthId: this.context.session.user.authId,
       };
 
       await saveDraftRegistration(draftRegistrationId, emptyDraftRegistration);

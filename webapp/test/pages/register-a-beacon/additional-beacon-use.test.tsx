@@ -132,6 +132,7 @@ describe("AdditionalBeaconUse page", () => {
         query: {
           useId: nonExistentUseId,
         },
+        session: { user: { authId: "auth-id" } },
         container: {
           getDraftRegistration: jest.fn().mockResolvedValue(mockRegistration),
           sessionGateway: mockSessionGateway,

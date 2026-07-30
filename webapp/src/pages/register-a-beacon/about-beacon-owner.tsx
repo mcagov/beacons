@@ -161,6 +161,7 @@ const props = async (
     (
       await context.container.getDraftRegistration(
         context.req.cookies[formSubmissionCookieId],
+        context.session.user.authId,
       )
     )?.uses || [];
 

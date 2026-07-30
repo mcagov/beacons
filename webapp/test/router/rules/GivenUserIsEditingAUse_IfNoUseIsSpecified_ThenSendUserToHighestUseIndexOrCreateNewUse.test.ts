@@ -53,6 +53,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
         ],
       };
       const context = {
+        session: { user: { authId: "auth-id" } },
         container: {
           getDraftRegistration: jest
             .fn()
@@ -82,6 +83,7 @@ describe("GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseIdOr
     it("when there are no uses it creates a new use and sends the user to it", async () => {
       const draftRegistrationNoUses: DraftRegistration = { uses: [] };
       const context = {
+        session: { user: { authId: "auth-id" } },
         container: {
           getDraftRegistration: jest
             .fn()

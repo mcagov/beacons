@@ -35,6 +35,7 @@ export class GivenUserIsEditingADraftRegistration_ThenMakeTheDraftRegistrationAv
   private async draftRegistration(): Promise<DraftRegistration> {
     return await this.context.container.getDraftRegistration(
       this.draftRegistrationId(),
+      this.context.session.user.authId,
     );
   }
 

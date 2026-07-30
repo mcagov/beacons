@@ -132,6 +132,7 @@ const props = async (
 ): Promise<Partial<PurposeFormProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
     context.req.cookies[formSubmissionCookieId],
+    context.session.user.authId,
   );
 
   const useId = context.query.useId as string;

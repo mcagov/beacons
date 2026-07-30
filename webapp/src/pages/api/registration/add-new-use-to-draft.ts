@@ -1,3 +1,5 @@
+import { getSession } from "next-auth/react";
+import { BeaconsSession } from "../../../gateways/NextAuthUserSessionGateway";
 import {
   BeaconsApiRequest,
   withApiContainer,
@@ -9,8 +11,12 @@ export const handler = withApiContainer(async (req: BeaconsApiRequest, res) => {
   const { submissionId } = req.cookies;
   const { nextPage } = req.query;
 
+  const session = (await getSession({ req })) as BeaconsSession;
+
   await addNewUseToDraftRegistration(submissionId);
-  const newUseId = (await getDraftRegistration(submissionId)).uses.length - 1;
+  const newUseId =
+    (await getDraftRegistration(submissionId, session.user.authId)).uses
+      .length - 1;
 
   res.redirect(
     nextPage

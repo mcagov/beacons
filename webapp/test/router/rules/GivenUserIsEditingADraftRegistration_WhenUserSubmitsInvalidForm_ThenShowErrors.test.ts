@@ -80,6 +80,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSh
           [formSubmissionCookieId]: "test-draft-registration-id",
         },
       },
+      session: { user: { authId: "auth-id" } },
       container: {
         parseFormDataAs: jest.fn().mockResolvedValue(invalidForm),
         saveDraftRegistration: jest.fn(),
@@ -116,6 +117,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserSubmitsInvalidForm_ThenSh
       req: {
         cookies: {},
       },
+      session: { user: { authId: "auth-id" } },
       container: {
         parseFormDataAs: jest.fn().mockResolvedValue(invalidForm),
         saveDraftRegistration: jest.fn(),

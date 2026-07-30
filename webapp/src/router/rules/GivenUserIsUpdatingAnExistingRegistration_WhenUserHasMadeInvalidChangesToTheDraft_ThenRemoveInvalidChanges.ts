@@ -49,6 +49,7 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidCha
   private async draftRegistration(): Promise<DraftRegistration> {
     return await this.context.container.getDraftRegistration(
       this.registrationId,
+      this.context.session.user.authId,
     );
   }
 

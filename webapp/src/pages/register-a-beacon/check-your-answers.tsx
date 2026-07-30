@@ -124,6 +124,7 @@ const props = async (
 ): Promise<Partial<CheckYourAnswersProps>> => {
   const draftRegistration = await context.container.getDraftRegistration(
     context.req.cookies[formSubmissionCookieId],
+    context.session.user.authId,
   );
 
   return {

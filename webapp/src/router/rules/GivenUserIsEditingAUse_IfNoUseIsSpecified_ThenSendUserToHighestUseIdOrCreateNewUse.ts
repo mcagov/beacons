@@ -70,6 +70,7 @@ export class GivenUserIsEditingAUse_IfNoUseIsSpecified_ThenSendUserToHighestUseI
   private async draftRegistration(): Promise<DraftRegistration> {
     return await this.context.container.getDraftRegistration(
       this.context.req.cookies[formSubmissionCookieId],
+      this.context.session.user.authId,
     );
   }
 }

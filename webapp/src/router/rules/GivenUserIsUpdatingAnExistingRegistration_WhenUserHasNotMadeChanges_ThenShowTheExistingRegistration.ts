@@ -29,8 +29,10 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasNotMadeChanges
 
     const registrationId = this.context.params.registrationId as string;
 
-    const draftRegistration: DraftRegistration =
-      await getDraftRegistration(registrationId);
+    const draftRegistration: DraftRegistration = await getDraftRegistration(
+      registrationId,
+      this.context.session.user.authId,
+    );
 
     if (!draftRegistration) return true;
 

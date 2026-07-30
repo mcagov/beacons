@@ -41,7 +41,10 @@ export class GivenUserHasNotStartedUpdatingARegistration_ThenSaveRegistrationToC
       accountHolderId,
     );
 
-    await saveDraftRegistration(this.registrationId, registration);
+    await saveDraftRegistration(this.registrationId, {
+      ...registration,
+      ownerAuthId: this.context.session.user.authId,
+    });
 
     setCookie(this.context.res, formSubmissionCookieId, this.registrationId);
 

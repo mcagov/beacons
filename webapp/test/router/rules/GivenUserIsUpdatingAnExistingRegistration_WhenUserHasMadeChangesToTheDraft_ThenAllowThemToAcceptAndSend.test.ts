@@ -12,6 +12,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
         params: {
           registrationId: "registration-id-from-url",
         },
+        session: { user: { authId: "auth-id" } },
         container: {
           getAccountHolderId: jest
             .fn()
@@ -41,6 +42,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
         params: {
           registrationId: "registration-id-from-url",
         },
+        session: { user: { authId: "auth-id" } },
         container: {
           getDraftRegistration: jest
             .fn()
@@ -72,6 +74,7 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
         params: {
           registrationId: "registration-id-from-url",
         },
+        session: { user: { authId: "auth-id" } },
         container: {
           getAccountHolderId: jest
             .fn()
@@ -108,10 +111,12 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
         params: {
           registrationId: "registration-id-from-url",
         },
+        session: { user: { authId: "auth-id" } },
         req: {
           cookies: null,
         },
         container: {
+          getAccountHolderId: jest.fn().mockResolvedValue("account-holder-id"),
           getDraftRegistration: jest.fn(),
         },
       } as any;

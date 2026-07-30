@@ -60,6 +60,7 @@ export class GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm
   private async draftRegistration(): Promise<DraftRegistration> {
     return await this.context.container.getDraftRegistration(
       this.draftRegistrationId(),
+      this.context.session.user.authId,
     );
   }
 

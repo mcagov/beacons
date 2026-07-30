@@ -61,6 +61,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", 
           [formSubmissionCookieId]: "test-draft-registration-id",
         },
       },
+      session: { user: { authId: "auth-id" } },
       container: {
         getDraftRegistration: jest.fn().mockResolvedValue({
           manufacturer: "ACME Inc.",
@@ -87,6 +88,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenUserViewsForm_ThenShowForm", 
       req: {
         cookies: {},
       },
+      session: { user: { authId: "auth-id" } },
       container: {
         getDraftRegistration: jest.fn().mockResolvedValue(registrationFixture),
       },
