@@ -41,7 +41,7 @@ export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
               <TableCell>Type of note</TableCell>
               <TableCell>Note</TableCell>
               <TableCell>Noted by</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
