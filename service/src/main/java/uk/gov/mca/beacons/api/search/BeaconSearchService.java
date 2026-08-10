@@ -70,7 +70,7 @@ public class BeaconSearchService {
     BeaconOwner owner = BeaconOwnerHelper.getMainOwner(owners).orElse(null);
 
     List<BeaconUse> uses =
-      beaconUseRepository.getBeaconUseByBeaconIdOrderByMainUseDescCreatedDateAsc(
+      beaconUseRepository.getBeaconUseByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
         beacon.getId()
       );
 

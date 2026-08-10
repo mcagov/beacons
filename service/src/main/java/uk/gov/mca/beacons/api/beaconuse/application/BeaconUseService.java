@@ -26,7 +26,7 @@ public class BeaconUseService {
   }
 
   public List<BeaconUse> getByBeaconId(BeaconId beaconId) {
-    return beaconUseRepository.getBeaconUseByBeaconIdOrderByMainUseDescCreatedDateAsc(
+    return beaconUseRepository.getBeaconUseByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
       beaconId
     );
   }
