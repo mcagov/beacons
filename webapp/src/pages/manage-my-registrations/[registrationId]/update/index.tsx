@@ -44,6 +44,7 @@ import { GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidChanges
 interface RegistrationSummaryPageProps {
   registration: Registration;
   userHasEdited: boolean;
+  showCookieBanner: boolean;
 }
 
 const RegistrationSummaryPage: FunctionComponent<
@@ -51,6 +52,7 @@ const RegistrationSummaryPage: FunctionComponent<
 > = ({
   registration,
   userHasEdited,
+  showCookieBanner,
 }: RegistrationSummaryPageProps): JSX.Element => {
   const pageHeading = `Your registered beacon with Hex ID/UIN: ${registration.hexId}`;
 
@@ -64,7 +66,7 @@ const RegistrationSummaryPage: FunctionComponent<
     <Layout
       navigation={<BackButton href={AccountPageURLs.accountHome} />}
       title={pageHeading}
-      showCookieBanner={true}
+      showCookieBanner={showCookieBanner}
     >
       <Grid
         mainContent={
