@@ -65,7 +65,7 @@ jobs:
           password: ${{ secrets.aws_secret_access_key }}
 
       - name: Build and Push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: backoffice
           push: ${{ inputs.push_to_ecr }}
