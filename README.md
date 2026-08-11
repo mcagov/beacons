@@ -93,8 +93,9 @@ deployments to production.
 ### Manual deployment
 
 A specific version tag can also be deployed on demand. The `deploy-staging` and `deploy-production` workflows are
-triggered manually via `workflow_dispatch`, taking the tag to deploy as an input. `deploy-staging` runs the test suite
-before deploying to staging. `deploy-production` deploys the given tag to production.
+triggered manually via `workflow_dispatch`, taking the tag to deploy as an input. Neither builds images; both deploy the
+images already published for that tag. `deploy-staging` runs the test suite first. `deploy-production` still requires
+approval as above.
 
 **Manual scenario testing that must be performed before and after each release is documented in [tests/](./tests).**
 
