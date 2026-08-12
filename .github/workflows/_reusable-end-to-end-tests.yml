@@ -78,7 +78,7 @@ jobs:
         with:
           ref: ${{inputs.git-reference}}
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: "22.17.0"
 
