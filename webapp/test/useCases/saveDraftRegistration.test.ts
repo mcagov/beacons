@@ -77,8 +77,8 @@ describe("saveDraftRegistration", () => {
 
   it("does not overwrite a draft that is owned by a different user", async () => {
     const existingDraftRegistration: DraftRegistration = {
-      ownerAuthId: "victim-auth-id",
-      ownerFullName: "Steve Stevington",
+      ownerAuthId: "owner-auth-id",
+      ownerFullName: "does-not-matter",
       uses: [],
     };
     const updatesTodraftRegistration: DraftRegistration = {

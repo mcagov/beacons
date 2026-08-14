@@ -143,7 +143,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
       });
     });
 
-    it("when a draft exists at that id but is not owned by the user it redirects to the account page without creating or overwriting a draft", async () => {
+    it("when a draft exists at, but is not owned by the user, it redirects to the account page without creating or overwriting a draft", async () => {
       const context = {
         req: {
           url: "current-page-url",
@@ -152,7 +152,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
             [formSubmissionCookieId]: "someone-elses-draft-registration-id",
           },
         } as Partial<IncomingMessage>,
-        session: { user: { authId: "attacker-auth-id" } },
+        session: { user: { authId: "requester-auth-id" } },
         container: {
           saveDraftRegistration: jest.fn(),
           draftRegistrationGateway: {

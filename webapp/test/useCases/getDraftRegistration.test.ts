@@ -23,18 +23,18 @@ describe("getDraftRegistration", () => {
 
     const result = await getDraftRegistration(container as any)(
       "draft-id",
-      "auth-id-a",
+      "owner-auth-id",
     );
 
     expect(result).toStrictEqual(draftRegistration);
   });
 
   it("returns null when the draft belongs to a different user", async () => {
-    const container = containerReturning(draftOwnedBy("auth-id-a"));
+    const container = containerReturning(draftOwnedBy("owner-auth-id"));
 
     const result = await getDraftRegistration(container as any)(
       "draft-id",
-      "auth-id-b",
+      "requester-auth-id",
     );
 
     expect(result).toBeNull();
