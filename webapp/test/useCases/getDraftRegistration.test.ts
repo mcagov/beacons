@@ -18,7 +18,7 @@ describe("getDraftRegistration", () => {
   });
 
   it("returns the draft when it belongs to the requesting user", async () => {
-    const draftRegistration = draftOwnedBy("auth-id-a");
+    const draftRegistration = draftOwnedBy("owner-auth-id");
     const container = containerReturning(draftRegistration);
 
     const result = await getDraftRegistration(container as any)(
