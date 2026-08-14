@@ -116,6 +116,9 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
         session: { user: { authId: "auth-id" } },
         container: {
           saveDraftRegistration: jest.fn(),
+          draftRegistrationGateway: {
+            read: jest.fn().mockResolvedValue(null),
+          },
         } as Partial<IAppContainer>,
       };
       const rule =
@@ -136,6 +139,41 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
       expect(result).toMatchObject({
         redirect: {
           destination: "current-page-url",
+        },
+      });
+    });
+
+    it("when a draft exists at that id but is not owned by the user it redirects to the account page without creating or overwriting a draft", async () => {
+      const context = {
+        req: {
+          url: "current-page-url",
+          method: "GET",
+          cookies: {
+            [formSubmissionCookieId]: "someone-elses-draft-registration-id",
+          },
+        } as Partial<IncomingMessage>,
+        session: { user: { authId: "attacker-auth-id" } },
+        container: {
+          saveDraftRegistration: jest.fn(),
+          draftRegistrationGateway: {
+            read: jest.fn().mockResolvedValue({
+              uses: [],
+              ownerAuthId: "victim-auth-id",
+            }),
+          },
+        } as Partial<IAppContainer>,
+      };
+      const rule =
+        new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToRegistryAccountPage(
+          context as any,
+        );
+
+      const result: GetServerSidePropsResult<any> = await rule.action();
+
+      expect(context.container.saveDraftRegistration).not.toHaveBeenCalled();
+      expect(result).toMatchObject({
+        redirect: {
+          destination: "/account/your-beacon-registry-account",
         },
       });
     });

@@ -8,6 +8,13 @@ export const saveDraftRegistration =
   async (id: string, updates: DraftRegistration): Promise<void> => {
     const existingDraftRegistration = await draftRegistrationGateway.read(id);
 
+    if (
+      existingDraftRegistration?.ownerAuthId &&
+      updates.ownerAuthId &&
+      existingDraftRegistration.ownerAuthId !== updates.ownerAuthId
+    )
+      return;
+
     await draftRegistrationGateway.update(
       id,
       _.merge(existingDraftRegistration, updates),

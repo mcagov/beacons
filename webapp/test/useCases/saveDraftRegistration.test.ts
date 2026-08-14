@@ -74,4 +74,29 @@ describe("saveDraftRegistration", () => {
       },
     );
   });
+
+  it("does not overwrite a draft that is owned by a different user", async () => {
+    const existingDraftRegistration: DraftRegistration = {
+      ownerAuthId: "victim-auth-id",
+      ownerFullName: "Steve Stevington",
+      uses: [],
+    };
+    const updatesTodraftRegistration: DraftRegistration = {
+      ownerAuthId: "attacker-auth-id",
+      uses: [],
+    };
+    const container = {
+      draftRegistrationGateway: {
+        read: jest.fn().mockResolvedValue(existingDraftRegistration),
+        update: jest.fn(),
+      },
+    };
+
+    await saveDraftRegistration(container as any)(
+      "test-id",
+      updatesTodraftRegistration,
+    );
+
+    expect(container.draftRegistrationGateway.update).not.toHaveBeenCalled();
+  });
 });
