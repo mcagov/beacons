@@ -45,7 +45,7 @@ describe("getDraftRegistration", () => {
 
     const result = await getDraftRegistration(container as any)(
       "draft-id",
-      "auth-id-a",
+      "requester-auth-id",
     );
 
     expect(result).toBeNull();
