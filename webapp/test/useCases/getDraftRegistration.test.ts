@@ -5,7 +5,7 @@ import { getDraftRegistration } from "../../src/useCases/getDraftRegistration";
 describe("getDraftRegistration", () => {
   const draftOwnedBy = (ownerAuthId: string): DraftRegistration => ({
     ownerAuthId,
-    ownerFullName: "Steve Stevington",
+    ownerFullName: "does-not-matter",
     uses: [],
   });
 
