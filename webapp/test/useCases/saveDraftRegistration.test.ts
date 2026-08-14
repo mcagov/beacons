@@ -82,7 +82,7 @@ describe("saveDraftRegistration", () => {
       uses: [],
     };
     const updatesTodraftRegistration: DraftRegistration = {
-      ownerAuthId: "attacker-auth-id",
+      ownerAuthId: "requester-auth-id",
       uses: [],
     };
     const container = {
