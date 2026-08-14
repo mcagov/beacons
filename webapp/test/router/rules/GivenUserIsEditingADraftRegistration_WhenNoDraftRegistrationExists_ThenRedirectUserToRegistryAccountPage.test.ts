@@ -158,7 +158,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
           draftRegistrationGateway: {
             read: jest.fn().mockResolvedValue({
               uses: [],
-              ownerAuthId: "victim-auth-id",
+              ownerAuthId: "owner-auth-id",
             }),
           },
         } as Partial<IAppContainer>,
