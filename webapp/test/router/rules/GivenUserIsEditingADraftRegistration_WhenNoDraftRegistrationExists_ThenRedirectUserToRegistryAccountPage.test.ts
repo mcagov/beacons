@@ -149,7 +149,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
           url: "current-page-url",
           method: "GET",
           cookies: {
-            [formSubmissionCookieId]: "someone-elses-draft-registration-id",
+            [formSubmissionCookieId]: "owner-auth-id",
           },
         } as Partial<IncomingMessage>,
         session: { user: { authId: "requester-auth-id" } },
