@@ -26,7 +26,7 @@ describe("CompletePage", () => {
       id: "draft-registration-id",
       hexId: "draft-registration-hexId",
       model: "ASOS",
-      uses: [],
+      uses: [{}],
     };
 
     const mockSessionGateway = {
@@ -69,6 +69,28 @@ describe("CompletePage", () => {
           destination: "/account/your-beacon-registry-account",
         },
       });
+    });
+
+    it("should redirect the user to uses section if the registration has no uses", async () => {
+      mockContainer.getDraftRegistration = jest
+        .fn()
+        .mockResolvedValue({ ...mockDraftRegistration, uses: [] });
+      const context = {
+        req: { cookies: { [formSubmissionCookieId]: "test-cookie-uuid" } },
+        res: createResponse(),
+        container: mockContainer,
+        session: { user: { authId: "a-session-id" } },
+      };
+
+      const result = await getServerSideProps(context as any);
+
+      expect(result).toMatchObject({
+        redirect: {
+          destination:
+            "/manage-my-registrations/draft-registration-id/update/uses/",
+        },
+      });
+      expect(mockUpdateRegistration).not.toHaveBeenCalled();
     });
 
     it("should attempt to update the user's registration", async () => {
