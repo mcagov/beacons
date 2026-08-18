@@ -1,7 +1,4 @@
-##
-# TODO: Deploy a specified version to production.  Useful for reverting production to a known good state.
-##
-name: Deploy a version of the application
+name: Deploy a version to production
 
 permissions:
   contents: read
@@ -11,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Enter the version of the application to deploy"
+        description: "Tag to deploy to production"
         required: true
         type: string
 
@@ -42,7 +39,8 @@ jobs:
       trello_token: ${{ secrets.TRELLO_TOKEN }}
       opensearch_master_user_name: ${{ secrets.OPENSEARCH_USERNAME }}
       opensearch_master_user_password: ${{ secrets.OPENSEARCH_PASSWORD }}
-      opensearch_dashboards_sso_client_secret: ${{ secrets.OPENSEARCH_DASHBOARDS_SSO_CLIENT_SECRET }}
+      opensearch_proxy_sso_client_id: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_ID }}
+      opensearch_proxy_sso_client_secret: ${{ secrets.OPENSEARCH_PROXY_SSO_CLIENT_SECRET }}
       microsoft_graph_client_id: ${{ secrets.MICROSOFT_GRAPH_CLIENT_ID }}
       microsoft_graph_client_secret: ${{ secrets.MICROSOFT_GRAPH_CLIENT_SECRET }}
       microsoft_graph_b2c_tenant_id: ${{ secrets.MICROSOFT_GRAPH_B2C_TENANT_ID }}
