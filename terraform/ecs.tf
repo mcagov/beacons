@@ -133,6 +133,11 @@ resource "aws_ecs_service" "webapp" {
   health_check_grace_period_seconds = 60
   wait_for_steady_state             = true
 
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
+
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
     subnets         = aws_subnet.app.*.id
@@ -275,6 +280,11 @@ resource "aws_ecs_service" "service" {
   health_check_grace_period_seconds = 600
   wait_for_steady_state             = true
 
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
+
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
     subnets         = aws_subnet.app.*.id
@@ -347,6 +357,11 @@ resource "aws_ecs_service" "backoffice" {
   platform_version                  = var.ecs_fargate_version
   health_check_grace_period_seconds = 600
   wait_for_steady_state             = true
+
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
 
   network_configuration {
     security_groups = [aws_security_group.ecs_tasks.id]
