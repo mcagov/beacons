@@ -3,6 +3,7 @@ import { EmergencyContact } from "../../entities/EmergencyContact";
 import { Owner } from "../../entities/Owner";
 import { Use } from "../../entities/Use";
 import { isoDate } from "../../lib/dateTime";
+import { withSingleMainUse } from "../../lib/helpers/withSingleMainUse";
 import {
   BeaconOwnerResponse,
   BeaconUseResponse,
@@ -85,7 +86,7 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
   }
 
   private mapUses(uses: BeaconUseResponse[]): Use[] {
-    return uses
+    const mappedUses = uses
       .map(
         (use) =>
           ({
@@ -138,6 +139,8 @@ export class BeaconsApiResponseMapper implements IBeaconResponseMapper {
           }) as Record<string, any> as Use,
       )
       .sort((firstUse, secondUse) => this.mainUseSortFn(firstUse, secondUse));
+
+    return withSingleMainUse(mappedUses);
   }
 
   private mainUseSortFn(firstUse: Use, secondUse: Use): number {

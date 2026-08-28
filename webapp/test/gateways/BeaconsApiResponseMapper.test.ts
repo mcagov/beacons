@@ -31,4 +31,17 @@ describe("BeaconsApiResponseMapper", () => {
 
     expect(mappedBeacons).toStrictEqual(expectedBeacons);
   });
+
+  it("keeps a single main use when the API returns several main uses", () => {
+    beaconApiResponse = _.cloneDeep(singleBeaconApiResponseFixture);
+    const [mainUse] = beaconApiResponse.uses;
+    beaconApiResponse.uses = [
+      { ...mainUse, id: "first-use-id" },
+      { ...mainUse, id: "second-use-id" },
+    ];
+
+    const mappedBeacon = responseMapper.map(beaconApiResponse);
+
+    expect(mappedBeacon.uses.map((use) => use.mainUse)).toEqual([true, false]);
+  });
 });

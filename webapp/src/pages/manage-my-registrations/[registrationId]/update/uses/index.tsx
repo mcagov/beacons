@@ -7,6 +7,7 @@ import { Layout } from "../../../../../components/Layout";
 import { GovUKBody, PageHeading } from "../../../../../components/Typography";
 import { DraftBeaconUse } from "../../../../../entities/DraftBeaconUse";
 import { DraftRegistration } from "../../../../../entities/DraftRegistration";
+import { withSingleMainUse } from "../../../../../lib/helpers/withSingleMainUse";
 import { BeaconsGetServerSidePropsContext } from "../../../../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { withContainer } from "../../../../../lib/middleware/withContainer";
 import { withSession } from "../../../../../lib/middleware/withSession";
@@ -39,19 +40,13 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
 }: UseSummaryProps): JSX.Element => {
   const pageHeading = "Summary of how you use this beacon";
 
-  const hasMainUse = draftRegistration.uses.filter((u) => u.mainUse).length > 0;
-
-  if (!hasMainUse) {
-    draftRegistration.uses.forEach((use, index) => {
-      use.mainUse = index === 0;
-    });
-  }
+  const uses = withSingleMainUse(draftRegistration.uses);
 
   return (
     <>
       <Layout
         navigation={
-          draftRegistration.uses.length > 0 && (
+          uses.length > 0 && (
             <BackButton
               href={UrlBuilder.buildRegistrationUrl(
                 Actions.update,
@@ -69,7 +64,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
             <>
               <PageHeading>{pageHeading}</PageHeading>
 
-              {draftRegistration.uses.length === 0 && (
+              {uses.length === 0 && (
                 <>
                   <GovUKBody>
                     You have not assigned any uses to this beacon yet.
@@ -84,7 +79,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           Actions.update,
                           UsePages.environment,
                           draftRegistration.id,
-                          draftRegistration.uses.length.toString(),
+                          uses.length.toString(),
                         ),
                       })
                     }
@@ -92,9 +87,9 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                 </>
               )}
 
-              {draftRegistration.uses.length > 0 && (
+              {uses.length > 0 && (
                 <>
-                  {draftRegistration.uses.map((use, index) => {
+                  {uses.map((use, index) => {
                     return (
                       <AdditionalBeaconUseSummary
                         index={index}
@@ -134,7 +129,7 @@ const AdditionalBeaconUse: FunctionComponent<UseSummaryProps> = ({
                           Actions.update,
                           UsePages.environment,
                           draftRegistration.id,
-                          draftRegistration.uses.length.toString(),
+                          uses.length.toString(),
                         ),
                       })
                     }

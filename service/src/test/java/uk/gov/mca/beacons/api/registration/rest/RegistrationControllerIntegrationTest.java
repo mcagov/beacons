@@ -1,5 +1,7 @@
 package uk.gov.mca.beacons.api.registration.rest;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +42,28 @@ public class RegistrationControllerIntegrationTest extends WebIntegrationTest {
         .valueEquals("Content-Type", MediaType.APPLICATION_JSON_VALUE)
         .expectBody()
         .json(registrationBody);
+    }
+
+    @Test
+    void shouldStoreOneMainUseWhenTheRequestHasSeveralMainUses()
+      throws Exception {
+      final String registrationBody = getRegistrationBody(
+        RegistrationUseCase.SINGLE_BEACON,
+        accountHolderId,
+        fixture -> fixture.replace("\"mainUse\": false", "\"mainUse\": true")
+      );
+
+      webTestClient
+        .post()
+        .uri(Endpoints.Registration.value + "/register")
+        .contentType(MediaType.APPLICATION_JSON)
+        .bodyValue(registrationBody)
+        .exchange()
+        .expectStatus()
+        .isCreated()
+        .expectBody()
+        .jsonPath("$.uses[*].mainUse")
+        .value(containsInAnyOrder(true, false, false));
     }
 
     @Test

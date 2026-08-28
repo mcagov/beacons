@@ -22,6 +22,8 @@ public class BeaconUseService {
   }
 
   public List<BeaconUse> createAll(List<BeaconUse> beaconUses) {
+    BeaconUseHelper.applySingleMainUse(beaconUses);
+
     return beaconUseRepository.saveAll(beaconUses);
   }
 
