@@ -48,9 +48,10 @@ class BeaconToSpreadsheetRowItemProcessor
       beaconOwners
     ).orElse(null);
 
-    List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
-      beaconId
-    );
+    List<BeaconUse> beaconUses =
+      beaconUseRepository.findBeaconUsesByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
+        beaconId
+      );
     List<EmergencyContact> emergencyContacts =
       emergencyContactRepository.findEmergencyContactsByBeaconId(beaconId);
 
