@@ -25,7 +25,7 @@ jobs:
       TF_WORKSPACE: production
     steps:
       - uses: actions/checkout@v6
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
