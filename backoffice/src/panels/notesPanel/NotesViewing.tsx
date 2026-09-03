@@ -1,5 +1,9 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import {
+  Button,
   CardHeader,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -14,12 +18,16 @@ import { titleCase } from "utils/writingStyle";
 
 interface INotesViewingProps {
   notes: INote[];
+  onEdit?: (note: INote) => void;
+  onDelete?: (noteId: string) => void;
 }
 
 export const noNotesMessage = "No notes associated with this record";
 
 export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
   notes,
+  onEdit,
+  onDelete,
 }: INotesViewingProps): JSX.Element => {
   if (notes.length === 0) {
     return <CardHeader title={noNotesMessage} />;
@@ -36,6 +44,7 @@ export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
               <TableCell>Type of note</TableCell>
               <TableCell>Note</TableCell>
               <TableCell>Noted by</TableCell>
+              <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -45,6 +54,31 @@ export const NotesViewing: FunctionComponent<INotesViewingProps> = ({
                 <TableCell>{titleCase(note.type)}</TableCell>
                 <TableCell>{note.text}</TableCell>
                 <TableCell>{note.fullName}</TableCell>
+                <TableCell>
+                  <Stack direction="row" spacing={1}>
+                    {onEdit && (
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        endIcon={<EditIcon />}
+                        onClick={() => onEdit(note)}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                    {onDelete && (
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="error"
+                        endIcon={<DeleteIcon />}
+                        onClick={() => onDelete(note.id)}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </Stack>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

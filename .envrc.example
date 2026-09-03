@@ -1,0 +1,4 @@
+export MICROSOFT_GRAPH_CLIENT_ID="<from_1Password>"
+export MICROSOFT_GRAPH_CLIENT_SECRET="<from_1Password>"
+export MICROSOFT_GRAPH_B2C_TENANT_ID="<from_1Password>"
+export MICROSOFT_GRAPH_B2C_TENANT_NAME="<from_1Password>"

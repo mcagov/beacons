@@ -20,7 +20,7 @@ public class AccountHolderIntegrationTest extends BaseIntegrationTest {
     accountHolder.setAddress(
       Address.builder().addressLine1("Something").build()
     );
-    accountHolder.setEmail("test@test.com");
+    accountHolder.setEmail(UUID.randomUUID() + "@mt-test.com");
     accountHolder.setAuthId(UUID.randomUUID().toString());
 
     AccountHolder savedAccountHolder = accountHolderRepository.saveAndFlush(

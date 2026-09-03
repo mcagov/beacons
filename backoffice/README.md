@@ -1,8 +1,10 @@
 # beacons-backoffice
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Local development
 
-## Available Scripts
+Follow [the instructions in the root README to get started](../README.md#local-development).
+
+## Working on the Backoffice in isolation
 
 In the Backoffice SPA sub-directory, you can run:
 
