@@ -11,5 +11,7 @@ import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 public interface BeaconUseReadOnlyRepository
   extends JpaRepository<BeaconUse, BeaconUseId> {
   @QueryHints({ @QueryHint(name = "org.hibernate.readOnly", value = "true") })
-  List<BeaconUse> findBeaconUsesByBeaconId(BeaconId beaconId);
+  List<BeaconUse> findBeaconUsesByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
+    BeaconId beaconId
+  );
 }
