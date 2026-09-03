@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/mcagov/beacons#readme",
   "devDependencies": {
-    "cypress": "^15.8.1",
+    "cypress": "^15.15.0",
     "dotenv": "^17.2.3",
     "husky": "^9.1.7",
     "prettier": "3.6.2",
