@@ -17,3 +17,4 @@
 ## Things to check
 
 - [ ] Environment variables have been updated
+- [ ] (For Dependabot Upgrades) - Checked for breaking changes
