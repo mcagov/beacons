@@ -46,9 +46,10 @@ public class ReindexSearchBeaconProcessor
       beaconOwners
     ).orElse(null);
 
-    List<BeaconUse> beaconUses = beaconUseRepository.findBeaconUsesByBeaconId(
-      beaconId
-    );
+    List<BeaconUse> beaconUses =
+      beaconUseRepository.findBeaconUsesByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
+        beaconId
+      );
 
     return new BeaconSearchDocument(beacon, beaconMainOwner, beaconUses);
   }
