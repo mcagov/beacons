@@ -151,7 +151,7 @@ export const SingleLegacyBeaconRecordView: FunctionComponent<
       </PageHeader>
       <PageContent>
         <LegacyBeaconSummaryPanel
-          legacyBeaconId={beacon.id}
+          legacyBeaconId={beaconId}
           legacyBeaconsGateway={legacyBeaconsGateway}
         />
         <Tabs value={selectedTab} onChange={handleChange}>
