@@ -9,7 +9,7 @@ describe("filename()", () => {
           "attachment; filename=19700101-Beacons_Data-Official Sensitive - Personal.csv",
         ),
     };
-    const parsed = parseFilename(headers as any as Headers);
+    const parsed = parseFilename(headers as unknown as Headers);
 
     expect(parsed).toBe(
       "19700101-Beacons_Data-Official Sensitive - Personal.csv",
@@ -24,7 +24,7 @@ describe("filename()", () => {
           "attachment; filename=19700102-Beacons_Data-Official Sensitive - Personal.csv",
         ),
     };
-    const parsed = parseFilename(headers as any as Headers);
+    const parsed = parseFilename(headers as unknown as Headers);
 
     expect(parsed).toBe(
       "19700102-Beacons_Data-Official Sensitive - Personal.csv",
@@ -39,7 +39,7 @@ describe("filename()", () => {
           "attachment; filename=20220329-Beacons_Data-Official Sensitive - Personal.csv",
         ),
     };
-    const parsed = parseFilename(headers as any as Headers);
+    const parsed = parseFilename(headers as unknown as Headers);
 
     expect(parsed).toBe(
       "20220329-Beacons_Data-Official Sensitive - Personal.csv",
