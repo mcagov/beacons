@@ -85,9 +85,11 @@ export class RedisDraftRegistrationGateway implements DraftRegistrationGateway {
 
     const updatedUses = {
       ...registration,
-      uses: registration.uses.map((use, i) => {
-        return { ...use, mainUse: i === useId };
-      }),
+      uses: registration.uses
+        .map((use, i) => {
+          return { ...use, mainUse: i === useId };
+        })
+        .sort((firstUse, secondUse) => +secondUse.mainUse - +firstUse.mainUse),
     };
 
     await this.update(submissionId, updatedUses);

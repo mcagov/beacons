@@ -288,6 +288,35 @@ class ExportMapperUnitTest {
   }
 
   @Test
+  public void toLegacyUsesDTO_whenTheGivenUseHasAModEnvironment_shouldMapToGenericLegacyUseWithTheVesselDetails() {
+    LegacyUse modUse = new LegacyUse();
+    modUse.setUseType("MOD");
+    modUse.setVesselName("MCA Test MOD Vessel");
+    modUse.setHomePort("MCA Test Port");
+    modUse.setCallSign("GABC");
+    modUse.setMmsiNumber(232001234);
+    modUse.setMaxPersons(25);
+    modUse.setCommunications("VHF Radio");
+
+    List<LegacyUse> legacyUses = new ArrayList<>();
+    legacyUses.add(modUse);
+
+    List<BeaconExportUseDTO> useDTOs = mapper.toLegacyUsesDTO(legacyUses);
+
+    assertEquals(true, useDTOs.get(0) instanceof BeaconExportGenericUseDTO);
+
+    BeaconExportGenericUseDTO mappedModUse =
+      (BeaconExportGenericUseDTO) useDTOs.get(0);
+
+    assertEquals("MOD", mappedModUse.getEnvironment());
+    assertEquals("MCA Test MOD Vessel", mappedModUse.getVesselName());
+    assertEquals("MCA Test Port", mappedModUse.getHomePort());
+    assertEquals("GABC", mappedModUse.getVesselCallsign());
+    assertEquals("232001234", mappedModUse.getMmsiNumber());
+    assertEquals(25, mappedModUse.getMaxPersonOnBoard());
+  }
+
+  @Test
   public void toLegacyOwnerDTO_whenTheGivenLegacyGenericOwnerIsValid_shouldMapToBeaconExportOwnerDTO() {
     LegacyGenericOwner legacyOwner = new LegacyGenericOwner();
     legacyOwner.setOwnerName("Pharoah Sanders");
