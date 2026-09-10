@@ -48,9 +48,11 @@ Before you start...
   - Install [docker](https://docs.docker.com/engine/install/), or `brew install --cask docker-desktop`.
   - See the `.tool-versions` if you want to manage them some other way.
 - Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password. Please ensure you click "Edit" in 1Password before copying the config.
-- Get the Microsoft Graph secrets into your environment variables from "Microsoft Graph Secrets - TEST" from 1Password to your terminal.
+- Set up your environment variables.
   - We recommend using [direnv](https://direnv.net/) to manage this.
-  - Save the `.envrc.example` file in the root of the repository as `.envrc` and populate the values with what's in "Microsoft Graph Secrets - TEST" in 1Password
+  - Save the `.envrc.example` file in the root of the repository as `.envrc`.
+  - It enables local authentication by default, so **no Azure credentials are needed**. See
+    [Local authentication](#local-authentication) below.
 - Install all the things, setup commit hooks etc.
   - ```bash
     # From the root of this repository
@@ -61,6 +63,35 @@ Before you start...
     # From the root of this repository
     make serve
     ```
+
+### Local authentication
+
+The service normally uses Azure AD B2C for beacon owners, Azure AD for Backoffice users, and
+Microsoft Graph to manage account holder identities. Reaching those needs credentials for the MCA's
+tenants, which not every developer has, and they cannot be reached offline.
+
+Setting `BEACONS_LOCAL_AUTH=true` in your `.envrc` replaces all three with a single local user, so
+`make setup` and `make serve` are all you need:
+
+|                           | Normally                                           | With local authentication                                                        |
+| ------------------------- | -------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Webapp sign-in            | Azure AD B2C hosted pages                          | `/account/sign-in`, using `LOCAL_AUTH_EMAIL` and `LOCAL_AUTH_PASSWORD`           |
+| Backoffice sign-in        | Azure AD redirect                                  | Signed in automatically as the same user                                         |
+| Webapp → service          | Azure AD client credentials                        | An unverified placeholder token                                                  |
+| Service authorisation     | Access token, with `APPROLE_*` roles from Azure AD | Every request attributed to the local user, with the roles in `LOCAL_AUTH_ROLES` |
+| Account holder identities | Microsoft Graph                                    | Stubbed out; writes are logged and discarded                                     |
+
+`LOCAL_AUTH_ID` stands in for the B2C `sub` claim and becomes the account holder's `authId`, so it
+must be a UUID. Trim `LOCAL_AUTH_ROLES` to check how the Backoffice behaves for users with fewer
+permissions.
+
+This is local development only. It is switched on by the Spring `localauth` profile in
+`docker-compose.yml` and by `BEACONS_LOCAL_AUTH` in the webapp and Backoffice; deployed environments
+run the `default,migration` profiles (see `terraform/*.tfvars`) and never set either. **Do not add
+`localauth` to a deployed environment's active profiles.**
+
+To work against the real Azure tenants instead, unset `BEACONS_LOCAL_AUTH` and populate the
+Microsoft Graph secrets — see the commented-out section of `.envrc.example`.
 
 ## Infrastructure-as-code
 

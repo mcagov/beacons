@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +21,7 @@ public class SecurityConfiguration {
    */
   @Order(1)
   @Configuration
-  @Profile("default | dev")
+  @Profile("(default | dev) & !localauth")
   public static class AzureAdSecurityConfiguration
     extends AadResourceServerWebSecurityConfigurerAdapter {
 
@@ -47,6 +49,43 @@ public class SecurityConfiguration {
            * The path to the Backoffice SPA's static assets is configured in build.gradle.
            */
           "/backoffice/**" // DO NOT ADD ANYTHING HERE
+        );
+    }
+  }
+
+  /**
+   * Accept every request as the configured local user, for local development without an Azure
+   * tenant. Deployed environments run {@code default,migration} (see {@code terraform/*.tfvars}):
+   * never add {@code localauth} to a deployed environment's active profiles.
+   */
+  @Order(1)
+  @Configuration
+  @Profile("localauth")
+  public static class LocalSecurityConfiguration
+    extends WebSecurityConfigurerAdapter {
+
+    private final LocalAuthConfiguration localAuthConfiguration;
+
+    public LocalSecurityConfiguration(
+      LocalAuthConfiguration localAuthConfiguration
+    ) {
+      this.localAuthConfiguration = localAuthConfiguration;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+      http
+        .csrf()
+        .disable()
+        .cors()
+        .and()
+        .authorizeRequests()
+        .antMatchers("/**")
+        .permitAll()
+        .and()
+        .addFilterBefore(
+          new LocalAuthenticationFilter(localAuthConfiguration),
+          UsernamePasswordAuthenticationFilter.class
         );
     }
   }

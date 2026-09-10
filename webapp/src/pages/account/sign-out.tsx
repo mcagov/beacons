@@ -3,6 +3,7 @@ import { signOut } from "next-auth/react";
 import React, { FunctionComponent, type JSX } from "react";
 import { Layout } from "../../components/Layout";
 import { PageHeading, AnchorLink } from "../../components/Typography";
+import { isLocalAuthEnabled } from "../../lib/localAuth";
 import { AccountPageURLs, GeneralPageURLs } from "../../lib/urls";
 
 interface SignOutProps {
@@ -42,6 +43,11 @@ export default SignOut;
 export const getServerSideProps: GetServerSideProps<
   SignOutProps
 > = async () => {
+  // No B2C session to end in local development, so just go back to the start page
+  if (isLocalAuthEnabled()) {
+    return { props: { federatedSignOutUrl: GeneralPageURLs.start } };
+  }
+
   const federatedSignOutUrl = `https://${process.env.AZURE_B2C_TENANT_NAME}\
 .b2clogin.com/${process.env.AZURE_B2C_TENANT_NAME}\
 .onmicrosoft.com/${process.env.AZURE_B2C_LOGIN_FLOW}\

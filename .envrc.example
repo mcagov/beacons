@@ -1,4 +1,39 @@
-export MICROSOFT_GRAPH_CLIENT_ID="<from_1Password>"
-export MICROSOFT_GRAPH_CLIENT_SECRET="<from_1Password>"
-export MICROSOFT_GRAPH_B2C_TENANT_ID="<from_1Password>"
-export MICROSOFT_GRAPH_B2C_TENANT_NAME="<from_1Password>"
+##
+# Local development environment
+#
+# Save this file as `.envrc` (gitignored) and use direnv (https://direnv.net/) to load it.
+##
+
+##
+# Local authentication
+#
+# With this enabled, `make setup` and `make serve` need no Azure credentials at all:
+#   - the webapp signs you in with the email and password below instead of Azure AD B2C
+#   - the Backoffice signs you in as the same user instead of Azure AD
+#   - the service accepts any request and attributes it to that user (Spring "localauth" profile)
+#   - Microsoft Graph is stubbed out
+#
+# There is one user. Deployed environments are unaffected: they never set "localauth".
+##
+export BEACONS_LOCAL_AUTH=true
+export LOCAL_AUTH_EMAIL="dev@beacons.local"
+export LOCAL_AUTH_PASSWORD="password"
+export LOCAL_AUTH_NAME="Dev User"
+
+# The account holder's authId. Stands in for the B2C "sub" claim, so it must be a UUID.
+export LOCAL_AUTH_ID="00000000-0000-4000-8000-000000000001"
+
+# Backoffice permissions granted to the local user. Trim this list to test the restricted views.
+export LOCAL_AUTH_ROLES="UPDATE_RECORDS,ADD_BEACON_NOTES,DATA_EXPORTER,DELETE_BEACONS,ADMIN_EXPORT"
+
+##
+# Authenticating against real Azure instead
+#
+# Unset BEACONS_LOCAL_AUTH, uncomment the lines below, and populate them from "Microsoft Graph
+# Secrets - TEST" in 1Password.
+##
+# export SERVICE_SPRING_PROFILES="dev,seed"
+# export MICROSOFT_GRAPH_CLIENT_ID="<from_1Password>"
+# export MICROSOFT_GRAPH_CLIENT_SECRET="<from_1Password>"
+# export MICROSOFT_GRAPH_B2C_TENANT_ID="<from_1Password>"
+# export MICROSOFT_GRAPH_B2C_TENANT_NAME="<from_1Password>"

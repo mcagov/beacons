@@ -25,6 +25,7 @@ node_modules
 
 #Test results
 tests/cypress/screenshots/
+tests/cypress/videos/
 
 # Mutation testing
 .stryker-tmp
