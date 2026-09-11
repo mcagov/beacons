@@ -106,7 +106,7 @@
         "activity": "JET_AIRCRAFT",
         "otherActivity": "In my aircraft",
         "callSign": "Fish and Flights",
-        "mainUse": true,
+        "mainUse": false,
         "vhfRadio": true,
         "fixedVhfRadio": true,
         "fixedVhfRadioValue": "this is my MMSI number",
