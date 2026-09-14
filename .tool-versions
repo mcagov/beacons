@@ -1,4 +1,4 @@
-# Used by asdf (http://asdf-vm.com/) to control the versions of things on a per directory basis
+# Used by mise (http://mise.jdx.dev) to control the versions of things on a per directory basis
 
 java temurin-17.0.15+6
 
