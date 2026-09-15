@@ -116,7 +116,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
           draftRegistrationGateway: {
             read: jest.fn().mockResolvedValue(null),
           },
-        } as Partial<IAppContainer>,
+        } as unknown as Partial<IAppContainer>,
       };
       const rule =
         new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToRegistryAccountPage(
@@ -156,7 +156,7 @@ describe("GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_The
               ownerAuthId: "owner-auth-id",
             }),
           },
-        } as Partial<IAppContainer>,
+        } as unknown as Partial<IAppContainer>,
       };
       const rule =
         new GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_ThenRedirectUserToRegistryAccountPage(
