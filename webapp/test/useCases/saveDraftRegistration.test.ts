@@ -5,6 +5,7 @@ import { saveDraftRegistration } from "../../src/useCases/saveDraftRegistration"
 describe("saveDraftRegistration", () => {
   it("only mutates the cache with the updated fields", async () => {
     const existingDraftRegistration: DraftRegistration = {
+      ownerAuthId: "owner-auth-id",
       ownerFullName: "Steve Stevington",
       ownerEmail: "steve@stevington.com",
       ownerTelephoneNumber: "07283 726182",
@@ -17,6 +18,7 @@ describe("saveDraftRegistration", () => {
       uses: [],
     };
     const container = {
+      authId: "owner-auth-id",
       draftRegistrationGateway: {
         deleteUse: jest.fn(),
         read: jest.fn().mockResolvedValue(existingDraftRegistration),
@@ -32,6 +34,7 @@ describe("saveDraftRegistration", () => {
     expect(container.draftRegistrationGateway.update).toHaveBeenCalledWith(
       "test-id",
       {
+        ownerAuthId: "owner-auth-id",
         ownerFullName: "Steve Stevington",
         ownerEmail: "steve@stevington.com",
         ownerTelephoneNumber: "07283 726182",
@@ -45,6 +48,7 @@ describe("saveDraftRegistration", () => {
 
   it("retains existing properties of the mutated uses array element", async () => {
     const existingDraftRegistration: DraftRegistration = {
+      ownerAuthId: "owner-auth-id",
       uses: [
         {
           environment: Environment.MARITIME,
@@ -55,6 +59,7 @@ describe("saveDraftRegistration", () => {
       uses: [{ vesselName: "SS Fedora" }],
     };
     const container = {
+      authId: "owner-auth-id",
       draftRegistrationGateway: {
         deleteUse: jest.fn(),
         read: jest.fn().mockResolvedValue(existingDraftRegistration),
@@ -70,8 +75,44 @@ describe("saveDraftRegistration", () => {
     expect(container.draftRegistrationGateway.update).toHaveBeenCalledWith(
       "test-id",
       {
+        ownerAuthId: "owner-auth-id",
         uses: [{ environment: Environment.MARITIME, vesselName: "SS Fedora" }],
       },
     );
+  });
+
+  it("stamps the saving user as the owner of the draft", async () => {
+    const container = {
+      authId: "owner-auth-id",
+      draftRegistrationGateway: {
+        read: jest.fn().mockResolvedValue(null),
+        update: jest.fn(),
+      },
+    };
+
+    await saveDraftRegistration(container as any)("test-id", { uses: [] });
+
+    expect(container.draftRegistrationGateway.update).toHaveBeenCalledWith(
+      "test-id",
+      { uses: [], ownerAuthId: "owner-auth-id" },
+    );
+  });
+
+  it("does not overwrite a draft that is owned by a different user", async () => {
+    const container = {
+      authId: "requester-auth-id",
+      draftRegistrationGateway: {
+        read: jest.fn().mockResolvedValue({
+          ownerAuthId: "owner-auth-id",
+          ownerFullName: "does-not-matter",
+          uses: [],
+        }),
+        update: jest.fn(),
+      },
+    };
+
+    await saveDraftRegistration(container as any)("test-id", { uses: [] });
+
+    expect(container.draftRegistrationGateway.update).not.toHaveBeenCalled();
   });
 });

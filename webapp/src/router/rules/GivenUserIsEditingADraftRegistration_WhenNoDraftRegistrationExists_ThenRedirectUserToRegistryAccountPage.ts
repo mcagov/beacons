@@ -26,9 +26,18 @@ export class GivenUserIsEditingADraftRegistration_WhenNoDraftRegistrationExists_
     if (this.draftRegistrationCookieIdIsMissing())
       return redirectUserTo(AccountPageURLs.accountHome);
 
+    if (await this.aDraftRegistrationExistsButIsNotOwnedByThisUser())
+      return redirectUserTo(AccountPageURLs.accountHome);
+
     await this.createBlankDraftRegistration();
 
     return this.reloadPage();
+  }
+
+  private async aDraftRegistrationExistsButIsNotOwnedByThisUser(): Promise<boolean> {
+    return !!(await this.context.container.draftRegistrationGateway.read(
+      this.cookieId(),
+    ));
   }
 
   private async createBlankDraftRegistration(): Promise<void> {

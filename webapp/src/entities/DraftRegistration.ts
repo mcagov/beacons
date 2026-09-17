@@ -4,4 +4,5 @@ import { Registration } from "./Registration";
 
 export interface DraftRegistration extends RecursivePartial<Registration> {
   uses: DraftBeaconUse[];
+  ownerAuthId?: string;
 }
