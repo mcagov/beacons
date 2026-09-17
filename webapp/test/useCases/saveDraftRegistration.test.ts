@@ -5,6 +5,7 @@ import { saveDraftRegistration } from "../../src/useCases/saveDraftRegistration"
 describe("saveDraftRegistration", () => {
   it("only mutates the cache with the updated fields", async () => {
     const existingDraftRegistration: DraftRegistration = {
+      ownerAuthId: "owner-auth-id",
       ownerFullName: "Steve Stevington",
       ownerEmail: "steve@stevington.com",
       ownerTelephoneNumber: "07283 726182",
@@ -17,6 +18,7 @@ describe("saveDraftRegistration", () => {
       uses: [],
     };
     const container = {
+      authId: "owner-auth-id",
       draftRegistrationGateway: {
         deleteUse: jest.fn(),
         read: jest.fn().mockResolvedValue(existingDraftRegistration),
@@ -32,6 +34,7 @@ describe("saveDraftRegistration", () => {
     expect(container.draftRegistrationGateway.update).toHaveBeenCalledWith(
       "test-id",
       {
+        ownerAuthId: "owner-auth-id",
         ownerFullName: "Steve Stevington",
         ownerEmail: "steve@stevington.com",
         ownerTelephoneNumber: "07283 726182",
@@ -45,6 +48,7 @@ describe("saveDraftRegistration", () => {
 
   it("retains existing properties of the mutated uses array element", async () => {
     const existingDraftRegistration: DraftRegistration = {
+      ownerAuthId: "owner-auth-id",
       uses: [
         {
           environment: Environment.MARITIME,
@@ -55,6 +59,7 @@ describe("saveDraftRegistration", () => {
       uses: [{ vesselName: "SS Fedora" }],
     };
     const container = {
+      authId: "owner-auth-id",
       draftRegistrationGateway: {
         deleteUse: jest.fn(),
         read: jest.fn().mockResolvedValue(existingDraftRegistration),
@@ -70,6 +75,7 @@ describe("saveDraftRegistration", () => {
     expect(container.draftRegistrationGateway.update).toHaveBeenCalledWith(
       "test-id",
       {
+        ownerAuthId: "owner-auth-id",
         uses: [{ environment: Environment.MARITIME, vesselName: "SS Fedora" }],
       },
     );
