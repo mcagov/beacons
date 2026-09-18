@@ -39,6 +39,21 @@ setup-webapp:
 		npm install
 
 ##
+# Local authentication
+#
+# Set BEACONS_LOCAL_AUTH=true in your .envrc to develop without Azure. See "Local development without Azure" in
+# the README.
+##
+ifeq ($(BEACONS_LOCAL_AUTH),true)
+SERVICE_SPRING_PROFILES := dev,seed,localauth
+WEBAPP_DEV_SCRIPT := dev:local-auth
+else
+SERVICE_SPRING_PROFILES := dev,seed
+WEBAPP_DEV_SCRIPT := dev
+endif
+export SERVICE_SPRING_PROFILES
+
+##
 # Applications
 ##
 
@@ -52,7 +67,7 @@ serve: serve-backing-services serve-webapp serve-backoffice serve-backoffice-stu
 .PHONY: serve-webapp
 serve-webapp:
 	@echo "⏭ Starting the NextJS Webapp in dev mode..."
-	@cd ./webapp && npm run dev
+	@cd ./webapp && npm run $(WEBAPP_DEV_SCRIPT)
 
 .PHONY: serve-backoffice
 serve-backoffice:

@@ -1,0 +1,14 @@
+##
+# The local user for local development without Azure. Loaded by .envrc when BEACONS_LOCAL_AUTH=true.
+#
+# Optional: save as .envrc.local-auth (gitignored) to change these. Without it, the same values apply as defaults.
+##
+export LOCAL_AUTH_EMAIL="dev@beacons.local"
+export LOCAL_AUTH_PASSWORD="password"
+export LOCAL_AUTH_NAME="Dev User"
+
+# The account holder's authId. Stands in for the B2C "sub" claim, so it must be a UUID.
+export LOCAL_AUTH_ID="00000000-0000-4000-8000-000000000001"
+
+# Backoffice permissions granted to the local user. Trim this list to test the restricted views.
+export LOCAL_AUTH_ROLES="UPDATE_RECORDS,ADD_BEACON_NOTES,DATA_EXPORTER,DELETE_BEACONS,ADMIN_EXPORT"

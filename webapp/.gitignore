@@ -18,12 +18,9 @@ node_modules/
 
 # Cypress
 screenshots
-videos
 
 # Jest
 coverage
 
-# TypeScript incremental build cache
-*.tsbuildinfo
-
 cypress.env.json
+.env.local-auth

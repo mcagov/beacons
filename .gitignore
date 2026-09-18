@@ -25,7 +25,6 @@ node_modules
 
 #Test results
 tests/cypress/screenshots/
-tests/cypress/videos/
 
 # Mutation testing
 .stryker-tmp
@@ -33,3 +32,4 @@ stryker.log
 */reports/mutation
 
 .envrc
+.envrc.local-auth

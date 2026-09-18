@@ -6,11 +6,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
 
 /**
  * The single fixed identity used when the {@code localauth} profile is active. Supplied by the
- * environment (see {@code .envrc.example}) so all three applications agree on the local developer.
+ * environment (see {@code .envrc.local-auth.example}) so all three applications agree on the local developer.
  */
 @Profile("localauth")
 @Component
@@ -27,6 +29,21 @@ public class LocalAuthConfiguration {
 
   @Value("${local-auth.roles}")
   private String roles;
+
+  /**
+   * Deployed environments run {@code default,migration} (see {@code terraform/*.tfvars}). Refuse to start rather
+   * than serve an unauthenticated API if {@code localauth} is ever added to them.
+   */
+  public LocalAuthConfiguration(Environment environment) {
+    if (
+      !environment.acceptsProfiles(Profiles.of("dev")) ||
+      environment.acceptsProfiles(Profiles.of("default | migration"))
+    ) {
+      throw new IllegalStateException(
+        "The 'localauth' profile is for local development only: it must run with 'dev', and never with 'default' or 'migration'"
+      );
+    }
+  }
 
   public UUID getId() {
     return UUID.fromString(id);

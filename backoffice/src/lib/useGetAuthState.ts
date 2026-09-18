@@ -73,8 +73,11 @@ export const useGetAuthState = (): AuthState => {
 
 type AuthMode = ({ mode: "local" } & LocalAuthConfig) | { mode: "azure" };
 
-// Deployed environments do not serve this path, so any failure here means "use Azure AD".
+// Only the local stub server (stubs.js) serves this path, so production builds never ask and any failure here
+// means "use Azure AD".
 const getAuthMode = async (): Promise<AuthMode | null> => {
+  if (!import.meta.env.DEV) return null;
+
   try {
     const response = await fetch("/backoffice/auth-mode");
     if (!response.ok) return null;
