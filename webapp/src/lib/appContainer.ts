@@ -31,11 +31,14 @@ import { isLocalAuthEnabled } from "./localAuth";
 import { parseFormDataAs } from "./middleware";
 import { makeCachedUseMain } from "../useCases/makeCachedUseMain";
 
-// "overrides" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
 const authGateway = () =>
   isLocalAuthEnabled() ? new LocalAuthGateway() : new AadAuthGateway();
 
-export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
+// "overrides" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
+// It is also how the request-scoped `authId` is bound (see withContainer/withApiContainer).
+export const getAppContainer = (
+  overrides?: Partial<IAppContainer>,
+): IAppContainer => {
   return {
     /* Simple use cases */
     deleteCachedUse: deleteCachedUse,
