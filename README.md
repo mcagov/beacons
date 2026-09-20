@@ -69,22 +69,23 @@ If you don't have the Azure and 1Password secrets above, or want to work offline
 local user instead:
 
 1. Set `BEACONS_LOCAL_AUTH=true` in your `.envrc` (see `.envrc.example`) and run `direnv allow`.
-2. Copy `webapp/.env.local-auth.example` as `webapp/.env.local-auth`. It needs nothing from 1Password.
-3. Optionally, copy `.envrc.local-auth.example` as `.envrc.local-auth` to change the local user's email, password or
-   Backoffice roles.
-4. `make serve`, then sign in to the webapp with `dev@beacons.local` / `password`. The Backoffice signs you in as the
+2. Optionally, to change the defaults:
+   - copy `webapp/.env.local-auth.example` as `webapp/.env.local-auth` for the webapp's settings, which need nothing
+     from 1Password. Without it, the example file is used.
+   - copy `.envrc.local-auth.example` as `.envrc.local-auth` for the local user's email, password or Backoffice roles.
+3. `make serve`, then sign in to the webapp with `dev@beacons.local` / `password`. The Backoffice signs you in as the
    same user automatically.
 
 Each mode uses its own env files, so you can switch by changing the flag and restarting `make serve`:
 
-|                           | `BEACONS_LOCAL_AUTH` unset or `false` (default) | `BEACONS_LOCAL_AUTH=true`                                                            |
-| ------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Root env                  | `.envrc` (Microsoft Graph secrets)              | `.envrc` plus the optional `.envrc.local-auth`                                       |
-| Webapp env                | `webapp/.env.local`                             | `webapp/.env.local-auth`. Nothing is read from `.env.local`                          |
-| Webapp sign-in            | Azure AD B2C                                    | `/account/sign-in`, using `LOCAL_AUTH_EMAIL` and `LOCAL_AUTH_PASSWORD`               |
-| Backoffice sign-in        | Azure AD                                        | Signed in automatically as the same user                                             |
-| Service authorisation     | Azure AD access tokens                          | Spring `localauth` profile: every request is the local user, with `LOCAL_AUTH_ROLES` |
-| Account holder identities | Microsoft Graph                                 | Stubbed out; writes are logged and discarded                                         |
+|                           | `BEACONS_LOCAL_AUTH` unset or `false` (default) | `BEACONS_LOCAL_AUTH=true`                                                                |
+| ------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Root env                  | `.envrc` (Microsoft Graph secrets)              | `.envrc` plus the optional `.envrc.local-auth`                                           |
+| Webapp env                | `webapp/.env.local`                             | `webapp/.env.local-auth`, or its `.example` if absent. Nothing is read from `.env.local` |
+| Webapp sign-in            | Azure AD B2C                                    | `/account/sign-in`, using `LOCAL_AUTH_EMAIL` and `LOCAL_AUTH_PASSWORD`                   |
+| Backoffice sign-in        | Azure AD                                        | Signed in automatically as the same user                                                 |
+| Service authorisation     | Azure AD access tokens                          | Spring `localauth` profile: every request is the local user, with `LOCAL_AUTH_ROLES`     |
+| Account holder identities | Microsoft Graph                                 | Stubbed out; writes are logged and discarded                                             |
 
 This is for local development only. Deployed environments run the `default,migration` Spring profiles (see
 `terraform/*.tfvars`) and never set `BEACONS_LOCAL_AUTH`. The service refuses to start if `localauth` is combined with

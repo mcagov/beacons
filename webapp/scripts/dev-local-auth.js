@@ -2,7 +2,7 @@
  * Runs `next dev` for local development without Azure. `make serve` uses this when BEACONS_LOCAL_AUTH=true;
  * see "Local development without Azure" in the root README.
  *
- * Settings come from .env.local-auth only. Next.js always reads .env.local too, but it never overrides a variable
+ * Settings come from .env.local-auth, or .env.local-auth.example if you haven't made one. Next.js always reads .env.local too, but it never overrides a variable
  * that is already set, even to "", so every key in the files it would read is blanked out here. Switching modes
  * therefore never mixes Azure settings with local ones.
  */
@@ -12,7 +12,8 @@ const fs = require("fs");
 const path = require("path");
 
 const webappDir = path.join(__dirname, "..");
-const localAuthEnvFile = ".env.local-auth";
+// A developer's own copy, if they have made one, otherwise the committed defaults
+const localAuthEnvFiles = [".env.local-auth", ".env.local-auth.example"];
 // The files Next.js loads in development
 const nextEnvFiles = [
   ".env.development.local",
@@ -35,13 +36,12 @@ if (process.env.BEACONS_LOCAL_AUTH !== "true") {
   process.exit(1);
 }
 
-const localAuthEnv = readEnvFile(localAuthEnvFile);
-if (!localAuthEnv) {
-  console.error(
-    `webapp/${localAuthEnvFile} is missing. Copy webapp/${localAuthEnvFile}.example to create it.`,
-  );
+const localAuthEnvFile = localAuthEnvFiles.find((file) => readEnvFile(file));
+if (!localAuthEnvFile) {
+  console.error(`None of ${localAuthEnvFiles.join(", ")} exist in webapp/.`);
   process.exit(1);
 }
+const localAuthEnv = readEnvFile(localAuthEnvFile);
 
 // Real environment variables still take precedence, as they do with `next dev`
 const env = { ...process.env };
