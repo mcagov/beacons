@@ -1,3 +1,12 @@
+locals {
+  service_jvm_memory_logging_env = terraform.workspace == "dev" ? [
+    {
+      name : "JAVA_TOOL_OPTIONS",
+      value : "-Xlog:gc:stdout:time -XX:+UnlockDiagnosticVMOptions -XX:NativeMemoryTracking=summary -XX:+PrintNMTStatistics"
+    }
+  ] : []
+}
+
 data "aws_ecr_repository" "webapp" {
   name = var.webapp_image
 }
@@ -186,7 +195,7 @@ resource "aws_ecs_task_definition" "service" {
         sourceVolume : aws_efs_file_system.service-filesystem.creation_token
       }
     ],
-    environment : [
+    environment : concat([
       {
         name : "SPRING_DATASOURCE_URL",
         value : "jdbc:postgresql://${aws_db_instance.postgres.endpoint}/${var.db_name}?sslmode=require"
@@ -243,7 +252,7 @@ resource "aws_ecs_task_definition" "service" {
         name : "MICROSOFT_GRAPH_B2C_TENANT_NAME",
         value : var.microsoft_graph_b2c_tenant_name
       }
-    ],
+    ], local.service_jvm_memory_logging_env),
     logConfiguration : {
       "logDriver" : "awslogs",
       "options" : {
