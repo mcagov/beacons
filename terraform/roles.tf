@@ -56,3 +56,28 @@ resource "aws_iam_role_policy_attachment" "secret_manager_access" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = aws_iam_policy.secret_manager_access.arn
 }
+
+resource "aws_iam_role" "ecs_exec_task_role" {
+  count              = terraform.workspace == "dev" ? 1 : 0
+  name               = "${terraform.workspace}-ecs-exec-task-role"
+  assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_role.json
+}
+
+resource "aws_iam_role_policy" "ecs_exec_task_role" {
+  count = terraform.workspace == "dev" ? 1 : 0
+  name  = "${terraform.workspace}-ecs-exec"
+  role  = aws_iam_role.ecs_exec_task_role[0].id
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Action = [
+        "ssmmessages:CreateControlChannel",
+        "ssmmessages:CreateDataChannel",
+        "ssmmessages:OpenControlChannel",
+        "ssmmessages:OpenDataChannel"
+      ],
+      Resource = "*"
+    }]
+  })
+}

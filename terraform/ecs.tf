@@ -1,4 +1,6 @@
 locals {
+  service_exec_task_role_arn = terraform.workspace == "dev" ? aws_iam_role.ecs_exec_task_role[0].arn : null
+
   service_jvm_memory_logging_env = terraform.workspace == "dev" ? [
     {
       name : "JAVA_TOOL_OPTIONS",
@@ -168,6 +170,7 @@ resource "aws_ecs_service" "webapp" {
 resource "aws_ecs_task_definition" "service" {
   family                   = "${terraform.workspace}-beacons-service-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = local.service_exec_task_role_arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.service_fargate_cpu
@@ -284,6 +287,7 @@ resource "aws_ecs_service" "service" {
   cluster                           = aws_ecs_cluster.main.id
   task_definition                   = aws_ecs_task_definition.service.arn
   desired_count                     = var.service_count
+  enable_execute_command            = terraform.workspace == "dev"
   launch_type                       = "FARGATE"
   platform_version                  = var.ecs_fargate_version
   health_check_grace_period_seconds = 600
