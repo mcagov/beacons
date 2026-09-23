@@ -30,7 +30,10 @@ import { parseFormDataAs } from "./middleware";
 import { makeCachedUseMain } from "../useCases/makeCachedUseMain";
 
 // "overrides" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
-export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
+// It is also how the request-scoped `authId` is bound (see withContainer/withApiContainer).
+export const getAppContainer = (
+  overrides?: Partial<IAppContainer>,
+): IAppContainer => {
   return {
     /* Simple use cases */
     deleteCachedUse: deleteCachedUse,
