@@ -55,7 +55,6 @@ public class BeaconsDataWorkbookRepository {
     switch (operationType) {
       case EXPORT:
         SXSSFSheet exportSheet = workbook.createSheet("Beacons Export Data");
-        exportSheet.trackAllColumnsForAutoSizing();
         Row exportRow = exportSheet.createRow(0);
 
         int exportCellNum = 0;
@@ -66,7 +65,6 @@ public class BeaconsDataWorkbookRepository {
         break;
       case BACKUP:
         SXSSFSheet backupSheet = workbook.createSheet("Beacons Backup Data");
-        backupSheet.trackAllColumnsForAutoSizing();
         Row backupRow = backupSheet.createRow(0);
 
         int backupCellNum = 0;

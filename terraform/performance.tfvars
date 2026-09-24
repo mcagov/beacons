@@ -41,3 +41,5 @@ opensearch_instance_type                = "t3.small.elasticsearch"
 opensearch_master_node_count            = 3
 opensearch_instance_count               = 2
 opensearch_ebs_volume_size              = 10
+service_jvm_max_metaspace               = "384m"
+service_jvm_reserved_code_cache         = "192m"

@@ -142,6 +142,14 @@ variable "service_fargate_memory" {
   type        = number
   description = "Fargate instance memory to provision (in MiB) for the Beacons Service"
 }
+variable "service_jvm_max_metaspace" {
+  type        = string
+  description = "Maximum metaspace size for the Beacons Service JVM, e.g. 256m"
+}
+variable "service_jvm_reserved_code_cache" {
+  type        = string
+  description = "Reserved code cache size for the Beacons Service JVM, e.g. 128m"
+}
 variable "service_azure_ad_api_id" {
   sensitive   = true
   type        = string

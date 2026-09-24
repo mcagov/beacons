@@ -1,12 +1,16 @@
 locals {
   service_exec_task_role_arn = terraform.workspace == "dev" ? aws_iam_role.ecs_exec_task_role[0].arn : null
 
-  service_jvm_memory_logging_env = terraform.workspace == "dev" ? [
+  service_jvm_memory_limits = "-XX:MaxRAMPercentage=70 -XX:MaxMetaspaceSize=${var.service_jvm_max_metaspace} -XX:ReservedCodeCacheSize=${var.service_jvm_reserved_code_cache} -XX:+ExitOnOutOfMemoryError"
+
+  service_jvm_memory_logging = terraform.workspace == "dev" ? " -Xlog:gc:stdout:time -XX:+UnlockDiagnosticVMOptions -XX:NativeMemoryTracking=summary -XX:+PrintNMTStatistics" : ""
+
+  service_jvm_memory_logging_env = [
     {
       name : "JAVA_TOOL_OPTIONS",
-      value : "-Xlog:gc:stdout:time -XX:+UnlockDiagnosticVMOptions -XX:NativeMemoryTracking=summary -XX:+PrintNMTStatistics"
+      value : "${local.service_jvm_memory_limits}${local.service_jvm_memory_logging}"
     }
-  ] : []
+  ]
 }
 
 data "aws_ecr_repository" "webapp" {

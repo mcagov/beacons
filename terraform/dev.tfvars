@@ -42,3 +42,5 @@ opensearch_ebs_volume_size              = 10
 ssl_certificate_arn                     = "arn:aws:acm:eu-west-2:232705206979:certificate/cca7f7e5-8b98-443d-a6c6-245e7b653200"
 load_balancer_idle_time                 = 120
 redis_draft_registration_ttl            = 86400
+service_jvm_max_metaspace               = "256m"
+service_jvm_reserved_code_cache         = "128m"

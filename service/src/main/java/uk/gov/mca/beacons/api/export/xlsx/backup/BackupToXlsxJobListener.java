@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.batch.core.BatchStatus;
@@ -41,12 +40,6 @@ public class BackupToXlsxJobListener implements JobExecutionListener {
             .getWorkbook(BeaconsDataWorkbookRepository.OperationType.BACKUP)
             .get()
         );
-
-        SXSSFSheet sheet = workbook.getSheet("Beacons Backup Data");
-
-        for (Integer i : sheet.getTrackedColumnsForAutoSizing()) {
-          sheet.autoSizeColumn(i);
-        }
 
         workbook.write(fileOutputStream);
 
