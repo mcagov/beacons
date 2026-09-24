@@ -1,0 +1,37 @@
+minimumLimaVersion: "2.2.0"
+
+base: template:docker
+
+vmType: vz
+mountType: virtiofs
+
+cpus: 4
+memory: 8GiB
+disk: 60GiB
+
+mountInotify: true
+
+mounts: []
+
+provision:
+  - mode: system
+    script: |
+      #!/bin/bash
+      set -eux -o pipefail
+      apt-get update
+      apt-get install -y --no-install-recommends make git curl unzip ca-certificates
+      mkdir -p /tmp/beacons
+  - mode: user
+    script: |
+      #!/bin/bash
+      set -eux -o pipefail
+      if ! [ -x "$HOME/.local/bin/mise" ]; then
+        curl -fsSL https://mise.run | sh
+      fi
+      if ! grep -q "mise/shims" "$HOME/.profile" 2>/dev/null; then
+        echo 'export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"' >> "$HOME/.profile"
+      fi
+      "$HOME/.local/bin/mise" settings set idiomatic_version_file_enable_tools "[]" || true
+
+message: |
+  The Beacons VM is ready. Use ./scripts/dev.sh from the repository on your Mac.

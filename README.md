@@ -68,6 +68,11 @@ Before you start...
 If you don't have the Azure and 1Password secrets above, or want to work offline, you can run everything with a single
 local user instead.
 
+To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run
+`./scripts/dev.sh`. It creates the VM, installs everything inside it and serves the app; run it with no
+arguments for the list of commands. `node_modules` is kept inside the VM, so install on your Mac too if you
+want your editor to resolve imports. To run natively instead:
+
 1. Set `BEACONS_LOCAL_AUTH=true` in your `.envrc` (see `.envrc.example`) and run `direnv allow`.
 2. Optionally, to change the defaults:
    - copy `webapp/.env.local-auth.example` as `webapp/.env.local-auth` for the webapp's settings, which need nothing
