@@ -40,6 +40,9 @@ The service can be run either locally in your IDE of choice or from the command 
 
 Note that it will stop reporting progress at 80 something percent.
 
+To run without Azure, use `--spring.profiles.active=dev,localauth`. See
+[Local development without Azure](../README.md#local-development-without-azure).
+
 ## Testing
 
 ### Configuration for Tests

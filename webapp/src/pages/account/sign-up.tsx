@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import React, { FunctionComponent, useEffect, type JSX } from "react";
+import { isLocalAuthEnabled } from "../../lib/localAuth";
 import { AccountPageURLs } from "../../lib/urls";
 
 interface SignUpPageProps {
@@ -16,6 +17,10 @@ const SignUpPage: FunctionComponent<SignUpPageProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
+  if (isLocalAuthEnabled()) {
+    return { props: { signUpUrl: AccountPageURLs.signIn } };
+  }
+
   const tenantName = process.env.AZURE_B2C_TENANT_NAME;
   const userFlow = process.env.AZURE_B2C_SIGNUP_FLOW;
   const clientId = process.env.AZURE_B2C_CLIENT_ID;
