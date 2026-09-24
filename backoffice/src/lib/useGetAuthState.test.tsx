@@ -2,7 +2,6 @@ import { render, waitFor } from "@testing-library/react";
 import React from "react";
 import { AuthState, useGetAuthState } from "./useGetAuthState";
 
-// RTL v12 has no renderHook, so the hook is driven through a probe component
 let observed: AuthState;
 
 const AuthStateProbe = (): JSX.Element => {

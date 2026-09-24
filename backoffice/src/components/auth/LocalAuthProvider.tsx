@@ -10,7 +10,6 @@ interface LocalAuthProviderProps {
   apiAccessToken: string;
 }
 
-// Provides the same AuthContext as AuthProvider, so everything downstream is unchanged.
 export const LocalAuthProvider: FunctionComponent<LocalAuthProviderProps> = ({
   children,
   username,

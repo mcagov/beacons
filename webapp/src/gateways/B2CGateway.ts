@@ -11,7 +11,6 @@ export class B2CGateway {
   public readonly redirectUrl = "/unavailable";
 
   public async canConnectToB2C(): Promise<boolean> {
-    // There is no B2C tenant to reach in local development, so don't send the user to /unavailable
     if (isLocalAuthEnabled()) return true;
 
     try {

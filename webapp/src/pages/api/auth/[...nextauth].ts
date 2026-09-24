@@ -53,13 +53,10 @@ const localProvider = CredentialsProvider({
 
     const user = localUser();
 
-    // "id" becomes the JWT's "sub" claim, which the session callback exposes as authId
     return { id: user.id, name: user.name, email: user.email };
   },
 });
 
-// B2C's cross-site redirect needs SameSite=None, which requires Secure. Browsers reject Secure
-// cookies on http://localhost, so local sign-in keeps the default SameSite=Lax cookie.
 const callbackUrlCookie = {
   callbackUrl: {
     name: "next-auth.callback-url",

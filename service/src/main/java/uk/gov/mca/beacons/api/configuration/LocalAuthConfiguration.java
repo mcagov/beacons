@@ -10,10 +10,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
 
-/**
- * The single fixed identity used when the {@code localauth} profile is active. Supplied by the
- * environment ({@code LOCAL_AUTH_*}) so all three applications agree on the local developer.
- */
 @Profile("localauth")
 @Component
 public class LocalAuthConfiguration {
@@ -30,10 +26,6 @@ public class LocalAuthConfiguration {
   @Value("${local-auth.roles}")
   private String roles;
 
-  /**
-   * Deployed environments run {@code default,migration} (see {@code terraform/*.tfvars}). Refuse to start rather
-   * than serve an unauthenticated API if {@code localauth} is ever added to them.
-   */
   public LocalAuthConfiguration(Environment environment) {
     if (
       !environment.acceptsProfiles(Profiles.of("dev")) ||
@@ -57,7 +49,6 @@ public class LocalAuthConfiguration {
     return name;
   }
 
-  /** Role names without the {@code APPROLE_} prefix that Azure AD applies. */
   public List<String> getRoles() {
     return Arrays.stream(roles.split(","))
       .map(String::trim)

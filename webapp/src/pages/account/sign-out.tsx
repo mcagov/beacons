@@ -43,7 +43,6 @@ export default SignOut;
 export const getServerSideProps: GetServerSideProps<
   SignOutProps
 > = async () => {
-  // No B2C session to end in local development, so just go back to the start page
   if (isLocalAuthEnabled()) {
     return { props: { federatedSignOutUrl: GeneralPageURLs.start } };
   }

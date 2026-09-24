@@ -7,10 +7,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.mca.beacons.api.accountholder.domain.AccountHolder;
 import uk.gov.mca.beacons.api.configuration.LocalAuthConfiguration;
 
-/**
- * Treats an identity as existing for any authId asked about, so the account holder journey and the
- * Backoffice's account holder views work against locally-seeded data. Writes are discarded.
- */
 @Slf4j
 @Profile("localauth")
 @Component("microsoftGraphService")

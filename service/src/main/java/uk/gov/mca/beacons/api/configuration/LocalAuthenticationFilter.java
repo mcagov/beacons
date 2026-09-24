@@ -13,10 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-/**
- * Authenticates every request as the configured local user, so the {@code @PreAuthorize}
- * annotations guarding Backoffice operations behave as they do in a deployed environment.
- */
 public class LocalAuthenticationFilter extends OncePerRequestFilter {
 
   private final LocalAuthConfiguration config;

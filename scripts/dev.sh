@@ -126,7 +126,7 @@ announce_when_ready() {
 
   cat <<EOF
 
-  ──────────────────────────────────────────────────────────────
+  --------------------------------------------------------------
   Beacons is ready.
 
   Webapp      http://localhost:3000    sign in as dev@beacons.local / password
@@ -135,7 +135,7 @@ announce_when_ready() {
   Dashboards  http://localhost:5601
 
   Edit files on your Mac as usual. Press Ctrl-C to stop.
-  ──────────────────────────────────────────────────────────────
+  --------------------------------------------------------------
 
 EOF
 }

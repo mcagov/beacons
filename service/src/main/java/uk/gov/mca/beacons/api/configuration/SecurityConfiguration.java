@@ -53,11 +53,6 @@ public class SecurityConfiguration {
     }
   }
 
-  /**
-   * Accept every request as the configured local user, for local development without an Azure
-   * tenant. Deployed environments run {@code default,migration} (see {@code terraform/*.tfvars}):
-   * never add {@code localauth} to a deployed environment's active profiles.
-   */
   @Order(1)
   @Configuration
   @Profile("localauth")
