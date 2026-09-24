@@ -37,12 +37,6 @@ setup-webapp:
 		node --version && \
 		npm install
 
-##
-# Local authentication
-#
-# Set BEACONS_LOCAL_AUTH=true in your .envrc to develop without Azure. See "Local development without Azure" in
-# the README.
-##
 ifeq ($(BEACONS_LOCAL_AUTH),true)
 SERVICE_SPRING_PROFILES := dev,seed,localauth
 WEBAPP_DEV_SCRIPT := dev:local-auth

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * The single fixed identity used when the {@code localauth} profile is active. Supplied by the
- * environment (see {@code .envrc.local-auth.example}) so all three applications agree on the local developer.
+ * environment ({@code LOCAL_AUTH_*}) so all three applications agree on the local developer.
  */
 @Profile("localauth")
 @Component

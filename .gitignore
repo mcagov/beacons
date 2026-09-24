@@ -32,4 +32,3 @@ stryker.log
 */reports/mutation
 
 .envrc
-.envrc.local-auth

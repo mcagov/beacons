@@ -1,16 +1,5 @@
-##
-# Set to true to develop without Azure: see "Local development without Azure" in the README.
-#
-# Each mode loads only its own variables, and direnv unloads the other mode's when you switch.
-##
 export BEACONS_LOCAL_AUTH=false
-
-if [ "$BEACONS_LOCAL_AUTH" = "true" ]; then
-  # Optional: copy .envrc.local-auth.example to change the local user. Defaults apply without it.
-  source_env_if_exists .envrc.local-auth
-else
-  export MICROSOFT_GRAPH_CLIENT_ID="<from_1Password>"
-  export MICROSOFT_GRAPH_CLIENT_SECRET="<from_1Password>"
-  export MICROSOFT_GRAPH_B2C_TENANT_ID="<from_1Password>"
-  export MICROSOFT_GRAPH_B2C_TENANT_NAME="<from_1Password>"
-fi
+export MICROSOFT_GRAPH_CLIENT_ID="<from_1Password>"
+export MICROSOFT_GRAPH_CLIENT_SECRET="<from_1Password>"
+export MICROSOFT_GRAPH_B2C_TENANT_ID="<from_1Password>"
+export MICROSOFT_GRAPH_B2C_TENANT_NAME="<from_1Password>"
