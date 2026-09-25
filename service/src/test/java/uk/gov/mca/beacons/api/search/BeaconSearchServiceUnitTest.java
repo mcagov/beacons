@@ -67,9 +67,7 @@ public class BeaconSearchServiceUnitTest {
     BeaconUse mockBeaconUse = createMockBeaconUse();
 
     given(
-      beaconUseRepository.getBeaconUseByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
-        any(BeaconId.class)
-      )
+      beaconUseRepository.getBeaconUseByBeaconId(any(BeaconId.class))
     ).willReturn(List.of(mockBeaconUse));
     beaconSearchService.index(mockBeacon.getId());
 
@@ -107,9 +105,7 @@ public class BeaconSearchServiceUnitTest {
       List.of()
     );
     given(
-      beaconUseRepository.getBeaconUseByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
-        any(BeaconId.class)
-      )
+      beaconUseRepository.getBeaconUseByBeaconId(any(BeaconId.class))
     ).willReturn(List.of());
     beaconSearchService.index(mockBeacon.getId());
 
