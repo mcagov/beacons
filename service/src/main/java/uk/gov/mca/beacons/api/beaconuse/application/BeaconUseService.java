@@ -22,11 +22,15 @@ public class BeaconUseService {
   }
 
   public List<BeaconUse> createAll(List<BeaconUse> beaconUses) {
+    BeaconUseHelper.applySingleMainUse(beaconUses);
+
     return beaconUseRepository.saveAll(beaconUses);
   }
 
   public List<BeaconUse> getByBeaconId(BeaconId beaconId) {
-    return beaconUseRepository.getBeaconUseByBeaconId(beaconId);
+    return beaconUseRepository.getBeaconUseByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
+      beaconId
+    );
   }
 
   public BeaconUse getMainUseByBeaconId(BeaconId beaconId) {

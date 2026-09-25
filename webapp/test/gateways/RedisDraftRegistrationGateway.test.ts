@@ -162,18 +162,18 @@ describe("RedisDraftRegistrationGateway", () => {
           ...draft,
           uses: [
             {
-              environment: "AVIATION",
-              purpose: "PLEASURE",
-              activity: "GLIDER",
-              moreDetails: "More details of this vessel",
-              mainUse: false,
-            },
-            {
               environment: "MARITIME",
               purpose: "COMMERCIAL",
               activity: "SAILING",
               moreDetails: "More details of this vessel",
               mainUse: true,
+            },
+            {
+              environment: "AVIATION",
+              purpose: "PLEASURE",
+              activity: "GLIDER",
+              moreDetails: "More details of this vessel",
+              mainUse: false,
             },
           ],
         },
