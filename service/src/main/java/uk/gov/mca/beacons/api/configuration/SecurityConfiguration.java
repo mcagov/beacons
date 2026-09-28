@@ -70,8 +70,6 @@ public class SecurityConfiguration {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       http
-        .csrf()
-        .disable()
         .cors()
         .and()
         .authorizeRequests()
