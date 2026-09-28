@@ -1,4 +1,5 @@
 import { AadAuthGateway } from "../gateways/AadAuthGateway";
+import { LocalAuthGateway } from "../gateways/LocalAuthGateway";
 import { B2CGateway } from "../gateways/B2CGateway";
 import { BeaconsApiAccountHolderGateway } from "../gateways/BeaconsApiAccountHolderGateway";
 import { BeaconsApiBeaconGateway } from "../gateways/BeaconsApiBeaconGateway";
@@ -26,11 +27,18 @@ import { submitRegistration } from "../useCases/submitRegistration";
 import { updateAccountHolder } from "../useCases/updateAccountHolder";
 import { updateRegistration } from "../useCases/updateRegistration";
 import { IAppContainer } from "./IAppContainer";
+import { isLocalAuthEnabled } from "./localAuth";
 import { parseFormDataAs } from "./middleware";
 import { makeCachedUseMain } from "../useCases/makeCachedUseMain";
 
+const authGateway = () =>
+  isLocalAuthEnabled() ? new LocalAuthGateway() : new AadAuthGateway();
+
 // "overrides" is spread over the default appContainer at the bottom of this method to enable injecting mocks et al.
-export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
+// It is also how the request-scoped `authId` is bound (see withContainer/withApiContainer).
+export const getAppContainer = (
+  overrides?: Partial<IAppContainer>,
+): IAppContainer => {
   return {
     /* Simple use cases */
     deleteCachedUse: deleteCachedUse,
@@ -85,15 +93,12 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
 
     /* Gateways */
     get beaconGateway() {
-      return new BeaconsApiBeaconGateway(
-        process.env.API_URL,
-        new AadAuthGateway(),
-      );
+      return new BeaconsApiBeaconGateway(process.env.API_URL, authGateway());
     },
     get beaconSearchGateway() {
       return new BeaconsApiBeaconSearchGateway(
         process.env.API_URL,
-        new AadAuthGateway(),
+        authGateway(),
       );
     },
     get emailServiceGateway() {
@@ -102,7 +107,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get accountHolderGateway() {
       return new BeaconsApiAccountHolderGateway(
         process.env.API_URL,
-        new AadAuthGateway(),
+        authGateway(),
       );
     },
     get draftRegistrationGateway() {
@@ -114,7 +119,7 @@ export const getAppContainer = (overrides?: IAppContainer): IAppContainer => {
     get legacyBeaconGateway() {
       return new BeaconsApiLegacyBeaconGateway(
         process.env.API_URL,
-        new AadAuthGateway(),
+        authGateway(),
       );
     },
     get b2CGateway() {

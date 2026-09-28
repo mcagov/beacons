@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "dev:local-auth": "node scripts/dev-local-auth.js",
     "build": "next build",
     "start": "next start",
     "test": "jest",
