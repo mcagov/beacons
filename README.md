@@ -63,6 +63,26 @@ Before you start...
     make serve
     ```
 
+### Local development without Azure
+
+If you don't have the Azure and 1Password secrets above, or want to work offline, you can run everything with a single
+local user instead.
+
+1. Set `BEACONS_LOCAL_AUTH=true` in your `.envrc` (see `.envrc.example`) and run `direnv allow`.
+2. Optionally, to change the defaults:
+   - copy `webapp/.env.local-auth.example` as `webapp/.env.local-auth` for the webapp's settings, which need nothing
+     from 1Password. Without it, the example file is used.
+   - export `LOCAL_AUTH_EMAIL`, `LOCAL_AUTH_PASSWORD` or `LOCAL_AUTH_ROLES` in your `.envrc` to change the local
+     user's email, password or Backoffice roles.
+3. `make serve`, then sign in to the webapp with `dev@beacons.local` / `password`. The Backoffice signs you in as the
+   same user automatically.
+
+Each mode uses its own env files, so you can switch by changing the flag and restarting `make serve`.
+
+This is for local development only. Deployed environments run the `default,migration` Spring profiles (see
+`terraform/*.tfvars`) and never set `BEACONS_LOCAL_AUTH`. The service refuses to start if `localauth` is combined with
+`default` or `migration`, or runs without `dev`.
+
 ## Infrastructure-as-code
 
 The [Terraform](./terraform) directory contains the Terraform code for managing the infrastructure for the Beacons

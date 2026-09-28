@@ -13,6 +13,7 @@ export default defineConfig({
     proxy: {
       "/backoffice/client-id": "http://localhost:3005",
       "/backoffice/tenant-id": "http://localhost:3005",
+      "/backoffice/auth-mode": "http://localhost:3005",
       "/backoffice/log": "http://localhost:3005",
     },
   },
