@@ -151,7 +151,7 @@ const UseSection: FunctionComponent<UseProps> = ({
     type = Environments.Maritime;
   } else if (type.toUpperCase().indexOf("RIG") > -1) {
     type = "RIG";
-  } else {
+  } else if (type.toUpperCase().startsWith("LAND")) {
     type = Environments.Land;
   }
 

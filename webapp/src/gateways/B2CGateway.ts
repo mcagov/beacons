@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isLocalAuthEnabled } from "../lib/localAuth";
 import logger from "../logger";
 
 export class B2CGateway {
@@ -10,6 +11,8 @@ export class B2CGateway {
   public readonly redirectUrl = "/unavailable";
 
   public async canConnectToB2C(): Promise<boolean> {
+    if (isLocalAuthEnabled()) return true;
+
     try {
       const b2cResponse = await axios.get(this.loginUrl);
       return b2cResponse.status === 200;
