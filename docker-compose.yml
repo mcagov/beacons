@@ -36,6 +36,9 @@ services:
   opensearch-proxy:
     build: ./opensearch/proxy
     image: beacons-opensearch-proxy
+    depends_on:
+      - opensearch
+    restart: on-failure
     ports:
       - "8081:80"
     environment:
