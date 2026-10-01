@@ -35,7 +35,7 @@ xcrun gem install faker
 
 ### Local
 
-- Ensure your local dockerised instance of the Postgres DB server is running
+- Ensure your local containerised instance of the Postgres DB server is running
 - Run each script using Ruby, e.g:
   `ruby beacons_bulk_load_legacy.rb`
 

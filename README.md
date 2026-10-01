@@ -46,7 +46,9 @@ Before you start...
 - Make sure you have the required versions of things installed
   - Install [brew](https://brew.sh/) onto your laptop if you are using a Mac.
   - Install [mise-en-place](<[asdf-vm.com](https://mise.jdx.dev/)>)
-  - Install [docker](https://docs.docker.com/engine/install/), or `brew install --cask docker-desktop`.
+  - Install [Podman](https://podman.io/docs/installation) and podman-compose with `brew install podman podman-compose`,
+    then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
+    use `./scripts/dev.sh`, which runs Podman inside its own VM.
   - See the `.tool-versions` if you want to manage them some other way.
 - Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password. Please ensure you click "Edit" in 1Password before copying the config.
 - Get the Microsoft Graph secrets into your environment variables from "Microsoft Graph Secrets - TEST" from 1Password to your terminal.

@@ -5,7 +5,7 @@ version: "3.8"
 # See https://www.schemacrawler.com/ for documentation
 services:
   schemacrawler:
-    image: schemacrawler/schemacrawler:v16.15.2
+    image: docker.io/schemacrawler/schemacrawler:v16.15.2
     volumes:
       - ./schemacrawler:/opt/schema/
     entrypoint:
