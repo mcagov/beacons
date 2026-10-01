@@ -2,6 +2,8 @@ import { PublicClientApplication } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { RequireAuth } from "components/auth/RequireAuth";
 import { AuthGateway } from "gateways/auth/AuthGateway";
+import { IAuthGateway } from "gateways/auth/IAuthGateway";
+import { LocalAuthGateway } from "gateways/auth/LocalAuthGateway";
 import { BeaconsGateway } from "gateways/beacons/BeaconsGateway";
 import { ExportsGateway } from "gateways/exports/ExportsGateway";
 import { UsesGateway } from "gateways/uses/UsesGateway";
@@ -21,6 +23,7 @@ import { LabelsView, LabelView } from "views/exports/label/LabelView";
 import { UserRolesView } from "views/UserRolesView";
 import "./App.scss";
 import { AuthProvider } from "./components/auth/AuthProvider";
+import { LocalAuthProvider } from "./components/auth/LocalAuthProvider";
 import { ErrorState } from "./components/dataPanel/PanelErrorState";
 import { LoadingState } from "./components/dataPanel/PanelLoadingState";
 import { Footer } from "./components/layout/Footer";
@@ -62,11 +65,39 @@ const App: FunctionComponent = () => {
     logToServer.error(authState.error);
     return <ErrorState>Error loading authentication configuration</ErrorState>;
   }
-  const pca = new PublicClientApplication(authState.config);
+  let authGateway: IAuthGateway;
+  let authShell: (children: React.ReactNode) => JSX.Element;
+  let routeGuard: (children: React.ReactNode) => JSX.Element;
+
+  if (authState.status === "LOCAL") {
+    const localConfig = authState.config;
+
+    authGateway = new LocalAuthGateway();
+    authShell = (children) => (
+      <LocalAuthProvider
+        username={localConfig.username}
+        displayName={localConfig.displayName}
+        roles={localConfig.roles}
+        apiAccessToken="local-development-token"
+      >
+        {children}
+      </LocalAuthProvider>
+    );
+    routeGuard = (children) => <>{children}</>;
+  } else {
+    const pca = new PublicClientApplication(authState.config);
+
+    authGateway = new AuthGateway(pca);
+    authShell = (children) => (
+      <MsalProvider instance={pca}>
+        <AuthProvider>{children}</AuthProvider>
+      </MsalProvider>
+    );
+    routeGuard = (children) => <RequireAuth>{children}</RequireAuth>;
+  }
 
   const beaconResponseMapper = new BeaconResponseMapper();
   const legacyBeaconResponseMapper = new LegacyBeaconResponseMapper();
-  const authGateway = new AuthGateway(pca);
   const beaconRequestMapper = new BeaconRequestMapper();
 
   const beaconsGateway = new BeaconsGateway(
@@ -181,87 +212,81 @@ const App: FunctionComponent = () => {
     );
   };
 
-  return (
-    <MsalProvider instance={pca}>
-      <AuthProvider>
-        <UserSettingsProvider>
-          <Router basename="/backoffice">
-            <RequireAuth>
-              <Switch>
-                <Route exact path="/">
-                  <Navigation exportsGateway={exportsGateway} />
-                  <Search beaconsGateway={beaconsGateway} />
-                  <Footer />
-                </Route>
-                <Route path={`/export/search`}>
-                  <Navigation exportsGateway={exportsGateway} />
-                  <PageContent>
-                    <BeaconExportSearch exportsGateway={exportsGateway} />
-                  </PageContent>
-                </Route>
-                <Route path={`/roles`}>
-                  <Navigation exportsGateway={exportsGateway} />
-                  <PageContent>
-                    <UserRolesView />
-                  </PageContent>
-                  <Footer />
-                </Route>
-                <Route path={`/beacons/:id`}>
-                  <SingleBeaconRecordViewWithParam />
-                </Route>
-                <Route path={`/legacy-beacons/:id`}>
-                  <SingleLegacyBeaconRecordViewWithParam />
-                </Route>
-                <Route path={`/account-holder/:id`}>
-                  <AccountHolderViewWithParam />
-                </Route>
-                <Route path={`/account-holders`}>
-                  <div>
-                    <Navigation exportsGateway={exportsGateway} />
-                    <AccountHolderListView
-                      accountHolderGateway={accountHolderGateway}
-                    />
-                    <Footer />
-                  </div>
-                </Route>
-                <Route path={`/admin`}>
-                  <Navigation exportsGateway={exportsGateway} />
-                  <AdminView />
-                  <Footer />
-                </Route>
-                <Route path={`/certificate/:id`}>
-                  <CertificateViewWithParam />
-                </Route>
-                <Route path={`/certificates/:ids`}>
-                  <CertificatesViewWithParam />
-                </Route>
-                <Route path={`/letter/:letterType/:id/`}>
-                  <LetterViewWithParam />
-                </Route>
-                <Route path={`/letters/:lettersType/:ids/`}>
-                  <LettersViewWithParam />
-                </Route>
-                <Route path={`/label/:id`}>
-                  <Navigation exportsGateway={exportsGateway} />
-                  <LabelViewWithParam />
-                  <Footer />
-                </Route>
-                <Route path={`/labels/:ids`}>
-                  <Navigation exportsGateway={exportsGateway} />
-                  <LabelsViewWithParam />
-                  <Footer />
-                </Route>
-                <Route>
-                  <Navigation exportsGateway={exportsGateway} />
-                  Page not found. Is the address correct?
-                  <Footer />
-                </Route>
-              </Switch>
-            </RequireAuth>
-          </Router>
-        </UserSettingsProvider>
-      </AuthProvider>
-    </MsalProvider>
+  const routes = (
+    <Switch>
+      <Route exact path="/">
+        <Navigation exportsGateway={exportsGateway} />
+        <Search beaconsGateway={beaconsGateway} />
+        <Footer />
+      </Route>
+      <Route path={`/export/search`}>
+        <Navigation exportsGateway={exportsGateway} />
+        <PageContent>
+          <BeaconExportSearch exportsGateway={exportsGateway} />
+        </PageContent>
+      </Route>
+      <Route path={`/roles`}>
+        <Navigation exportsGateway={exportsGateway} />
+        <PageContent>
+          <UserRolesView />
+        </PageContent>
+        <Footer />
+      </Route>
+      <Route path={`/beacons/:id`}>
+        <SingleBeaconRecordViewWithParam />
+      </Route>
+      <Route path={`/legacy-beacons/:id`}>
+        <SingleLegacyBeaconRecordViewWithParam />
+      </Route>
+      <Route path={`/account-holder/:id`}>
+        <AccountHolderViewWithParam />
+      </Route>
+      <Route path={`/account-holders`}>
+        <div>
+          <Navigation exportsGateway={exportsGateway} />
+          <AccountHolderListView accountHolderGateway={accountHolderGateway} />
+          <Footer />
+        </div>
+      </Route>
+      <Route path={`/admin`}>
+        <Navigation exportsGateway={exportsGateway} />
+        <AdminView />
+        <Footer />
+      </Route>
+      <Route path={`/certificate/:id`}>
+        <CertificateViewWithParam />
+      </Route>
+      <Route path={`/certificates/:ids`}>
+        <CertificatesViewWithParam />
+      </Route>
+      <Route path={`/letter/:letterType/:id/`}>
+        <LetterViewWithParam />
+      </Route>
+      <Route path={`/letters/:lettersType/:ids/`}>
+        <LettersViewWithParam />
+      </Route>
+      <Route path={`/label/:id`}>
+        <Navigation exportsGateway={exportsGateway} />
+        <LabelViewWithParam />
+        <Footer />
+      </Route>
+      <Route path={`/labels/:ids`}>
+        <Navigation exportsGateway={exportsGateway} />
+        <LabelsViewWithParam />
+        <Footer />
+      </Route>
+      <Route>
+        <Navigation exportsGateway={exportsGateway} />
+        Page not found. Is the address correct?
+        <Footer />
+      </Route>
+    </Switch>
+  );
+
+  return authShell(
+    <UserSettingsProvider>
+      <Router basename="/backoffice">{routeGuard(routes)}</Router>
+    </UserSettingsProvider>,
   );
 };
 

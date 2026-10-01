@@ -8,8 +8,6 @@ import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 @Repository("BeaconUseRepositoyV2")
 public interface BeaconUseRepository
   extends JpaRepository<BeaconUse, BeaconUseId> {
-  List<BeaconUse> getBeaconUseByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
-    BeaconId beaconId
-  );
+  List<BeaconUse> getBeaconUseByBeaconId(BeaconId beaconId);
   Long deleteAllByBeaconId(BeaconId beaconId);
 }
