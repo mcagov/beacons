@@ -9,14 +9,13 @@ MAKEFLAGS += -j
 
 .PHONY: setup
 setup: setup-root setup-backoffice setup-webapp
-	asdf plugin add nodejs
 
 .PHONY: setup-root
 setup-root:
 	@echo "\n==================================================="
 	@echo "Installing root level dependencies and commit hooks\n"
 	cd . && \
-		asdf install && \
+		mise install && \
 		node --version && \
 		npm install
 
@@ -25,7 +24,7 @@ setup-backoffice:
 	@echo "\n=================================="
 	@echo "Installing backoffice dependencies\n"
 	cd ./backoffice && \
-		asdf install && \
+		mise install && \
 		node --version && \
 		npm install
 
@@ -34,9 +33,18 @@ setup-webapp:
 	@echo "\n=============================="
 	@echo "Installing webapp dependencies\n"
 	cd ./webapp && \
-		asdf install && \
+		mise install && \
 		node --version && \
 		npm install
+
+ifeq ($(BEACONS_LOCAL_AUTH),true)
+SERVICE_SPRING_PROFILES := dev,seed,localauth
+WEBAPP_DEV_SCRIPT := dev:local-auth
+else
+SERVICE_SPRING_PROFILES := dev,seed
+WEBAPP_DEV_SCRIPT := dev
+endif
+export SERVICE_SPRING_PROFILES
 
 ##
 # Applications
@@ -52,7 +60,7 @@ serve: serve-backing-services serve-webapp serve-backoffice serve-backoffice-stu
 .PHONY: serve-webapp
 serve-webapp:
 	@echo "⏭ Starting the NextJS Webapp in dev mode..."
-	@cd ./webapp && npm run dev
+	@cd ./webapp && npm run $(WEBAPP_DEV_SCRIPT)
 
 .PHONY: serve-backoffice
 serve-backoffice:

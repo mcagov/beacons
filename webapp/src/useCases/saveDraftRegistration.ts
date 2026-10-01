@@ -4,12 +4,22 @@ import { appContainer } from "../lib/appContainer";
 import { IAppContainer } from "../lib/IAppContainer";
 
 export const saveDraftRegistration =
-  ({ draftRegistrationGateway }: IAppContainer = appContainer) =>
+  ({ draftRegistrationGateway, authId }: IAppContainer = appContainer) =>
   async (id: string, updates: DraftRegistration): Promise<void> => {
     const existingDraftRegistration = await draftRegistrationGateway.read(id);
 
+    if (
+      existingDraftRegistration?.ownerAuthId &&
+      existingDraftRegistration.ownerAuthId !== authId
+    )
+      return;
+
     await draftRegistrationGateway.update(
       id,
-      _.merge(existingDraftRegistration, updates),
+      _.merge(
+        existingDraftRegistration,
+        updates,
+        authId ? { ownerAuthId: authId } : {},
+      ),
     );
   };
