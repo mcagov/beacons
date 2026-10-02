@@ -25,7 +25,7 @@ You will need these running before you try to run the API or continue down from 
 ```shell
 # From the repository root
 
-docker compose up --build postgres opensearch
+podman compose up --build postgres opensearch
 ```
 
 ### Run the API
@@ -62,7 +62,13 @@ Both unit and integration tests go in [src/test/java/uk/gov/mca/beacons/api](src
 
 ### Running tests
 
-Note that the integration tests require Docker to be running on your local development environment.
+Note that the integration tests use Testcontainers, which needs Podman running and its Docker-compatible socket in
+`DOCKER_HOST`. The `./scripts/dev.sh` VM sets this up for you. On your Mac, with a Podman machine running:
+
+```shell
+export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
+export TESTCONTAINERS_RYUK_DISABLED=true
+```
 
 - `./gradlew clean test` runs unit tests
 - `./gradlew clean integrationTest` runs integration tests
@@ -101,6 +107,6 @@ The progress of the job can then be monitored in the logs.
 
 ## Database schema diagram
 
-With the Beacons Service API running, execute `docker compose up -f docker-compose.schemacrawler.yml`. This will create
+With the Beacons Service API running, execute `podman compose -f docker-compose.schemacrawler.yml up`. This will create
 a diagram of the database schema at
 [schemacrawler/beacons-schema.html](schemacrawler/beacons-schema.html).

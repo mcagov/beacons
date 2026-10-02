@@ -7,6 +7,8 @@
 
 MAKEFLAGS += -j
 
+export BUILDAH_FORMAT := docker
+
 .PHONY: setup
 setup: setup-root setup-backoffice setup-webapp
 
@@ -72,9 +74,9 @@ serve-backoffice:
 ##
 .PHONY: serve-backing-services
 serve-backing-services:
-	@echo "🐳 Starting Postgres, Redis and OpenSearch..."
-	# Don't try separating these. Docker compose does not like working in parallel, so they all need to come up at once
-	@docker compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service --build
+	@echo "🦭 Starting Postgres, Redis and OpenSearch..."
+	# Don't try separating these. Podman compose does not like working in parallel, so they all need to come up at once
+	@podman compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service --build
 
 .PHONY: serve-backoffice-stubs
 serve-backoffice-stubs:
@@ -86,4 +88,4 @@ serve-backoffice-stubs:
 ##
 .PHONY: clean
 clean:
-	docker compose down
+	podman compose down

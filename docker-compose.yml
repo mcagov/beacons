@@ -1,16 +1,16 @@
-# Instead of using Docker Compose directly, w use make commands to run the application locally, see README.md#local-development
+# Instead of using Podman Compose directly, we use make commands to run the application locally, see README.md#local-development
 
 version: "3.9"
 
 ##
 # A containerised local development environment similar to the deployed environment
 #
-# ! Requires Docker Desktop to be configured with 4GB of RAM !
+# ! Requires the Podman machine or Lima VM to have at least 4GB of RAM !
 ##
 
 services:
   postgres:
-    image: library/postgres:17
+    image: docker.io/library/postgres:17
     environment:
       POSTGRES_USER: beacons_service
       POSTGRES_PASSWORD: password
@@ -19,7 +19,7 @@ services:
       - "5432:5432"
 
   opensearch:
-    image: opensearchproject/opensearch:1.1.0
+    image: docker.io/opensearchproject/opensearch:1.1.0
     environment:
       - discovery.type=single-node
     volumes:
@@ -27,7 +27,7 @@ services:
     expose:
       - 9200 # Core OpenSearch queries
       - 9600 # Performance Analyzer queries
-    ports: # Exposed only for local development with a non-Dockerized Spring; these ports are private when deployed
+    ports: # Exposed only for local development with a non-containerised Spring; these ports are private when deployed
       - "9200:9200"
       - "9600:9600"
 
@@ -48,7 +48,7 @@ services:
       APPLICATION_CREDENTIALS_BASE64: "" # Not used in local development
 
   opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:1.1.0
+    image: docker.io/opensearchproject/opensearch-dashboards:1.1.0
     ports:
       - "5601:5601"
     environment:
@@ -98,7 +98,7 @@ services:
       VITE_APP_FEEDBACK_EMAIL_ADDRESSES: "x@y.com,y@z.com"
 
   redis:
-    image: redis:6
+    image: docker.io/library/redis:6
     ports:
       - "6379:6379"
 
