@@ -50,7 +50,7 @@ To run without Azure, use `--spring.profiles.active=dev,localauth`. See
 - The test project has its own application.yml file containing several sensitive MICROSOFT_GRAPH environment variables
 - These do not have values in the actual file as they are secrets. To ensure these variables have values at runtime,
   make a .sh file on your machine and fill it with the contents of 'Set Microsoft Graph sensitive values as local Bash
-  env vars' in 1Password.
+  env vars' in AWS.
 - Make sure your environment includes the variables in the `.envrc.sample` file in the root of this repository.
 - The integration tests need these settings in order to create, update and delete a user in the test Azure AD B2C
   environment.
@@ -89,7 +89,7 @@ guidance on this and how to configure IntelliJ to ensure it does not use wildcar
 As well as during the pre-commit hook, the formatter can be run manually with:
 
 ```bash
-$ npm run format
+npm run format
 ```
 
 ## Jobs

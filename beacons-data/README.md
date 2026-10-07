@@ -65,7 +65,7 @@ delete from account_holder;
 delete from person;
 ```
 
-- Obtain the DB credentials relevant to the environment you're working with from 1Password, and use them to replace the local DB credentials below in the code (only temporarily though: do not commit these sensitive values to source control)
+- Obtain the DB credentials relevant to the environment you're working with from AWS, and use them to replace the local DB credentials below in the code (only temporarily though: do not commit these sensitive values to source control)
 
 ```
 db_host = 'localhost'
