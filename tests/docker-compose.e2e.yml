@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   postgres:
-    image: postgres:17
+    image: docker.io/library/postgres:17
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: beacons_service
@@ -11,7 +11,7 @@ services:
       - 5432:5432
 
   opensearch:
-    image: opensearchproject/opensearch:1.1.0
+    image: docker.io/opensearchproject/opensearch:1.1.0
     container_name: opensearch
     environment:
       - "discovery.type=single-node"
@@ -105,6 +105,6 @@ services:
     restart: on-failure
 
   redis:
-    image: redis:6
+    image: docker.io/library/redis:6
     ports:
       - "6379:6379"
