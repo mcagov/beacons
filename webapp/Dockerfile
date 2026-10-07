@@ -30,10 +30,10 @@ COPY public ./public
 COPY package.json ./
 COPY next.config.js ./
 
-USER node
+USER 1000
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD curl --fail http://localhost:3000/api/health/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD ["curl", "--fail", "http://localhost:3000/api/health/"]
 
 ENTRYPOINT [ "npm", "start" ]
