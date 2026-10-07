@@ -73,7 +73,7 @@ jobs:
 
       - uses: actions/setup-java@v6
         with:
-          distribution: "adopt"
+          distribution: "temurin"
           java-version: 17
 
       - name: Unit tests
@@ -101,7 +101,7 @@ jobs:
 
       - uses: actions/setup-java@v6
         with:
-          distribution: "adopt"
+          distribution: "temurin"
           java-version: 17
 
       - name: Integration tests
