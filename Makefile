@@ -7,6 +7,8 @@
 
 MAKEFLAGS += -j
 
+export BUILDAH_FORMAT := docker
+
 .PHONY: setup
 setup: setup-root setup-backoffice setup-webapp
 
@@ -37,6 +39,15 @@ setup-webapp:
 		node --version && \
 		npm install
 
+ifeq ($(BEACONS_LOCAL_AUTH),true)
+SERVICE_SPRING_PROFILES := dev,seed,localauth
+WEBAPP_DEV_SCRIPT := dev:local-auth
+else
+SERVICE_SPRING_PROFILES := dev,seed
+WEBAPP_DEV_SCRIPT := dev
+endif
+export SERVICE_SPRING_PROFILES
+
 ##
 # Applications
 ##
@@ -51,7 +62,7 @@ serve: serve-backing-services serve-webapp serve-backoffice serve-backoffice-stu
 .PHONY: serve-webapp
 serve-webapp:
 	@echo "⏭ Starting the NextJS Webapp in dev mode..."
-	@cd ./webapp && npm run dev
+	@cd ./webapp && npm run $(WEBAPP_DEV_SCRIPT)
 
 .PHONY: serve-backoffice
 serve-backoffice:
@@ -63,9 +74,8 @@ serve-backoffice:
 ##
 .PHONY: serve-backing-services
 serve-backing-services:
-	@echo "🐳 Starting Postgres, Redis and OpenSearch..."
-	# Don't try separating these. Docker compose does not like working in parallel, so they all need to come up at once
-	@docker compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service --build
+	@echo "🦭 Starting Postgres, Redis and OpenSearch..."
+	@podman compose up postgres redis opensearch opensearch-proxy opensearch-dashboards service --build
 
 .PHONY: serve-backoffice-stubs
 serve-backoffice-stubs:
@@ -77,4 +87,4 @@ serve-backoffice-stubs:
 ##
 .PHONY: clean
 clean:
-	docker compose down
+	podman compose down

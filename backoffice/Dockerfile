@@ -1,4 +1,4 @@
-FROM node:24-alpine AS build
+FROM docker.io/library/node:24-alpine AS build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
@@ -11,7 +11,7 @@ ENV VITE_APP_MUI_PRO_LICENSE_KEY=$mui_pro_license_key
 COPY . ./
 RUN npm ci && npm run build
 
-FROM nginx:stable-alpine
+FROM docker.io/library/nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 EXPOSE 80

@@ -46,7 +46,9 @@ Before you start...
 - Make sure you have the required versions of things installed
   - Install [brew](https://brew.sh/) onto your laptop if you are using a Mac.
   - Install [mise-en-place](<[asdf-vm.com](https://mise.jdx.dev/)>)
-  - Install [docker](https://docs.docker.com/engine/install/), or `brew install --cask docker-desktop`.
+  - Install [Podman](https://podman.io/docs/installation) and podman-compose with `brew install podman podman-compose`,
+    then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
+    use `./scripts/dev.sh`, which runs Podman inside its own VM.
   - See the `.tool-versions` if you want to manage them some other way.
 - Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password. Please ensure you click "Edit" in 1Password before copying the config.
 - Get the Microsoft Graph secrets into your environment variables from "Microsoft Graph Secrets - TEST" from 1Password to your terminal.
@@ -62,6 +64,31 @@ Before you start...
     # From the root of this repository≠
     make serve
     ```
+
+### Local development without Azure
+
+If you don't have the Azure and 1Password secrets above, or want to work offline, you can run everything with a single
+local user instead.
+
+To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run
+`./scripts/dev.sh`. It creates the VM, installs everything inside it and serves the app; run it with no
+arguments for the list of commands. `node_modules` is kept inside the VM, so install on your Mac too if you
+want your editor to resolve imports. To run natively instead:
+
+1. Set `BEACONS_LOCAL_AUTH=true` in your `.envrc` (see `.envrc.example`) and run `direnv allow`.
+2. Optionally, to change the defaults:
+   - copy `webapp/.env.local-auth.example` as `webapp/.env.local-auth` for the webapp's settings, which need nothing
+     from 1Password. Without it, the example file is used.
+   - export `LOCAL_AUTH_EMAIL`, `LOCAL_AUTH_PASSWORD` or `LOCAL_AUTH_ROLES` in your `.envrc` to change the local
+     user's email, password or Backoffice roles.
+3. `make serve`, then sign in to the webapp with `dev@beacons.local` / `password`. The Backoffice signs you in as the
+   same user automatically.
+
+Each mode uses its own env files, so you can switch by changing the flag and restarting `make serve`.
+
+This is for local development only. Deployed environments run the `default,migration` Spring profiles (see
+`terraform/*.tfvars`) and never set `BEACONS_LOCAL_AUTH`. The service refuses to start if `localauth` is combined with
+`default` or `migration`, or runs without `dev`.
 
 ## Infrastructure-as-code
 

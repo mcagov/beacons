@@ -24,6 +24,8 @@ import { UpdateRegistrationFn } from "../useCases/updateRegistration";
 import { GetAccountHoldersRegistrationFn } from "../useCases/getAccountHoldersRegistration";
 
 export interface IAppContainer {
+  authId?: string;
+
   /* Use cases */
   submitRegistration: SubmitRegistrationFn;
   sendConfirmationEmail: SendConfirmationEmailFn;

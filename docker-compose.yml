@@ -1,16 +1,16 @@
-# Instead of using Docker Compose directly, w use make commands to run the application locally, see README.md#local-development
+# Instead of using Podman Compose directly, we use make commands to run the application locally, see README.md#local-development
 
 version: "3.9"
 
 ##
 # A containerised local development environment similar to the deployed environment
 #
-# ! Requires Docker Desktop to be configured with 4GB of RAM !
+# ! Requires the Podman machine or Lima VM to have at least 4GB of RAM !
 ##
 
 services:
   postgres:
-    image: library/postgres:17
+    image: docker.io/library/postgres:17
     environment:
       POSTGRES_USER: beacons_service
       POSTGRES_PASSWORD: password
@@ -19,7 +19,7 @@ services:
       - "5432:5432"
 
   opensearch:
-    image: opensearchproject/opensearch:1.1.0
+    image: docker.io/opensearchproject/opensearch:1.1.0
     environment:
       - discovery.type=single-node
     volumes:
@@ -27,7 +27,7 @@ services:
     expose:
       - 9200 # Core OpenSearch queries
       - 9600 # Performance Analyzer queries
-    ports: # Exposed only for local development with a non-Dockerized Spring; these ports are private when deployed
+    ports: # Exposed only for local development with a non-containerised Spring; these ports are private when deployed
       - "9200:9200"
       - "9600:9600"
 
@@ -36,6 +36,9 @@ services:
   opensearch-proxy:
     build: ./opensearch/proxy
     image: beacons-opensearch-proxy
+    depends_on:
+      - opensearch
+    restart: on-failure
     ports:
       - "8081:80"
     environment:
@@ -45,7 +48,7 @@ services:
       APPLICATION_CREDENTIALS_BASE64: "" # Not used in local development
 
   opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:1.1.0
+    image: docker.io/opensearchproject/opensearch-dashboards:1.1.0
     ports:
       - "5601:5601"
     environment:
@@ -61,13 +64,17 @@ services:
     restart: on-failure
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/beacons
-      SPRING_PROFILES_ACTIVE: dev,seed
+      SPRING_PROFILES_ACTIVE: ${SERVICE_SPRING_PROFILES:-dev,seed}
       OPENSEARCH_ENDPOINT: opensearch
       EXPORT_DIRECTORY: /var/export
-      MICROSOFT_GRAPH_CLIENT_ID: ${MICROSOFT_GRAPH_CLIENT_ID}
-      MICROSOFT_GRAPH_CLIENT_SECRET: ${MICROSOFT_GRAPH_CLIENT_SECRET}
-      MICROSOFT_GRAPH_B2C_TENANT_ID: ${MICROSOFT_GRAPH_B2C_TENANT_ID}
+      MICROSOFT_GRAPH_CLIENT_ID: ${MICROSOFT_GRAPH_CLIENT_ID:-}
+      MICROSOFT_GRAPH_CLIENT_SECRET: ${MICROSOFT_GRAPH_CLIENT_SECRET:-}
+      MICROSOFT_GRAPH_B2C_TENANT_ID: ${MICROSOFT_GRAPH_B2C_TENANT_ID:-}
       MICROSOFT_GRAPH_B2C_TENANT_NAME: TESTB2CMCGA
+      LOCAL_AUTH_ID: ${LOCAL_AUTH_ID:-00000000-0000-4000-8000-000000000001}
+      LOCAL_AUTH_EMAIL: ${LOCAL_AUTH_EMAIL:-dev@beacons.local}
+      LOCAL_AUTH_NAME: ${LOCAL_AUTH_NAME:-Dev User}
+      LOCAL_AUTH_ROLES: ${LOCAL_AUTH_ROLES:-UPDATE_RECORDS,ADD_BEACON_NOTES,DATA_EXPORTER,DELETE_BEACONS,ADMIN_EXPORT}
     volumes:
       - /tmp/beacons:/var/export
     depends_on:
@@ -91,7 +98,7 @@ services:
       VITE_APP_FEEDBACK_EMAIL_ADDRESSES: "x@y.com,y@z.com"
 
   redis:
-    image: redis:6
+    image: docker.io/library/redis:6
     ports:
       - "6379:6379"
 

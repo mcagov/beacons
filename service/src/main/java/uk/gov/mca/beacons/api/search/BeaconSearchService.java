@@ -69,10 +69,9 @@ public class BeaconSearchService {
 
     BeaconOwner owner = BeaconOwnerHelper.getMainOwner(owners).orElse(null);
 
-    List<BeaconUse> uses =
-      beaconUseRepository.getBeaconUseByBeaconIdOrderByMainUseDescCreatedDateAscIdAsc(
-        beacon.getId()
-      );
+    List<BeaconUse> uses = beaconUseRepository.getBeaconUseByBeaconId(
+      beacon.getId()
+    );
 
     BeaconSearchDocument beaconSearchDocument = new BeaconSearchDocument(
       beacon,
