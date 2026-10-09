@@ -105,13 +105,15 @@ export const getServerSideProps: GetServerSideProps = withSession(
         draftRegistration.id,
       );
 
-      clearFormSubmissionCookie(context);
-
-      if (!result.beaconUpdated) {
+      if (result.beaconUpdated) {
+        await context.container.deleteDraftRegistration(submissionCookieId);
+      } else {
         logger.error(
           `Failed to update beacon with hexId ${draftRegistration.hexId}. Check session cache for formSubmissionCookieId ${submissionCookieId}`,
         );
       }
+
+      clearFormSubmissionCookie(context);
 
       return {
         props: {
