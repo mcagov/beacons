@@ -32,3 +32,5 @@ stryker.log
 */reports/mutation
 
 .envrc
+
+.export/
