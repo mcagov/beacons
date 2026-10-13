@@ -76,7 +76,7 @@ services:
       LOCAL_AUTH_NAME: ${LOCAL_AUTH_NAME:-Dev User}
       LOCAL_AUTH_ROLES: ${LOCAL_AUTH_ROLES:-UPDATE_RECORDS,ADD_BEACON_NOTES,DATA_EXPORTER,DELETE_BEACONS,ADMIN_EXPORT}
     volumes:
-      - /tmp/beacons:/var/export
+      - ./.export:/var/export
     depends_on:
       opensearch:
         condition: service_started
