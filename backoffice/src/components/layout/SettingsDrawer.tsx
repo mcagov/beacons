@@ -51,7 +51,7 @@ export const SettingsDrawer: React.FunctionComponent<ISettingsDrawerProps> = ({
   };
 
   const handleDownloadComplete = (complete: boolean) => {
-    setShowProgressCirlce(false);
+    setShowProgressCirlce(!complete);
   };
 
   return (
