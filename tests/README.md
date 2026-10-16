@@ -26,13 +26,19 @@ TypeError: Cannot destructure property 'authId' of 'session.body.user' as it is 
 
 ...you may well need to update the `SESSION_TOKEN` used by the tests locally and in GitHub Actions.
 
-- Log into local/dev/staging webapp using the "Test B2C account" credentials from 1Password.
-  - Note that any time you use this account, it will create a new session token, so the following steps need carrying out regardless.
+- Log into the dev webapp as `beacons_test_b2c@mailsac.com` using the "/beacons/all/test-b2c-account" credentials from AWS Parameter Store.
 - Locate the session token in your browser's development tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
 - Copy this value.
 - Update the following with this value:
-  - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in https://github.com/mcagov/beacons/settings/secrets/actions.
-  - `SESSION_TOKEN` in the "Beacons Webapp Local .env.local config" in 1Password.
+  - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in GitHub Actions and Dependabot secrets, using the GitHub CLI (paste the value when prompted):
+
+    ```console
+    gh secret set TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN -R mcagov/beacons
+    gh secret set TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN -R mcagov/beacons --app dependabot
+    ```
+
+  - `SESSION_TOKEN` in the "/beacons/dev/webapp/env-local" in AWS Parameter Store.
+
 - Make sure all the engineers know to update their local `webapp/.env.local` and `tests/.env` files.
 
 ## Integration testing
