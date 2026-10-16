@@ -162,19 +162,47 @@ describe("RedisDraftRegistrationGateway", () => {
           ...draft,
           uses: [
             {
-              environment: "AVIATION",
-              purpose: "PLEASURE",
-              activity: "GLIDER",
-              moreDetails: "More details of this vessel",
-              mainUse: false,
-            },
-            {
               environment: "MARITIME",
               purpose: "COMMERCIAL",
               activity: "SAILING",
               moreDetails: "More details of this vessel",
               mainUse: true,
             },
+            {
+              environment: "AVIATION",
+              purpose: "PLEASURE",
+              activity: "GLIDER",
+              moreDetails: "More details of this vessel",
+              mainUse: false,
+            },
+          ],
+        },
+        { expire: ONE_DAY_SECONDS },
+      );
+    });
+
+    it("should move the main use to the top and keep the other uses in order", async () => {
+      cacheMock.get.mockResolvedValue({
+        ...draft,
+        uses: [
+          { activity: "SKIING", mainUse: true },
+          { activity: "MOTOR", mainUse: false },
+          { activity: "WALKING_HIKING", mainUse: false },
+          { activity: "LIGHT_AIRCRAFT", mainUse: false },
+        ],
+      });
+
+      await gateway.makeUseMain("123", 3);
+
+      expect(cacheMock.set).toHaveBeenCalledWith(
+        "123",
+        {
+          ...draft,
+          uses: [
+            { activity: "LIGHT_AIRCRAFT", mainUse: true },
+            { activity: "SKIING", mainUse: false },
+            { activity: "MOTOR", mainUse: false },
+            { activity: "WALKING_HIKING", mainUse: false },
           ],
         },
         { expire: ONE_DAY_SECONDS },
