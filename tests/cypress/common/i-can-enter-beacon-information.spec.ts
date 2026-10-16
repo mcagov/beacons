@@ -1,6 +1,5 @@
 import { testBeaconAndOwnerData } from "./happy-path-test-data.spec";
 import {
-  givenIHaveACookieSetAndIVisit,
   givenIHaveClickedContinue,
   givenIHaveTypedInAnEmptyField,
   thenTheUrlShouldContain,
@@ -13,7 +12,6 @@ export const givenIHaveEnteredMyBeaconDetails = (): void => {
 };
 
 export const givenIHaveFilledInCheckBeaconDetailsPage = (): void => {
-  givenIHaveACookieSetAndIVisit("/register-a-beacon/check-beacon-details");
   givenIHaveTypedInAnEmptyField(
     testBeaconAndOwnerData.beaconDetails.manufacturer,
     "#manufacturer",
