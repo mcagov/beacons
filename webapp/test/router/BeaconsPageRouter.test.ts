@@ -23,7 +23,7 @@ describe("BeaconsPageRouter", () => {
     expect(laterMatch.action).not.toHaveBeenCalled();
   });
 
-  it("returns not found when no rule matches, rather than undefined", async () => {
+  it("returns not found when no rule matches", async () => {
     const result = await new BeaconsPageRouter([
       ruleThat(false),
       ruleThat(false),
