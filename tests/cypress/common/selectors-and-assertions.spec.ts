@@ -114,6 +114,7 @@ export const givenIHaveClicked = (selector: string): void => {
 export const whenIClickOnTheErrorSummaryLinkContaining = (
   ...strings: string[]
 ): void => {
+  cy.get(".govuk-error-summary[data-govuk-error-summary-init]");
   let link = cy.get(".govuk-error-summary__list");
   strings.forEach((string) => (link = link.contains(string)));
   link.click();
