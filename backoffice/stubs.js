@@ -19,7 +19,7 @@ app.get("/backoffice/auth-mode", (req, res) => {
 
   const roles = (
     process.env.LOCAL_AUTH_ROLES ||
-    "UPDATE_RECORDS,ADD_BEACON_NOTES,DATA_EXPORTER,DELETE_BEACONS,ADMIN_EXPORT"
+    "UPDATE_RECORDS,ADD_BEACON_NOTES,DATA_EXPORTER,DELETE_BEACONS,ADMIN_EXPORT,UPDATE_BEACON_HEX_ID"
   )
     .split(",")
     .map((role) => role.trim())

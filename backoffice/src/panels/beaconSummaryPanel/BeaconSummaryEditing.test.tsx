@@ -5,18 +5,65 @@ import { IBeacon } from "../../entities/IBeacon";
 import { beaconFixture } from "../../fixtures/beacons.fixture";
 import { BeaconSummaryEditing } from "./BeaconSummaryEditing";
 import { BEACON_TYPES } from "../../entities/BeaconType";
+import { LocalAuthProvider } from "../../components/auth/LocalAuthProvider";
+import { Role } from "../../lib/User";
 
 describe("BeaconSummaryEditing", () => {
+  const renderWithRoles = (
+    roles: Role[],
+    {
+      beacon = beaconFixture,
+      onSave = jest.fn(),
+      onCancel = jest.fn(),
+    }: {
+      beacon?: IBeacon;
+      onSave?: jest.Mock;
+      onCancel?: jest.Mock;
+    } = {},
+  ) =>
+    render(
+      <LocalAuthProvider
+        username="dev@beacons.local"
+        displayName="Dev User"
+        roles={roles}
+        apiAccessToken="local-development-token"
+      >
+        <BeaconSummaryEditing
+          beacon={beacon}
+          onSave={onSave}
+          onCancel={onCancel}
+        />
+      </LocalAuthProvider>,
+    );
+
+  it("does not show the hex ID field to users without the UPDATE_BEACON_HEX_ID role", async () => {
+    renderWithRoles(["UPDATE_RECORDS"]);
+
+    await screen.findByDisplayValue(beaconFixture.chkCode as string);
+    expect(screen.queryByLabelText(/hex id/i)).not.toBeInTheDocument();
+  });
+
+  it("user with the UPDATE_BEACON_HEX_ID role can update the hex ID", async () => {
+    const onSave = jest.fn();
+    renderWithRoles(["UPDATE_RECORDS", "UPDATE_BEACON_HEX_ID"], { onSave });
+
+    const hexIdField = await screen.findByLabelText(/hex id/i);
+    const hexId = "1D0EA08C52FFBF0";
+    await act(async () => {
+      await userEvent.clear(hexIdField);
+      await userEvent.type(hexIdField, hexId);
+      await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    });
+
+    await waitFor(() => {
+      expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ hexId }));
+    });
+  });
+
   it("user can type text in basic string input fields", async () => {
     const onSave = jest.fn();
 
-    render(
-      <BeaconSummaryEditing
-        beacon={beaconFixture}
-        onSave={onSave}
-        onCancel={jest.fn()}
-      />,
-    );
+    renderWithRoles(["UPDATE_RECORDS"], { onSave });
     const editableField = await screen.findByDisplayValue(
       beaconFixture.chkCode as string,
     );
@@ -39,13 +86,7 @@ describe("BeaconSummaryEditing", () => {
   it("user can use dropdown to update mti", async () => {
     const onSave = jest.fn();
 
-    render(
-      <BeaconSummaryEditing
-        beacon={beaconFixture}
-        onSave={onSave}
-        onCancel={jest.fn()}
-      />,
-    );
+    renderWithRoles(["UPDATE_RECORDS"], { onSave });
 
     const dropdownField = await screen.findByLabelText(/mti/i);
     await act(async () => {
@@ -62,13 +103,7 @@ describe("BeaconSummaryEditing", () => {
   it("user can use dropdown to update protocol", async () => {
     const onSave = jest.fn();
 
-    render(
-      <BeaconSummaryEditing
-        beacon={beaconFixture}
-        onSave={onSave}
-        onCancel={jest.fn()}
-      />,
-    );
+    renderWithRoles(["UPDATE_RECORDS"], { onSave });
 
     const dropdownField = await screen.findByLabelText(/protocol/i);
     const protocol = "EPIRB, non-GPS, non-CSTA, UK Serialised";
@@ -87,13 +122,7 @@ describe("BeaconSummaryEditing", () => {
   it("user can see all options and select a beacon type", async () => {
     const onSave = jest.fn();
 
-    render(
-      <BeaconSummaryEditing
-        beacon={beaconFixture}
-        onSave={onSave}
-        onCancel={jest.fn()}
-      />,
-    );
+    renderWithRoles(["UPDATE_RECORDS"], { onSave });
 
     const dropdownField = await screen.findByLabelText(/beacon type/i);
 
@@ -120,13 +149,7 @@ describe("BeaconSummaryEditing", () => {
   it("calls the cancel callback to abort the edit", async () => {
     const onCancel = jest.fn();
     act(() => {
-      render(
-        <BeaconSummaryEditing
-          beacon={beaconFixture}
-          onSave={jest.fn()}
-          onCancel={onCancel}
-        />,
-      );
+      renderWithRoles(["UPDATE_RECORDS"], { onCancel });
     });
     const editableField = await screen.findByDisplayValue(
       beaconFixture.chkCode as string,
@@ -149,13 +172,7 @@ describe("BeaconSummaryEditing", () => {
     it("user can select manufacturer and model from dropdown and update beacon", async () => {
       const onSave = jest.fn();
 
-      render(
-        <BeaconSummaryEditing
-          beacon={beaconFixture}
-          onSave={onSave}
-          onCancel={jest.fn()}
-        />,
-      );
+      renderWithRoles(["UPDATE_RECORDS"], { onSave });
 
       const manufacturerField = await screen.findByLabelText(/manufacturer/i);
       const modelField = await screen.findByLabelText(/model/i);
@@ -182,13 +199,7 @@ describe("BeaconSummaryEditing", () => {
     it("selecting a different manufacturer resets the model to N/A", async () => {
       const onSave = jest.fn();
 
-      render(
-        <BeaconSummaryEditing
-          beacon={beaconFixture}
-          onSave={onSave}
-          onCancel={jest.fn()}
-        />,
-      );
+      renderWithRoles(["UPDATE_RECORDS"], { onSave });
 
       const manufacturerField = await screen.findByLabelText(/manufacturer/i);
       const manufacturer = "Ocean Signal";
@@ -225,13 +236,10 @@ describe("BeaconSummaryEditing", () => {
           model: modelValue,
         };
 
-        render(
-          <BeaconSummaryEditing
-            beacon={beaconFixtureWithFreeManufacturerAndModel}
-            onSave={onSave}
-            onCancel={jest.fn()}
-          />,
-        );
+        renderWithRoles(["UPDATE_RECORDS"], {
+          beacon: beaconFixtureWithFreeManufacturerAndModel,
+          onSave,
+        });
 
         expect(
           await screen.findByLabelText(/manufacturer/i),

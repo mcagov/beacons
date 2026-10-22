@@ -16,11 +16,13 @@ import { BeaconSummaryViewing } from "./BeaconSummaryViewing";
 interface IBeaconSummaryProps {
   beaconsGateway: IBeaconsGateway;
   beaconId: string;
+  onBeaconUpdated?: () => void;
 }
 
 export const BeaconSummaryPanel: FunctionComponent<IBeaconSummaryProps> = ({
   beaconsGateway,
   beaconId,
+  onBeaconUpdated,
 }): JSX.Element => {
   const [beacon, setBeacon] = useState<IBeacon>({} as IBeacon);
   const [userState, setUserState] = useState<DataPanelStates>(
@@ -53,6 +55,7 @@ export const BeaconSummaryPanel: FunctionComponent<IBeaconSummaryProps> = ({
         diffObjValues(beacon, updatedBeacon),
       );
       setUserState(DataPanelStates.Viewing);
+      onBeaconUpdated?.();
     } catch (error) {
       logToServer.error(error);
       setError(true);
