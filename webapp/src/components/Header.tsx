@@ -12,26 +12,44 @@ export const Header: FunctionComponent<HeaderProps> = ({
   signOutUri,
 }: HeaderProps): JSX.Element => {
   return (
-    <header className="govuk-header " role="banner" data-module="govuk-header">
-      <div className="govuk-header__container govuk-width-container">
-        <HeaderLogo />
-        <div className="govuk-header__content app-header-navigation">
-          <a href={homeLink} className="govuk-header__link">
-            {serviceName}
-          </a>
-          {signOutUri && (
-            <nav className="govuk-header__navigation">
-              <ul id="navigation" className="govuk-header__navigation ">
-                <li className="govuk-header__navigation-item">
-                  <a className="govuk-header__link" href={signOutUri}>
-                    Sign out
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          )}
+    <header className="govuk-template__header">
+      <div className="govuk-header">
+        <div className="govuk-header__container govuk-width-container">
+          <HeaderLogo />
         </div>
       </div>
+      <section
+        aria-label="Service information"
+        className="govuk-service-navigation"
+        data-module="govuk-service-navigation"
+      >
+        <div className="govuk-width-container">
+          <div className="govuk-service-navigation__container">
+            <span className="govuk-service-navigation__service-name">
+              <a href={homeLink} className="govuk-service-navigation__link">
+                {serviceName}
+              </a>
+            </span>
+            {signOutUri && (
+              <nav
+                aria-label="Menu"
+                className="govuk-service-navigation__wrapper"
+              >
+                <ul className="govuk-service-navigation__list" id="navigation">
+                  <li className="govuk-service-navigation__item">
+                    <a
+                      className="govuk-service-navigation__link"
+                      href={signOutUri}
+                    >
+                      Sign out
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            )}
+          </div>
+        </div>
+      </section>
     </header>
   );
 };
@@ -40,10 +58,7 @@ const HeaderLogo: FunctionComponent = (): JSX.Element => {
   return (
     <>
       <div className="govuk-header__logo">
-        <a
-          href="https://www.gov.uk/"
-          className="govuk-header__link govuk-header__link--homepage"
-        >
+        <a href="https://www.gov.uk/" className="govuk-header__homepage-link">
           <svg
             focusable="false"
             role="img"

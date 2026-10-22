@@ -1,6 +1,6 @@
 @import "../styles/variables";
 
 .success {
-  color: govuk-colour("light-grey");
+  color: govuk-colour("black", $variant: "tint-95");
   background: govuk-colour("black");
 }
