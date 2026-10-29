@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.beacon.rest;
 import static org.mockito.BDDMockito.given;
 
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -85,6 +86,59 @@ public class BeaconControllerIntegrationTest extends WebIntegrationTest {
     );
 
     patchHexId("NOT-A-HEX-ID").expectStatus().isBadRequest();
+  }
+
+  @Test
+  void shouldNotReturnCachedSearchResultsAfterTheHexIdIsUpdated()
+    throws Exception {
+    given(beaconRolesService.getUserRoles()).willReturn(
+      List.of(
+        SupportedPermissions.APPROLE_UPDATE_RECORDS,
+        SupportedPermissions.APPROLE_UPDATE_BEACON_HEX_ID
+      )
+    );
+    final String originalHexId = randomHexId();
+    final String updatedHexId = randomHexId();
+
+    patchHexId(originalHexId).expectStatus().isOk();
+    findAllByHexId(originalHexId).jsonPath("totalElements").isEqualTo(1);
+
+    patchHexId(updatedHexId).expectStatus().isOk();
+
+    findAllByHexId(originalHexId).jsonPath("totalElements").isEqualTo(0);
+    findAllByHexId(updatedHexId)
+      .jsonPath("totalElements")
+      .isEqualTo(1)
+      .jsonPath("content[0].hexId")
+      .isEqualTo(updatedHexId);
+  }
+
+  private String randomHexId() {
+    return UUID.randomUUID()
+      .toString()
+      .replace("-", "")
+      .substring(0, 15)
+      .toUpperCase();
+  }
+
+  private WebTestClient.BodyContentSpec findAllByHexId(String hexId) {
+    return webTestClient
+      .get()
+      .uri(uriBuilder ->
+        uriBuilder
+          .path(Endpoints.BeaconSearch.value + "/find-all")
+          .queryParam("status", "")
+          .queryParam("uses", "")
+          .queryParam("hexId", hexId)
+          .queryParam("ownerName", "")
+          .queryParam("cospasSarsatNumber", "")
+          .queryParam("manufacturerSerialNumber", "")
+          .build()
+      )
+      .exchange()
+      .expectStatus()
+      .isOk()
+      .expectBody();
   }
 
   private WebTestClient.ResponseSpec patchHexId(String hexId) {
