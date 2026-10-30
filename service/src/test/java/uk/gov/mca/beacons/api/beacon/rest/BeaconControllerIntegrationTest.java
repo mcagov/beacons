@@ -1,13 +1,24 @@
 package uk.gov.mca.beacons.api.beacon.rest;
 
+import static org.mockito.BDDMockito.given;
+
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import uk.gov.mca.beacons.api.WebIntegrationTest;
+import uk.gov.mca.beacons.api.auth.application.BeaconRolesService;
+import uk.gov.mca.beacons.api.auth.gateway.AuthGatewayImpl.SupportedPermissions;
 
 public class BeaconControllerIntegrationTest extends WebIntegrationTest {
 
   private String beaconId;
+
+  @MockBean
+  private BeaconRolesService beaconRolesService;
 
   @BeforeEach
   void init() throws Exception {
@@ -38,5 +49,111 @@ public class BeaconControllerIntegrationTest extends WebIntegrationTest {
       .isEqualTo(beaconId)
       .jsonPath("$.data.attributes.manufacturer")
       .isEqualTo("ACR (Artex)");
+  }
+
+  @Test
+  void shouldUpdateTheHexIdWhenTheUserHasTheUpdateBeaconHexIdRole()
+    throws Exception {
+    given(beaconRolesService.getUserRoles()).willReturn(
+      List.of(
+        SupportedPermissions.APPROLE_UPDATE_RECORDS,
+        SupportedPermissions.APPROLE_UPDATE_BEACON_HEX_ID
+      )
+    );
+
+    patchHexId(" 1d0ea08c52ffbf0 ")
+      .expectStatus()
+      .isOk()
+      .expectBody()
+      .jsonPath("$.data.attributes.hexId")
+      .isEqualTo("1D0EA08C52FFBF0");
+  }
+
+  @Test
+  void shouldRejectAHexIdUpdateWhenTheUserDoesNotHaveTheUpdateBeaconHexIdRole()
+    throws Exception {
+    given(beaconRolesService.getUserRoles()).willReturn(
+      List.of(SupportedPermissions.APPROLE_UPDATE_RECORDS)
+    );
+
+    patchHexId("1D0EA08C52FFBF0").expectStatus().isForbidden();
+  }
+
+  @Test
+  void shouldRejectAnInvalidHexId() throws Exception {
+    given(beaconRolesService.getUserRoles()).willReturn(
+      List.of(SupportedPermissions.APPROLE_UPDATE_BEACON_HEX_ID)
+    );
+
+    patchHexId("NOT-A-HEX-ID").expectStatus().isBadRequest();
+  }
+
+  @Test
+  void shouldNotReturnCachedSearchResultsAfterTheHexIdIsUpdated()
+    throws Exception {
+    given(beaconRolesService.getUserRoles()).willReturn(
+      List.of(
+        SupportedPermissions.APPROLE_UPDATE_RECORDS,
+        SupportedPermissions.APPROLE_UPDATE_BEACON_HEX_ID
+      )
+    );
+    final String originalHexId = randomHexId();
+    final String updatedHexId = randomHexId();
+
+    patchHexId(originalHexId).expectStatus().isOk();
+    findAllByHexId(originalHexId).jsonPath("totalElements").isEqualTo(1);
+
+    patchHexId(updatedHexId).expectStatus().isOk();
+
+    findAllByHexId(originalHexId).jsonPath("totalElements").isEqualTo(0);
+    findAllByHexId(updatedHexId)
+      .jsonPath("totalElements")
+      .isEqualTo(1)
+      .jsonPath("content[0].hexId")
+      .isEqualTo(updatedHexId);
+  }
+
+  private String randomHexId() {
+    return UUID.randomUUID()
+      .toString()
+      .replace("-", "")
+      .substring(0, 15)
+      .toUpperCase();
+  }
+
+  private WebTestClient.BodyContentSpec findAllByHexId(String hexId) {
+    return webTestClient
+      .get()
+      .uri(uriBuilder ->
+        uriBuilder
+          .path(Endpoints.BeaconSearch.value + "/find-all")
+          .queryParam("status", "")
+          .queryParam("uses", "")
+          .queryParam("hexId", hexId)
+          .queryParam("ownerName", "")
+          .queryParam("cospasSarsatNumber", "")
+          .queryParam("manufacturerSerialNumber", "")
+          .build()
+      )
+      .exchange()
+      .expectStatus()
+      .isOk()
+      .expectBody();
+  }
+
+  private WebTestClient.ResponseSpec patchHexId(String hexId) {
+    final String updateHexIdRequest =
+      "{\"data\":{\"type\":\"beacon\",\"id\":\"" +
+      beaconId +
+      "\",\"attributes\":{\"hexId\":\"" +
+      hexId +
+      "\"}}}";
+
+    return webTestClient
+      .patch()
+      .uri(Endpoints.Beacon.value + "/" + beaconId)
+      .contentType(MediaType.APPLICATION_JSON)
+      .bodyValue(updateHexIdRequest)
+      .exchange();
   }
 }
