@@ -38,6 +38,9 @@ on:
       test_webapp_azure_b2c_session_token:
         description: The session token of a logged in user to allow Cypress to test behind auth
         required: true
+      test_webapp_azure_b2c_test_user_id:
+        description: The Azure B2C object id of the Cypress test user
+        required: true
       test_webapp_azure_b2c_jwt_secret:
         description: Permits Cypress to authenticate with Azure B2C to perform logged-in tests
         required: true
@@ -118,7 +121,8 @@ jobs:
       - name: Run Cypress end to end tests
         uses: cypress-io/github-action@v7
         env:
-          CYPRESS_SESSION_TOKEN: ${{ secrets.test_webapp_azure_b2c_session_token }}
+          JWT_SECRET: ${{ secrets.test_webapp_azure_b2c_jwt_secret }}
+          TEST_USER_AUTH_ID: ${{ secrets.test_webapp_azure_b2c_test_user_id }}
           AAD_TENANT_ID: 513fb495-9a90-425b-a49a-bc6ebe2a429e
           WEBAPP_CLIENT_ID: 1ccbe14d-00e3-43ac-a434-8f7a38e03366
           WEBAPP_CLIENT_SECRET: ${{ secrets.test_webapp_azure_ad_client_secret }}

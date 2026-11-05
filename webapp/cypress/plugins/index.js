@@ -14,14 +14,30 @@
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require("dotenv").config({ path: ".env" });
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { encode } = require("next-auth/jwt");
 
 /**
  * @type {Cypress.PluginConfig}
  */
-module.exports = (on, config) => {
+module.exports = async (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
   setTestEnvVarsFromSystem(config);
+  if (!process.env.JWT_SECRET || !process.env.TEST_USER_AUTH_ID) {
+    throw new Error(
+      "JWT_SECRET and TEST_USER_AUTH_ID must be set to mint a session token",
+    );
+  }
+  config.env.SESSION_TOKEN = await encode({
+    token: {
+      sub: process.env.TEST_USER_AUTH_ID,
+      email: "beacons_test_b2c@mailsac.com",
+      name: "",
+    },
+    secret: process.env.JWT_SECRET,
+    maxAge: 24 * 60 * 60,
+  });
 
   return config;
 };
@@ -32,5 +48,4 @@ const setTestEnvVarsFromSystem = (config) => {
   config.env.AAD_TENANT_ID = process.env.AAD_TENANT_ID;
   config.env.AAD_API_ID = process.env.AAD_API_ID;
   config.env.API_URL = process.env.API_URL;
-  config.env.SESSION_TOKEN = process.env.SESSION_TOKEN;
 };
