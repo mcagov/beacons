@@ -16,30 +16,19 @@ $ podman compose -f docker-compose.e2e.yml up
 $ npm run test:e2e
 ```
 
-### The Cypress end-to-end tests need a valid `SESSION_TOKEN` to run
+### The Cypress end-to-end tests require `JWT_SECRET` and `TEST_USER_AUTH_ID`
 
-If you experience unexpected Cypress test failures with errors like...
+The session token is minted automatically at test startup. Ensure the following are set:
+
+- `JWT_SECRET` — the NextAuth secret
+- `TEST_USER_AUTH_ID` — the Azure B2C object ID of `beacons_test_b2c@mailsac.com`
+
+In GitHub Actions and Dependabot secrets, `TEST_WEBAPP_AZURE_B2C_TEST_USER_ID` must be set:
 
 ```console
-TypeError: Cannot destructure property 'authId' of 'session.body.user' as it is undefined.
+gh secret set TEST_WEBAPP_AZURE_B2C_TEST_USER_ID -R mcagov/beacons
+gh secret set TEST_WEBAPP_AZURE_B2C_TEST_USER_ID -R mcagov/beacons --app dependabot
 ```
-
-...you may well need to update the `SESSION_TOKEN` used by the tests locally and in GitHub Actions.
-
-- Log into the dev webapp as `beacons_test_b2c@mailsac.com` using the "/beacons/all/test-b2c-account" credentials from AWS Parameter Store.
-- Locate the session token in your browser's development tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
-- Copy this value.
-- Update the following with this value:
-  - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in GitHub Actions and Dependabot secrets, using the GitHub CLI (paste the value when prompted):
-
-    ```console
-    gh secret set TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN -R mcagov/beacons
-    gh secret set TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN -R mcagov/beacons --app dependabot
-    ```
-
-  - `SESSION_TOKEN` in the "/beacons/dev/webapp/env-local" in AWS Parameter Store.
-
-- Make sure all the engineers know to update their local `webapp/.env.local` and `tests/.env` files.
 
 ## Integration testing
 
