@@ -70,5 +70,6 @@ public class AuthGatewayImpl implements AuthGateway {
     APPROLE_DELETE_BEACONS,
     APPROLE_ADMIN_EXPORT,
     APPROLE_ADD_BEACON_NOTES,
+    APPROLE_UPDATE_BEACON_HEX_ID,
   }
 }

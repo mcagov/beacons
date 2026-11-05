@@ -22,7 +22,8 @@ export type Role =
   | "UPDATE_RECORDS"
   | "DATA_EXPORTER"
   | "DELETE_BEACONS"
-  | "ADMIN_EXPORT";
+  | "ADMIN_EXPORT"
+  | "UPDATE_BEACON_HEX_ID";
 
 export type UserActions = LoginAction | SetApiAccessTokenAction;
 
