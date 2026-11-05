@@ -24,6 +24,7 @@ import {
   WritingStyle,
 } from "../../utils/writingStyle";
 import { TabulatedRowEditField } from "views/TabulatedRowEditField";
+import { OnlyVisibleToUsersWith } from "components/auth/OnlyVisibleToUsersWith";
 import { BEACON_TYPES } from "../../entities/BeaconType";
 
 export const BeaconSummaryEditing: FunctionComponent<{
@@ -49,6 +50,14 @@ export const BeaconSummaryEditing: FunctionComponent<{
               <TableContainer>
                 <Table size="small">
                   <TableBody>
+                    <OnlyVisibleToUsersWith role={"UPDATE_BEACON_HEX_ID"}>
+                      <TabulatedRowEditField
+                        label={"Hex ID/UIN"}
+                        fieldName={"hexId"}
+                        type={"string"}
+                        required
+                      />
+                    </OnlyVisibleToUsersWith>
                     <TabulatedRow
                       displayKey={
                         <label htmlFor="manufacturer">

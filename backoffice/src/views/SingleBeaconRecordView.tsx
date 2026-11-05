@@ -66,6 +66,7 @@ export const SingleBeaconRecordView: FunctionComponent<
   const [beacon, setBeacon] = useState<IBeacon>({} as IBeacon);
   const [notes, setNotes] = useState<INote[]>([] as INote[]);
   const [dialogueIsOpen, setDialogueIsOpen] = useState<boolean>(false);
+  const [beaconVersion, setBeaconVersion] = useState<number>(0);
 
   useEffect((): void => {
     const fetchBeacon = async (id: string) => {
@@ -80,7 +81,7 @@ export const SingleBeaconRecordView: FunctionComponent<
     };
 
     fetchBeacon(beaconId);
-  }, [beaconId, beaconsGateway, notesGateway]);
+  }, [beaconId, beaconsGateway, notesGateway, beaconVersion]);
 
   const hexId = beacon?.hexId || "";
   const numberOfUses = beacon?.uses?.length.toString() || "";
@@ -157,6 +158,7 @@ export const SingleBeaconRecordView: FunctionComponent<
         <BeaconSummaryPanel
           beaconsGateway={beaconsGateway}
           beaconId={beaconId}
+          onBeaconUpdated={() => setBeaconVersion((version) => version + 1)}
         />
         <Tabs value={selectedTab} onChange={handleChange}>
           <Tab label="Owners & Emergency Contacts" />
