@@ -11,6 +11,7 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
 {
   private readonly context: BeaconsGetServerSidePropsContext;
   private readonly registrationId: string;
+  private existingRegistration: Registration;
 
   constructor(
     context: BeaconsGetServerSidePropsContext,
@@ -38,22 +39,29 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToT
       this.context.session,
     );
 
-    const existingRegistration: Registration =
-      await getAccountHoldersRegistration(registrationId, accountHolderId);
+    this.existingRegistration = await getAccountHoldersRegistration(
+      registrationId,
+      accountHolderId,
+    );
 
-    return !isEqual(existingRegistration, draftRegistration);
+    return !isEqual(this.existingRegistration, draftRegistration);
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
     const { getDraftRegistration } = this.context.container;
 
     const registrationId: string = this.context.params.registrationId as string;
+    const draft = await getDraftRegistration(registrationId);
 
     return {
       props: {
         showCookieBanner: showCookieBanner(this.context),
         userHasEdited: true,
-        registration: await getDraftRegistration(registrationId),
+        registration: {
+          ...draft,
+          registeredDate: this.existingRegistration.registeredDate,
+          lastModifiedDate: this.existingRegistration.lastModifiedDate,
+        },
       },
     };
   }

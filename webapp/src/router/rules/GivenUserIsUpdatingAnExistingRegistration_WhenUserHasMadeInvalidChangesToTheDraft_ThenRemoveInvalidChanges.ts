@@ -1,5 +1,6 @@
 import { GetServerSidePropsResult } from "next";
 import { DraftRegistration } from "../../entities/DraftRegistration";
+import { Registration } from "../../entities/Registration";
 import { BeaconsGetServerSidePropsContext } from "../../lib/middleware/BeaconsGetServerSidePropsContext";
 import { Rule } from "./Rule";
 import { isValidUse } from "../../lib/helpers/isValidUse";
@@ -21,8 +22,8 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidCha
 
   public async condition(): Promise<boolean> {
     const draftRegistration: DraftRegistration = await this.draftRegistration();
-
-    return !!draftRegistration;
+    if (!draftRegistration) return false;
+    return draftRegistration.uses?.some((use) => !isValidUse(use)) ?? false;
   }
 
   public async action(): Promise<GetServerSidePropsResult<any>> {
@@ -30,11 +31,22 @@ export class GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeInvalidCha
       await this.removeCachedInvalidUse();
     }
 
+    const draft = await this.draftRegistration();
+    const { getAccountHoldersRegistration, getAccountHolderId } =
+      this.context.container;
+    const accountHolderId = await getAccountHolderId(this.context.session);
+    const existingRegistration: Registration =
+      await getAccountHoldersRegistration(this.registrationId, accountHolderId);
+
     return {
       props: {
         showCookieBanner: showCookieBanner(this.context),
         userHasEdited: true,
-        registration: await this.draftRegistration(),
+        registration: {
+          ...draft,
+          registeredDate: existingRegistration.registeredDate,
+          lastModifiedDate: existingRegistration.lastModifiedDate,
+        },
       },
     };
   }
