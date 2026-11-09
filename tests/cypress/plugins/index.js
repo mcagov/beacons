@@ -13,7 +13,7 @@
 // the project's config changing)
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-require("dotenv").config({ path: ".env" });
+require("dotenv").config({ path: "../webapp/.env.local" });
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { mintSessionToken } = require("./sessionToken");
 /**

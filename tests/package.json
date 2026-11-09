@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Beacons end-to-end tests",
   "scripts": {
-    "test:e2e": "cypress run",
+    "test:e2e": "npm install && cypress run",
     "test:e2e:open": "cypress open"
   },
   "repository": {
