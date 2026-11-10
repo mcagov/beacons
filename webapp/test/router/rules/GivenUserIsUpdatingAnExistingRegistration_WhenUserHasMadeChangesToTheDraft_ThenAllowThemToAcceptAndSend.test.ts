@@ -99,20 +99,27 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
   });
 
   describe("action()", () => {
-    it("sets an edited boolean prop to true", async () => {
+    it("sets userHasEdited to true and uses dates from the live registration", async () => {
       const registrationId = "test-registration-id";
       const context = {
-        query: {
-          registrationId: registrationId,
-        },
-        params: {
-          registrationId: "registration-id-from-url",
-        },
-        req: {
-          cookies: null,
-        },
+        query: { registrationId },
+        params: { registrationId },
+        req: { cookies: null },
+        session: {},
         container: {
-          getDraftRegistration: jest.fn(),
+          getDraftRegistration: jest.fn().mockResolvedValue({
+            ...registrationFixture,
+            ownerFullName: "Sally Stevington",
+          }),
+          getAccountHolderId: jest
+            .fn()
+            .mockResolvedValue("test-account-holder-id"),
+          getAccountHoldersRegistration: jest.fn().mockResolvedValue({
+            ...registrationFixture,
+            ownerFullName: "Steve Stevington",
+            registeredDate: "2021-11-04",
+            lastModifiedDate: "2026-11-05",
+          }),
         },
       } as any;
       const rule =
@@ -121,9 +128,12 @@ describe("GivenUserIsUpdatingAnExistingRegistration_WhenUserHasMadeChangesToTheD
           registrationId,
         );
 
+      await rule.condition();
       const result = (await rule.action()) as any;
 
       expect(result.props.userHasEdited).toBe(true);
+      expect(result.props.registration.registeredDate).toBe("2021-11-04");
+      expect(result.props.registration.lastModifiedDate).toBe("2026-11-05");
     });
   });
 });
