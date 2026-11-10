@@ -10,17 +10,18 @@ Automated end-to-end tests use [Cypress](https://www.cypress.io/) and are run in
 To run end-to-end tests locally, ensure the service is running as per the root README with Azure authentication (not local auth mode; do not set `BEACONS_LOCAL_AUTH=true`), then:
 
 ```sh
-$ npm run test:e2e
+npm install
+npm run test:e2e
 ```
 
 ## Integration testing
 
-As part of our integration tests, a test user "test@test.com" is created in the Azure TEST tenancy. As a part of these tests, this user should be automatically deleted.
+As part of our integration tests, a test user "<test@test.com>" is created in the Azure TEST tenancy. As a part of these tests, this user should be automatically deleted.
 In the event that the test user is not deleted, the integration tests can fail:
 
 - "Another object with the same value for property proxyAddresses already exists."
 
-In order to remediate this failure, the "test@test.com" user will need to be deleted from the test tenancy. The tests should then succeed.
+In order to remediate this failure, the "<test@test.com>" user will need to be deleted from the test tenancy. The tests should then succeed.
 
 ## Smoke testing
 
