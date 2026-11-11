@@ -35,7 +35,7 @@ xcrun gem install faker
 
 ### Local
 
-- Ensure your local dockerised instance of the Postgres DB server is running
+- Ensure your local containerised instance of the Postgres DB server is running
 - Run each script using Ruby, e.g:
   `ruby beacons_bulk_load_legacy.rb`
 
@@ -65,7 +65,7 @@ delete from account_holder;
 delete from person;
 ```
 
-- Obtain the DB credentials relevant to the environment you're working with from 1Password, and use them to replace the local DB credentials below in the code (only temporarily though: do not commit these sensitive values to source control)
+- Obtain the DB credentials relevant to the environment you're working with from AWS, and use them to replace the local DB credentials below in the code (only temporarily though: do not commit these sensitive values to source control)
 
 ```
 db_host = 'localhost'

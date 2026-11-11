@@ -1,4 +1,4 @@
-FROM node:24-alpine AS build
+FROM docker.io/library/node:24-alpine AS build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
@@ -11,9 +11,9 @@ ENV VITE_APP_MUI_PRO_LICENSE_KEY=$mui_pro_license_key
 COPY . ./
 RUN npm ci && npm run build
 
-FROM nginx:stable-alpine
+FROM docker.io/library/nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 EXPOSE 80
-HEALTHCHECK --interval=30s --timeout=10s --retries=6 CMD curl --fail http://localhost:80/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --retries=6 CMD ["curl", "--fail", "http://localhost:80/health"]
 CMD ["nginx", "-g", "daemon off;"]

@@ -1,6 +1,12 @@
 minimumLimaVersion: "2.2.0"
 
-base: template:docker
+base:
+  - template:_images/ubuntu-lts
+  - template:_default/mounts
+
+containerd:
+  system: false
+  user: false
 
 vmType: vz
 mountType: virtiofs
@@ -20,6 +26,9 @@ provision:
       set -eux -o pipefail
       apt-get update
       apt-get install -y --no-install-recommends make git curl unzip ca-certificates
+      apt-get install -y podman podman-compose uidmap dbus-user-session passt
+      mkdir -p /etc/containers/registries.conf.d
+      echo 'unqualified-search-registries = ["docker.io"]' > /etc/containers/registries.conf.d/00-beacons.conf
       mkdir -p /tmp/beacons
   - mode: user
     script: |
@@ -32,6 +41,13 @@ provision:
         echo 'export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"' >> "$HOME/.profile"
       fi
       "$HOME/.local/bin/mise" settings set idiomatic_version_file_enable_tools "[]" || true
+      systemctl --user enable --now podman.socket
+      if ! grep -q "podman/podman.sock" "$HOME/.profile" 2>/dev/null; then
+        cat >> "$HOME/.profile" <<'EOF'
+      export DOCKER_HOST="unix:///run/user/$(id -u)/podman/podman.sock"
+      export TESTCONTAINERS_RYUK_DISABLED=true
+      EOF
+      fi
 
 message: |
   The Beacons VM is ready. Use ./scripts/dev.sh from the repository on your Mac.

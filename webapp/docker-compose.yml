@@ -20,6 +20,6 @@ services:
       REDIS_URI: redis://redis:6379
 
   redis:
-    image: redis:6
+    image: docker.io/library/redis:6
     ports:
       - "6379:6379"

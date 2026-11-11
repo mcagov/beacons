@@ -51,6 +51,7 @@ jobs:
       git-reference: ${{ inputs.version }}
     secrets:
       test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
+      test_azure_b2c_test_user_id: ${{ secrets.TEST_WEBAPP_AZURE_B2C_TEST_USER_ID }}
       test_azure_b2c_jwt_secret: ${{ secrets.TEST_WEBAPP_AZURE_B2C_JWT_SECRET }}
 
   test_service:

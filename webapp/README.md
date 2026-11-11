@@ -31,7 +31,7 @@ Our approach to testing:
 
 ### Running UI tests
 
-- `docker compose up` -- Start the app in production mode.
+- `podman compose up` -- Start the app in production mode.
 - `npm run cypress:open` -- Run Cypress tests in the `cypress/integration` directory with the [Cypress Test Runner](https://docs.cypress.io/guides/core-concepts/test-runner.html#Overview)
 - `npm run cypress:watch` -- Run Cypress tests with the Test Runner, with Cypress watching test files for changes
 - `npm run cypress:run` -- Run Cypress tests in the `cypress/integration` directory in the [command line](https://docs.cypress.io/guides/guides/command-line.html#cypress-run)
@@ -47,18 +47,14 @@ The UI tests are a part of our CI/CD pipeline.
 #### Running end-to-end tests:
 
 - Bring up the: Service, Database and Webapp
-- Cypress needs the `SESSION_TOKEN` environment variable to be set
-  - This value is set in env.local
-  - The value is in 1Password
+- Cypress needs `JWT_SECRET` and `TEST_USER_AUTH_ID` set — the session token is minted automatically at startup
 - `npm run cypress:open` or `npm run cypress:watch` -- Run Cypress tests in the `cypress/endToEnd` directory with the Test Runner
 - `npm run cypress:e2e` -- Run Cypress tests in the `cypress/endToEnd` directory in the command line
 
 The end-to-end tests are also a part of our CI/CD pipeline
 
-- They require the env vars `SESSION_TOKEN`, `JWT_SECRET` and `WEBAPP_CLIENT_SECRET`
+- They require the env vars `JWT_SECRET`, `TEST_USER_AUTH_ID` and `WEBAPP_CLIENT_SECRET`
   - These have been set as GitHub secrets in the repository
-- Currently, the values are the same as the ones used locally (`.env.local`)
-  - They're listed in 1Password in case the local or repository values change
 
   #### Testing authentication pages:
 

@@ -12,28 +12,23 @@ To run end-to-end tests locally:
 - Copy `tests/.env.example` as `tests/.env` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password for the corresponding environment variables.
 
 ```sh
-$ docker compose -f docker-compose.e2e.yml up
+$ podman compose -f docker-compose.e2e.yml up
 $ npm run test:e2e
 ```
 
-### The Cypress end-to-end tests need a valid `SESSION_TOKEN` to run
+### The Cypress end-to-end tests require `JWT_SECRET` and `TEST_USER_AUTH_ID`
 
-If you experience unexpected Cypress test failures with errors like...
+The session token is minted automatically at test startup. Ensure the following are set:
+
+- `JWT_SECRET` — the NextAuth secret
+- `TEST_USER_AUTH_ID` — the Azure B2C object ID of `beacons_test_b2c@mailsac.com`
+
+In GitHub Actions and Dependabot secrets, `TEST_WEBAPP_AZURE_B2C_TEST_USER_ID` must be set:
 
 ```console
-TypeError: Cannot destructure property 'authId' of 'session.body.user' as it is undefined.
+gh secret set TEST_WEBAPP_AZURE_B2C_TEST_USER_ID -R mcagov/beacons
+gh secret set TEST_WEBAPP_AZURE_B2C_TEST_USER_ID -R mcagov/beacons --app dependabot
 ```
-
-...you may well need to update the `SESSION_TOKEN` used by the tests locally and in GitHub Actions.
-
-- Log into local/dev/staging webapp using the "Test B2C account" credentials from 1Password.
-  - Note that any time you use this account, it will create a new session token, so the following steps need carrying out regardless.
-- Locate the session token in your browser's development tools: Application -> cookies -> \_\_Secure-next-auth.session-token -> value.
-- Copy this value.
-- Update the following with this value:
-  - `TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN` in https://github.com/mcagov/beacons/settings/secrets/actions.
-  - `SESSION_TOKEN` in the "Beacons Webapp Local .env.local config" in 1Password.
-- Make sure all the engineers know to update their local `webapp/.env.local` and `tests/.env` files.
 
 ## Integration testing
 
