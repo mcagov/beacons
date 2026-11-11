@@ -1,2 +1,4 @@
 // Re-export brand colour variables/functions for easier re-use within components
-@import "node_modules/govuk-frontend/dist/govuk/settings/colours-applied";
+@import "node_modules/govuk-frontend/dist/govuk/settings";
+@import "node_modules/govuk-frontend/dist/govuk/tools";
+@import "node_modules/govuk-frontend/dist/govuk/helpers";

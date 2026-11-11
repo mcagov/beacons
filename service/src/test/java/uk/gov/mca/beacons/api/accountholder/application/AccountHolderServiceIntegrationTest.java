@@ -187,10 +187,10 @@ public class AccountHolderServiceIntegrationTest extends BaseIntegrationTest {
     assertFalse(accountHolderService.getAccountHolder(id).isPresent());
 
     boolean userDeleted = false;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 30; i++) {
       try {
         graphService.getUser(accountHolder.getAuthId().toString());
-        TimeUnit.SECONDS.sleep(1);
+        TimeUnit.SECONDS.sleep(2);
       } catch (GraphServiceException e) {
         userDeleted = true;
         break;

@@ -14,13 +14,19 @@
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("dotenv").config({ path: ".env" });
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { mintSessionToken } = require("./sessionToken");
 /**
  * @type {Cypress.PluginConfig}
  */
-module.exports = (on, config) => {
+module.exports = async (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
   setTestEnvVarsFromSystem(config);
+  config.env.SESSION_TOKEN = await mintSessionToken(
+    process.env.JWT_SECRET,
+    process.env.TEST_USER_AUTH_ID,
+  );
 
   return config;
 };
@@ -31,5 +37,4 @@ const setTestEnvVarsFromSystem = (config) => {
   config.env.AAD_TENANT_ID = process.env.AAD_TENANT_ID;
   config.env.AAD_API_ID = process.env.AAD_API_ID;
   config.env.API_URL = process.env.API_URL;
-  config.env.SESSION_TOKEN = process.env.SESSION_TOKEN;
 };

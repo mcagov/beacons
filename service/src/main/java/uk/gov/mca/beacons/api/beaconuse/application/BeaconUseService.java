@@ -1,6 +1,8 @@
 package uk.gov.mca.beacons.api.beaconuse.application;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,15 @@ public class BeaconUseService {
   }
 
   public List<BeaconUse> getByBeaconId(BeaconId beaconId) {
-    return beaconUseRepository.getBeaconUseByBeaconId(beaconId);
+    return beaconUseRepository
+      .getBeaconUseByBeaconId(beaconId)
+      .stream()
+      .sorted(
+        Comparator.comparing((BeaconUse bu) ->
+          !Boolean.TRUE.equals(bu.getMainUse())
+        )
+      )
+      .collect(Collectors.toList());
   }
 
   public BeaconUse getMainUseByBeaconId(BeaconId beaconId) {
