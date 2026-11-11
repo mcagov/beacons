@@ -14,6 +14,9 @@ on:
       test_azure_b2c_session_token:
         description: The session token of a logged in user to allow Cypress to test behind auth
         required: true
+      test_azure_b2c_test_user_id:
+        description: The Azure B2C object id of the Cypress test user
+        required: true
       test_azure_b2c_jwt_secret:
         description: Permits Cypress to authenticate with Azure B2C to perform logged-in tests
         required: true
@@ -45,7 +48,7 @@ jobs:
         run: npm run lint
 
       - name: Docker linting
-        uses: hadolint/hadolint-action@v3.3.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: webapp/Dockerfile
 
@@ -78,6 +81,7 @@ jobs:
           - 6379:6379
     env:
       SESSION_TOKEN: ${{ secrets.test_azure_b2c_session_token }}
+      TEST_USER_AUTH_ID: ${{ secrets.test_azure_b2c_test_user_id }}
       JWT_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
       AUTH_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}
       NEXTAUTH_SECRET: ${{ secrets.test_azure_b2c_jwt_secret }}

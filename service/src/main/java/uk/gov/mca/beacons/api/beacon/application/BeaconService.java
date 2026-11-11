@@ -3,6 +3,7 @@ package uk.gov.mca.beacons.api.beacon.application;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.auditing.AuditingHandler;
@@ -13,6 +14,7 @@ import uk.gov.mca.beacons.api.beacon.domain.Beacon;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconId;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconRepository;
 import uk.gov.mca.beacons.api.beacon.domain.BeaconStatus;
+import uk.gov.mca.beacons.api.exceptions.InvalidHexIdException;
 import uk.gov.mca.beacons.api.exceptions.ResourceNotFoundException;
 import uk.gov.mca.beacons.api.mappers.ModelPatcher;
 import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
@@ -20,6 +22,10 @@ import uk.gov.mca.beacons.api.mappers.ModelPatcherFactory;
 @Transactional
 @Service("BeaconServiceV2")
 public class BeaconService {
+
+  private static final Pattern VALID_HEX_ID = Pattern.compile(
+    "^([0-9A-F]{15}|[0-9A-F]{23})$"
+  );
 
   private final AuditingHandler auditingHandler;
   private final BeaconRepository beaconRepository;
@@ -82,11 +88,21 @@ public class BeaconService {
 
   public Beacon update(BeaconId beaconId, Beacon patch)
     throws ResourceNotFoundException {
+    return update(beaconId, patch, false);
+  }
+
+  public Beacon update(BeaconId beaconId, Beacon patch, boolean updateHexId)
+    throws ResourceNotFoundException, InvalidHexIdException {
     Beacon beacon = beaconRepository
       .findById(beaconId)
       .orElseThrow(ResourceNotFoundException::new);
 
     final ModelPatcher<Beacon> patcher = getPatcher();
+
+    if (updateHexId && patch.getHexId() != null) {
+      patch.setHexId(normaliseHexId(patch.getHexId()));
+      patcher.withMapping(Beacon::getHexId, Beacon::setHexId);
+    }
 
     beacon.update(patch, patcher);
     auditingHandler.markModified(beacon);
@@ -102,6 +118,14 @@ public class BeaconService {
     beacon.softDelete();
 
     return beaconRepository.save(beacon);
+  }
+
+  private String normaliseHexId(String hexId) throws InvalidHexIdException {
+    final String normalised = hexId.trim().toUpperCase();
+    if (!VALID_HEX_ID.matcher(normalised).matches()) {
+      throw new InvalidHexIdException();
+    }
+    return normalised;
   }
 
   private ModelPatcher<Beacon> getPatcher() {

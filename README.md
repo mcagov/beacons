@@ -11,7 +11,7 @@ The Beacons registration service enables:
 It comprises three applications:
 
 1. A public-facing frontend that uses [NextJS](https://nextjs.org/) and the [GOV.UK Design System]
-   (https://design-system.service.gov.uk/).
+   (<https://design-system.service.gov.uk/>).
    - Source code is in the `webapp/` directory.
    - Application specific documentation is in the [README](./webapp/README.md).
 2. An API that uses [Spring Boot](https://spring.io/projects/spring-boot), [Postgres](https://www.postgresql.org/)
@@ -50,15 +50,16 @@ Before you start...
     then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
     use `./scripts/dev.sh`, which runs Podman inside its own VM.
   - See the `.tool-versions` if you want to manage them some other way.
-- Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "Beacons Webapp Local .env.local config" secure note in 1Password. Please ensure you click "Edit" in 1Password before copying the config.
-- Get the Microsoft Graph secrets into your environment variables from "Microsoft Graph Secrets - TEST" from 1Password to your terminal.
+- Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "/beacons/dev/webapp/env-local" secure note in AWS Parameter Store.
+- Get the Microsoft Graph secrets into your environment variables from "/beacons/dev/microsoft-graph" from AWS Parameter Store to your terminal.
   - Please use [direnv](https://direnv.net/) to manage this.
-  - Save the `.envrc.example` file in the root of the repository as `.envrc` and populate the values with what's in "Microsoft Graph Secrets - TEST" in 1Password
+  - Save the `.envrc.example` file in the root of the repository as `.envrc` and populate the values with what's in "/beacons/dev/microsoft-graph" in AWS Parameter Store
 - Install all the things, setup commit hooks etc.
   - ```bash
     # From the root of this repository
     make setup
     ```
+
 - Start up the applications in development mode, with backing services
   - ```bash
     # From the root of this repository≠
@@ -67,7 +68,7 @@ Before you start...
 
 ### Local development without Azure
 
-If you don't have the Azure and 1Password secrets above, or want to work offline, you can run everything with a single
+If you don't have the Azure and AWS secrets above, or want to work offline, you can run everything with a single
 local user instead.
 
 To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run
@@ -78,7 +79,7 @@ want your editor to resolve imports. To run natively instead:
 1. Set `BEACONS_LOCAL_AUTH=true` in your `.envrc` (see `.envrc.example`) and run `direnv allow`.
 2. Optionally, to change the defaults:
    - copy `webapp/.env.local-auth.example` as `webapp/.env.local-auth` for the webapp's settings, which need nothing
-     from 1Password. Without it, the example file is used.
+     from AWS. Without it, the example file is used.
    - export `LOCAL_AUTH_EMAIL`, `LOCAL_AUTH_PASSWORD` or `LOCAL_AUTH_ROLES` in your `.envrc` to change the local
      user's email, password or Backoffice roles.
 3. `make serve`, then sign in to the webapp with `dev@beacons.local` / `password`. The Backoffice signs you in as the
