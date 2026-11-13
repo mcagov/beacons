@@ -10,8 +10,25 @@ on:
       - main
 
 jobs:
+  detect_changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      non_docs: ${{ steps.filter.outputs.non_docs }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            non_docs:
+              - '**'
+              - '!**/*.md'
+
   terraform_lint:
     name: Terraform lint
+    needs: [detect_changes]
+    if: needs.detect_changes.outputs.non_docs == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -26,6 +43,8 @@ jobs:
 
   prettier_check:
     name: Prettier check
+    needs: [detect_changes]
+    if: needs.detect_changes.outputs.non_docs == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -39,6 +58,8 @@ jobs:
 
   test_webapp:
     name: Test Webapp
+    needs: [detect_changes]
+    if: needs.detect_changes.outputs.non_docs == 'true'
     uses: ./.github/workflows/_reusable-test-webapp.yml
     secrets:
       test_azure_b2c_session_token: ${{ secrets.TEST_WEBAPP_AZURE_B2C_SESSION_TOKEN }}
@@ -47,10 +68,14 @@ jobs:
 
   test_backoffice:
     name: Test Backoffice
+    needs: [detect_changes]
+    if: needs.detect_changes.outputs.non_docs == 'true'
     uses: ./.github/workflows/_reusable-test-backoffice.yml
 
   test_service:
     name: Test Service
+    needs: [detect_changes]
+    if: needs.detect_changes.outputs.non_docs == 'true'
     uses: ./.github/workflows/_reusable-test-service.yml
     with:
       environment: ci-test
@@ -62,10 +87,8 @@ jobs:
 
   build_webapp_image:
     name: Build Webapp image
-    needs:
-      - test_backoffice
-      - test_service
-      - test_webapp
+    needs: [detect_changes, test_backoffice, test_service, test_webapp]
+    if: needs.detect_changes.outputs.non_docs == 'true'
     uses: ./.github/workflows/_reusable-publish-webapp-image.yml
     with:
       tag: ${{ github.sha }}
@@ -77,10 +100,8 @@ jobs:
 
   build_service_image:
     name: Build Service image
-    needs:
-      - test_backoffice
-      - test_service
-      - test_webapp
+    needs: [detect_changes, test_backoffice, test_service, test_webapp]
+    if: needs.detect_changes.outputs.non_docs == 'true'
     uses: ./.github/workflows/_reusable-publish-service-image.yml
     with:
       tag: ${{ github.sha }}
@@ -92,10 +113,8 @@ jobs:
 
   build_backoffice_image:
     name: Build Backoffice image
-    needs:
-      - test_backoffice
-      - test_service
-      - test_webapp
+    needs: [detect_changes, test_backoffice, test_service, test_webapp]
+    if: needs.detect_changes.outputs.non_docs == 'true'
     uses: ./.github/workflows/_reusable-publish-backoffice-image.yml
     with:
       tag: ${{ github.sha }}
@@ -109,10 +128,8 @@ jobs:
 
   build_opensearch_proxy_image:
     name: Build OpenSearch proxy image
-    needs:
-      - test_backoffice
-      - test_service
-      - test_webapp
+    needs: [detect_changes, test_backoffice, test_service, test_webapp]
+    if: needs.detect_changes.outputs.non_docs == 'true'
     uses: ./.github/workflows/_reusable-publish-opensearch-proxy-image.yml
     with:
       tag: ${{ github.sha }}
@@ -125,6 +142,7 @@ jobs:
   end_to_end_tests:
     name: End-to-end tests
     needs:
+      - detect_changes
       - terraform_lint
       - prettier_check
       - test_webapp
@@ -134,6 +152,7 @@ jobs:
       - build_service_image
       - build_backoffice_image
       - build_opensearch_proxy_image
+    if: needs.detect_changes.outputs.non_docs == 'true'
     uses: ./.github/workflows/_reusable-end-to-end-tests.yml
     with:
       image-tag: ${{ github.sha }}
