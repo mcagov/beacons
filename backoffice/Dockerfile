@@ -1,4 +1,4 @@
-FROM docker.io/library/node:24-alpine AS build
+FROM docker.io/library/node:25-alpine AS build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
