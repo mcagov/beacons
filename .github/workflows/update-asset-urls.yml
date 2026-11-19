@@ -1,0 +1,57 @@
+name: Deploy Asset URLs
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to update URLs for'
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+
+jobs:
+  update-urls:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'dev' }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+      
+      - name: Update asset URLs based on environment
+        run: |
+          ENV=${{ github.event.inputs.environment || 'dev' }}
+          BUCKET_URL="https://mca-beacons-b2c-assets-$ENV.s3.eu-west-2.amazonaws.com"
+          
+          echo "Updating URLs to: $BUCKET_URL"
+          
+          # Update all HTML files in webapp/public/auth
+          find webapp/public/auth -name "*.html" -type f -exec sed -i "s|https://mca-beacons-b2c-assets[^/]*\.s3\.eu-west-2\.amazonaws\.com|$BUCKET_URL|g" {} \;
+          
+          echo "URL update completed"
+      
+      - name: Deploy assets
+        run: |
+          chmod +x terraform/scripts/deploy-assets.sh
+          ./terraform/scripts/deploy-assets.sh ${{ github.event.inputs.environment || 'dev' }}
+      
+      - name: Deployment summary
+        run: |
+          ENV=${{ github.event.inputs.environment || 'dev' }}
+          echo "### Deployment Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Environment:** $ENV" >> $GITHUB_STEP_SUMMARY
+          echo "**Bucket:** mca-beacons-b2c-assets-$ENV" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** https://mca-beacons-b2c-assets-$ENV.s3.eu-west-2.amazonaws.com" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Updated files synced to S3:**" >> $GITHUB_STEP_SUMMARY
+          find webapp/public/auth -name "*.html" -type f | sed 's|webapp/public/||' | sed 's/^/- /' >> $GITHUB_STEP_SUMMARY
