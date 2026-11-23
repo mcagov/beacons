@@ -39,33 +39,6 @@ Known issues and resolution for Unit, Integration and End-to-end testing are doc
 Infrastructure-as-code remains the single source-of-truth for Beacons infrastructure! Always check `terraform/` if
 unsure.
 
-## Local development
-
-Before you start...
-
-- Make sure you have the required versions of things installed
-  - Install [brew](https://brew.sh/) onto your laptop if you are using a Mac.
-  - Install [mise-en-place](<[asdf-vm.com](https://mise.jdx.dev/)>)
-  - Install [Podman](https://podman.io/docs/installation) and podman-compose with `brew install podman podman-compose`,
-    then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
-    use `./scripts/dev.sh`, which runs Podman inside its own VM.
-  - See the `.tool-versions` if you want to manage them some other way.
-- Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "/beacons/dev/webapp/env-local" secure note in AWS Parameter Store.
-- Get the Microsoft Graph secrets into your environment variables from "/beacons/dev/microsoft-graph" from AWS Parameter Store to your terminal.
-  - Please use [direnv](https://direnv.net/) to manage this.
-  - Save the `.envrc.example` file in the root of the repository as `.envrc` and populate the values with what's in "/beacons/dev/microsoft-graph" in AWS Parameter Store
-- Install all the things, setup commit hooks etc.
-  - ```bash
-    # From the root of this repository
-    make setup
-    ```
-
-- Start up the applications in development mode, with backing services
-  - ```bash
-    # From the root of this repository≠
-    make serve
-    ```
-
 ### Local development without Azure
 
 If you don't have the Azure and AWS secrets above, or want to work offline, you can run everything with a single
@@ -90,6 +63,32 @@ Each mode uses its own env files, so you can switch by changing the flag and res
 This is for local development only. Deployed environments run the `default,migration` Spring profiles (see
 `terraform/*.tfvars`) and never set `BEACONS_LOCAL_AUTH`. The service refuses to start if `localauth` is combined with
 `default` or `migration`, or runs without `dev`.
+
+## Local development
+
+Before you start...
+
+- Make sure you have the required versions of things installed
+  - Install [brew](https://brew.sh/) onto your laptop if you are using a Mac.
+  - Install [mise-en-place](<[asdf-vm.com](https://mise.jdx.dev/)>)
+  - Install [Podman](https://podman.io/docs/installation) and podman-compose with `brew install podman podman-compose`,
+    then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
+    use `./scripts/dev.sh`, which runs Podman inside its own VM.
+  - See the `.tool-versions` if you want to manage them some other way.
+- Pull secrets from AWS Parameter Store (requires [direnv](https://direnv.net/)):
+  - ```bash
+    aws sso login --profile mca-admin-beacons
+    make pull-secrets
+    ```
+- Install all the things, setup commit hooks etc.
+  - ```bash
+    make setup
+    ```
+
+- Start up the applications in development mode, with backing services
+  - ```bash
+    make serve
+    ```
 
 ## Infrastructure-as-code
 
