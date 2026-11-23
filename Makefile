@@ -85,6 +85,10 @@ serve-backoffice-stubs:
 ##
 # Utils
 ##
+.PHONY: pull-secrets
+pull-secrets:
+	@./scripts/pull-secrets.sh
+
 .PHONY: clean
 clean:
 	podman compose down

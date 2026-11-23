@@ -75,19 +75,18 @@ Before you start...
     then create its VM with `podman machine init --memory 4096 && podman machine start`. You don't need this if you
     use `./scripts/dev.sh`, which runs Podman inside its own VM.
   - See the `.tool-versions` if you want to manage them some other way.
-- Copy `webapp/.env.example` as `webapp/.env.local` and populate it with the contents of the "/beacons/dev/webapp/env-local" secure note in AWS Parameter Store.
-- Get the Microsoft Graph secrets into your environment variables from "/beacons/dev/microsoft-graph" from AWS Parameter Store to your terminal.
-  - Please use [direnv](https://direnv.net/) to manage this.
-  - Save the `.envrc.example` file in the root of the repository as `.envrc` and populate the values with what's in "/beacons/dev/microsoft-graph" in AWS Parameter Store
+- Pull secrets from AWS Parameter Store (requires [direnv](https://direnv.net/)):
+  - ```bash
+    aws sso login --profile mca-admin-beacons
+    make pull-secrets
+    ```
 - Install all the things, setup commit hooks etc.
   - ```bash
-    # From the root of this repository
     make setup
     ```
 
 - Start up the applications in development mode, with backing services
   - ```bash
-    # From the root of this repository≠
     make serve
     ```
 
