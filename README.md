@@ -39,6 +39,31 @@ Known issues and resolution for Unit, Integration and End-to-end testing are doc
 Infrastructure-as-code remains the single source-of-truth for Beacons infrastructure! Always check `terraform/` if
 unsure.
 
+### Local development without Azure
+
+If you don't have the Azure and AWS secrets above, or want to work offline, you can run everything with a single
+local user instead.
+
+To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run
+`./scripts/dev.sh`. It creates the VM, installs everything inside it and serves the app; run it with no
+arguments for the list of commands. `node_modules` is kept inside the VM, so install on your Mac too if you
+want your editor to resolve imports. To run natively instead:
+
+1. Set `BEACONS_LOCAL_AUTH=true` in your `.envrc` (see `.envrc.example`) and run `direnv allow`.
+2. Optionally, to change the defaults:
+   - copy `webapp/.env.local-auth.example` as `webapp/.env.local-auth` for the webapp's settings, which need nothing
+     from AWS. Without it, the example file is used.
+   - export `LOCAL_AUTH_EMAIL`, `LOCAL_AUTH_PASSWORD` or `LOCAL_AUTH_ROLES` in your `.envrc` to change the local
+     user's email, password or Backoffice roles.
+3. `make serve`, then sign in to the webapp with `dev@beacons.local` / `password`. The Backoffice signs you in as the
+   same user automatically.
+
+Each mode uses its own env files, so you can switch by changing the flag and restarting `make serve`.
+
+This is for local development only. Deployed environments run the `default,migration` Spring profiles (see
+`terraform/*.tfvars`) and never set `BEACONS_LOCAL_AUTH`. The service refuses to start if `localauth` is combined with
+`default` or `migration`, or runs without `dev`.
+
 ## Local development
 
 Before you start...
@@ -65,31 +90,6 @@ Before you start...
     # From the root of this repository≠
     make serve
     ```
-
-### Local development without Azure
-
-If you don't have the Azure and AWS secrets above, or want to work offline, you can run everything with a single
-local user instead.
-
-To run it all in a Linux VM, with Homebrew as the only thing you install on your Mac, run
-`./scripts/dev.sh`. It creates the VM, installs everything inside it and serves the app; run it with no
-arguments for the list of commands. `node_modules` is kept inside the VM, so install on your Mac too if you
-want your editor to resolve imports. To run natively instead:
-
-1. Set `BEACONS_LOCAL_AUTH=true` in your `.envrc` (see `.envrc.example`) and run `direnv allow`.
-2. Optionally, to change the defaults:
-   - copy `webapp/.env.local-auth.example` as `webapp/.env.local-auth` for the webapp's settings, which need nothing
-     from AWS. Without it, the example file is used.
-   - export `LOCAL_AUTH_EMAIL`, `LOCAL_AUTH_PASSWORD` or `LOCAL_AUTH_ROLES` in your `.envrc` to change the local
-     user's email, password or Backoffice roles.
-3. `make serve`, then sign in to the webapp with `dev@beacons.local` / `password`. The Backoffice signs you in as the
-   same user automatically.
-
-Each mode uses its own env files, so you can switch by changing the flag and restarting `make serve`.
-
-This is for local development only. Deployed environments run the `default,migration` Spring profiles (see
-`terraform/*.tfvars`) and never set `BEACONS_LOCAL_AUTH`. The service refuses to start if `localauth` is combined with
-`default` or `migration`, or runs without `dev`.
 
 ## Infrastructure-as-code
 
