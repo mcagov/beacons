@@ -61,7 +61,7 @@ const MoreDetails: FunctionComponent<MoreDetailsPageProps> = ({
       </GovUKBody>
       <GovUKBody>
         This might include defining features (e.g. length, colour, etc.) and any
-        tracking details (e.g. RYA SafeTrx or Web) if you have them.
+        tracking details (e.g. Web) if you have them.
       </GovUKBody>
       <GovUKBody className="govuk-!-font-weight-bold">
         Please do not provide medical details as we cannot store these.
